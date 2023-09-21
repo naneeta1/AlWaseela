@@ -6,7 +6,7 @@ import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import { moderateScale, ScaledSheet } from 'react-native-size-matters';
 import ScreenBoiler from '../Components/ScreenBoiler';
 import LinearGradient from 'react-native-linear-gradient';
-import { ActivityIndicator, Platform, ToastAndroid, View, FlatList } from 'react-native';
+import { ActivityIndicator, Platform, ToastAndroid, View, FlatList, TouchableOpacity } from 'react-native';
 import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
@@ -22,6 +22,8 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import { setUserData } from '../Store/slices/common';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'native-base';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const Causes = (props) => {
 
@@ -169,50 +171,20 @@ const Causes = (props) => {
                         marginTop: moderateScale(5, 0.3),
                     }}
                     renderItem={({ item, index }) => {
-                        return (<View style={{
-                            width: windowWidth * 0.27,
-                            height: windowHeight * 0.12,
-                            borderColor: Color.veryLightGray,
-                            borderRadius: moderateScale(10, .6),
-                            borderWidth: 1,
-                            justifyContent:'center',
-                            alignItems:'center',
-                            margin:moderateScale(10,.6),
-                            padding:moderateScale(5,.6),
-                        }}>
-                            <View style={{ width: windowWidth * 0.15, height: windowHeight * 0.06 }}>
-                                <CustomImage
-                                    resizeMode="contain"
-                                    source={item?.image}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        // marginTop: moderateScale(25, 0.3),
-                                    }}
-                                />
-                            </View>
-                            <CustomText style={{color:Color.black, fontSize:moderateScale(13,.6), textAlign:'center', marginTop:moderateScale(5,.3) }}>{item?.name}</CustomText>
-                        </View>)
+                        return (
+                        <Chunks item={item}/>
+                        )
                     }}
 
 
                 />
 
 
-
-
-                
-
-
-
-
-
-
                 <CustomButton
                     onPress={() => {
                         // dispatch(setUserData());
                         //     dispatch(SetUserRole(response?.data?.user_info?.role))
-                        dispatch(setUserToken({ token: 'skdaksakdjlk' }));
+                        // dispatch(setUserToken({ token: 'skdaksakdjlk' }));
                         // LoginUser();
                     }}
                     text={
@@ -225,7 +197,30 @@ const Causes = (props) => {
                     textColor={Color.white}
                     width={windowWidth * 0.75}
                     height={windowHeight * 0.06}
-                    marginTop={moderateScale(15, 0.3)}
+                    marginTop={moderateScale(10, 0.3)}
+                    bgColor={Color.themeColor}
+                    borderRadius={moderateScale(25, 0.3)}
+                    
+                // isGradient
+                />
+                 <CustomButton
+                    onPress={() => {
+                        // dispatch(setUserData());
+                        //     dispatch(SetUserRole(response?.data?.user_info?.role))
+                        dispatch(setUserToken({token:null}));
+                        // LoginUser();
+                    }}
+                    text={
+                        isLoading ? (
+                            <ActivityIndicator size={'small'} color={Color.white} />
+                        ) : (
+                            'Logout'
+                        )
+                    }
+                    textColor={Color.white}
+                    width={windowWidth * 0.75}
+                    height={windowHeight * 0.06}
+                    marginTop={moderateScale(10, 0.3)}
                     bgColor={Color.themeColor}
                     borderRadius={moderateScale(25, 0.3)}
                     
@@ -253,3 +248,39 @@ const styles = ScaledSheet.create({
 });
 
 export default Causes;
+
+const Chunks =({item})=>{
+
+const [selectedInterest, setSelectedInterest] = useState(false)
+
+
+    return(<TouchableOpacity 
+        onPress={()=>{setSelectedInterest(true)}}
+        style={{
+        width: windowWidth * 0.27,
+        height: windowHeight * 0.11,
+        borderColor:selectedInterest ? Color.black : Color.veryLightGray,
+        borderRadius: moderateScale(10, .6),
+        borderWidth: selectedInterest ? 2 : 1,
+        justifyContent:'center',
+        alignItems:'center',
+        margin:moderateScale(10,.6),
+        padding:moderateScale(5,.6),
+    }}>{selectedInterest && <View style={{position:'absolute', top:5, right:5}}>
+        <Icon name="checkcircleo" as={AntDesign} size={4} color={Color.themeColor} />
+        </View>}
+        <View style={{ width: windowWidth * 0.15, height: windowHeight * 0.055 }}>
+            <CustomImage
+                onPress={()=>{setSelectedInterest(true)}}
+                resizeMode="contain"
+                source={item?.image}
+                style={{
+                    width: '100%',
+                    height: '100%',
+                    // marginTop: moderateScale(25, 0.3),
+                }}
+            />
+        </View>
+        <CustomText style={{color:Color.black, fontSize:moderateScale(13,.6), textAlign:'center', marginTop:moderateScale(5,.3) }}>{item?.name}</CustomText>
+    </TouchableOpacity>)
+}

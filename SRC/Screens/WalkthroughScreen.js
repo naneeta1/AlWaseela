@@ -98,7 +98,7 @@ const WalkThroughScreen = props => {
               style={{
                 color: Color.black,
                 fontSize: moderateScale(18, 0.6),
-                width: windowWidth * 0.8,
+                width: windowWidth * 0.9,
                 textAlign: 'center',
                 paddingVertical: moderateScale(10, 0.6),
               }}

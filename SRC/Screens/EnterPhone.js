@@ -87,7 +87,7 @@ const EnterPhone = (props) => {
           width: windowWidth,
           height: windowHeight,
           alignItems: 'center',
-          justifyContent: 'center',
+          // justifyContent: 'center',
         }}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -116,9 +116,13 @@ const EnterPhone = (props) => {
         <CustomText
           // onPress={() => navigationService.navigate('Signup')}
           isBold
-          style={{ fontSize: moderateScale(30, .6), color: Color.black, 
+          style={{ fontSize: moderateScale(30, .6),
+             color: Color.black,
+             marginTop :moderateScale(60,.6),
             // backgroundColor: 'red',
-           marginVertical: moderateScale(20, .3) }}>
+          //  marginVertical: moderateScale(20, .3)
+           }}
+           >
           POWER BOX
         </CustomText>
         <View
@@ -142,7 +146,7 @@ const EnterPhone = (props) => {
           // onPress={() => navigationService.navigate('Signup')}
           isBold
           style={styles.txt6}>
-          Reset
+          Reset 
         </CustomText>
 
         <TextInputWithTitle
@@ -178,41 +182,37 @@ const EnterPhone = (props) => {
           }}
           onPress={() => {
             console.log('here');
-            navigationService.navigate('EnterPhone');
+            navigationService.navigate('LoginScreen');
           }}
         />
+        <CustomText style={styles.txt5}>Please provide an email address associated with your account and we will send you a link to reset your password ?</CustomText>
+
 
         <CustomButton
           onPress={() => {
             // dispatch(setUserData());
             //     dispatch(SetUserRole(response?.data?.user_info?.role))
-            dispatch(setUserToken({ token: 'skdaksakdjlk' }));
+            // dispatch(setUserToken({ token: 'skdaksakdjlk' }));
             // LoginUser();
           }}
           text={
             isLoading ? (
               <ActivityIndicator size={'small'} color={Color.white} />
             ) : (
-              'Reset'
+              'Reset Password'
             )
           }
           textColor={Color.white}
           width={windowWidth * 0.75}
           height={windowHeight * 0.06}
-          marginTop={moderateScale(15, 0.3)}
+          marginTop={moderateScale(35, 0.3)}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(25, 0.3)}
         // isGradient
         />
 
 
-        <CustomText style={styles.txt5}>Please provide an email address associated with your account and we will send you a link to reset your password ?</CustomText>
-        <CustomText
-          onPress={() => navigationService.navigate('Signup')}
-          isBold
-          style={styles.txt6}>
-          Register
-        </CustomText>
+      
       </LinearGradient>
     </ScreenBoiler>
   );
@@ -223,7 +223,7 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(25, 0.3),
     fontSize: moderateScale(14, 0.6),
     color: Color.veryLightGray,
-    paddingHorizontal:moderateScale(20,.6),
+    paddingHorizontal:moderateScale(30,.6),
     textAlign:'center'
   },
   txt6: {

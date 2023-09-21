@@ -205,8 +205,8 @@ const LoginScreen = (props) => {
           onPress={() => {
             // dispatch(setUserData());
             //     dispatch(SetUserRole(response?.data?.user_info?.role))
-            // dispatch(setUserToken({ token: 'skdaksakdjlk' }));
-            navigationService.navigate('Causes')
+            dispatch(setUserToken({ token: 'skdaksakdjlk' }));
+            // navigationService.navigate('Causes')
             // LoginUser();
           }}
           text={

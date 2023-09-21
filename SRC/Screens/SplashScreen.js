@@ -59,7 +59,7 @@ const SplashScreen = () => {
             textAlign: 'center',
             fontSize: moderateScale(18, 0.6),
             color: Color.veryLightGray,
-            paddingHorizontal: moderateScale(10, .6),
+            paddingHorizontal: moderateScale(30, .6),
             fontStyle: 'italic'
 
             // marginTop : moderateScale(10,0.3)
@@ -75,13 +75,25 @@ const SplashScreen = () => {
               fontSize: moderateScale(27, 0.6),
               marginTop: moderateScale(10, 0.3)
             }}>A Project Of</CustomText>
-            <View style={{ width: windowWidth * 0.2, height: windowHeight * 0.08 }}>
-              <CustomImage
-                source={require('../Assets/Images/alwaseela.png')}
-                resizeMode={"stretch"}
-                style={{ width: '100%', height: '100%' }}
-              />
-            </View>
+              <View
+          style={{
+            height: windowHeight * 0.07,
+            width: windowWidth * 0.2,
+            // position: 'absolute',
+            // backgroundColor:'red',
+            // top: 10,
+            // right: 10,
+          }}>
+          <CustomImage
+            resizeMode="contain"
+            source={require('../Assets/Images/alwaseela.png')}
+            style={{
+              width: '100%',
+              height: '100%',
+              // marginTop: moderateScale(25, 0.3),
+            }}
+          />
+        </View>
 
           </View>
 
