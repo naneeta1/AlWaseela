@@ -17,6 +17,10 @@ import Drawer from './Drawer/Drawer';
 
 import SplashScreen from './Screens/SplashScreen';
 import Causes from './Screens/Causes';
+import DonationCategories from './Screens/DonationCategories';
+import DonationDetail from './Screens/DonationDetail';
+import DonateNow from './Screens/DonateNow';
+import UserProfile from './Screens/UserProfile';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
@@ -35,12 +39,16 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={firstScreen}
+          initialRouteName={'UserProfile'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
           <RootNav.Screen name="HomeScreen" component={HomeScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Causes" component={Causes} />
+          <RootNav.Screen name="DonationCategories" component={DonationCategories} />
+          <RootNav.Screen name="DonationDetail" component={DonationDetail} />
+          <RootNav.Screen name="DonateNow" component={DonateNow} />
+          <RootNav.Screen name="UserProfile" component={UserProfile} />
           
       
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />

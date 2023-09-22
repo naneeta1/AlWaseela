@@ -46,8 +46,8 @@ const TextInputWithTitle = props => {
           styles.fieldSet,
           {
             width: windowWidth * props.viewWidth,
-            borderBottomWidth: props.border,
-            // borderColor: Color.veryLightGray,
+            borderWidth: props.border,
+            borderColor: Color.veryLightGray,
             backgroundColor: props.backgroundColor,
           },
           props.elevation && {
