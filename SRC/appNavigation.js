@@ -17,6 +17,9 @@ import Drawer from './Drawer/Drawer';
 
 import SplashScreen from './Screens/SplashScreen';
 import Causes from './Screens/Causes';
+import FormScreen from './Screens/FormScreen';
+import SettingScreen from './Screens/SettingScreen';
+import Notification from './Screens/Notification';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
@@ -38,6 +41,9 @@ const AppNavigator = () => {
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          <RootNav.Screen name="Notification" component={Notification} />
+          <RootNav.Screen name="SettingScreen" component={SettingScreen} />
+          <RootNav.Screen name="FormScreen" component={FormScreen} />
           <RootNav.Screen name="HomeScreen" component={HomeScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Causes" component={Causes} />
