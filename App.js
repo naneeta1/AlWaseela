@@ -18,7 +18,6 @@ import {
 } from './SRC/Utillity/utils';
 import SplashScreen from './SRC/Screens/SplashScreen';
 import AppNavigator, {DrawerRoot} from './SRC/appNavigation';
-import GetStarted from './SRC/Screens/GetStarted';
 
 
 const App = () => {

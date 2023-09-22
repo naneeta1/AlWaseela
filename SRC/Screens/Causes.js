@@ -6,7 +6,7 @@ import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import { moderateScale, ScaledSheet } from 'react-native-size-matters';
 import ScreenBoiler from '../Components/ScreenBoiler';
 import LinearGradient from 'react-native-linear-gradient';
-import { ActivityIndicator, Platform, ToastAndroid, View, FlatList, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Platform, ToastAndroid, View, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
@@ -87,7 +87,7 @@ const Causes = (props) => {
             id: 12,
             image: require('../Assets/Images/card12.png'),
             name: 'Jinn Tv'
-        }, 
+        },
 
     ]
 
@@ -95,27 +95,34 @@ const Causes = (props) => {
         <ScreenBoiler
             statusBarBackgroundColor={'white'}
             statusBarContentStyle={'dark-content'}>
-            <LinearGradient
+            <ScrollView
+                showsVerticalScrollIndicator={false}
                 style={{
                     width: windowWidth,
-                    height: windowHeight,
-                    alignItems: 'center',
-                    paddingBottom:moderateScale(10,.6),
+                    backgroundColor: 'white',
+                    minHeight: windowHeight,
+                    flexGrow: 0,
                     //   justifyContent: 'center',
                 }}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                colors={[Color.white, Color.white]}
+                contentContainerStyle={{
+                    paddingBottom: moderateScale(30, .6),
+                    alignItems: 'center',
+
+                }}
+            // start={{ x: 0, y: 0 }}
+            // end={{ x: 1, y: 1 }}
+            // colors={[Color.white, Color.white]}
             // locations ={[0, 0.5, 0.6]}
             >
                 <View
                     style={{
                         height: windowHeight * 0.07,
                         width: windowWidth * 0.2,
-                        position: 'absolute',
+                        // position: 'absolute',
                         // backgroundColor:'red',
-                        top: 10,
+                        // top: 10,
                         right: 10,
+                        alignSelf: 'flex-end'
                     }}>
                     <CustomImage
                         resizeMode="contain"
@@ -162,17 +169,22 @@ const Causes = (props) => {
                     }}>
                     Choose your interest to donate. Donot worry you can always change it later
                 </CustomText>
+
                 <FlatList
                     numColumns={3}
                     showsVerticalScrollIndicator={false}
                     data={data}
+                    style={{
+                        marginBottom : moderateScale(20,0.6),
+
+                    }}
                     contentContainerStyle={{
                         alignSelf: 'center',
                         marginTop: moderateScale(5, 0.3),
                     }}
                     renderItem={({ item, index }) => {
                         return (
-                        <Chunks item={item}/>
+                            <Chunks item={item} />
                         )
                     }}
 
@@ -182,6 +194,7 @@ const Causes = (props) => {
 
                 <CustomButton
                     onPress={() => {
+                        navigationService.navigate('HomeScreen')
                         // dispatch(setUserData());
                         //     dispatch(SetUserRole(response?.data?.user_info?.role))
                         // dispatch(setUserToken({ token: 'skdaksakdjlk' }));
@@ -200,14 +213,14 @@ const Causes = (props) => {
                     marginTop={moderateScale(10, 0.3)}
                     bgColor={Color.themeColor}
                     borderRadius={moderateScale(25, 0.3)}
-                    
+
                 // isGradient
                 />
-                 <CustomButton
+                <CustomButton
                     onPress={() => {
                         // dispatch(setUserData());
                         //     dispatch(SetUserRole(response?.data?.user_info?.role))
-                        dispatch(setUserToken({token:null}));
+                        dispatch(setUserToken({ token: null }));
                         // LoginUser();
                     }}
                     text={
@@ -223,13 +236,13 @@ const Causes = (props) => {
                     marginTop={moderateScale(10, 0.3)}
                     bgColor={Color.themeColor}
                     borderRadius={moderateScale(25, 0.3)}
-                    
+
                 // isGradient
                 />
 
 
-               
-            </LinearGradient>
+
+            </ScrollView>
         </ScreenBoiler>
     );
 };
@@ -249,29 +262,29 @@ const styles = ScaledSheet.create({
 
 export default Causes;
 
-const Chunks =({item})=>{
+const Chunks = ({ item }) => {
 
-const [selectedInterest, setSelectedInterest] = useState(false)
+    const [selectedInterest, setSelectedInterest] = useState(false)
 
 
-    return(<TouchableOpacity 
-        onPress={()=>{setSelectedInterest(true)}}
+    return (<TouchableOpacity
+        onPress={() => { setSelectedInterest(!selectedInterest) }}
         style={{
-        width: windowWidth * 0.27,
-        height: windowHeight * 0.11,
-        borderColor:selectedInterest ? Color.black : Color.veryLightGray,
-        borderRadius: moderateScale(10, .6),
-        borderWidth: selectedInterest ? 2 : 1,
-        justifyContent:'center',
-        alignItems:'center',
-        margin:moderateScale(10,.6),
-        padding:moderateScale(5,.6),
-    }}>{selectedInterest && <View style={{position:'absolute', top:5, right:5}}>
-        <Icon name="checkcircleo" as={AntDesign} size={4} color={Color.themeColor} />
+            width: windowWidth * 0.27,
+            height: windowHeight * 0.11,
+            borderColor: selectedInterest ? Color.black : Color.veryLightGray,
+            borderRadius: moderateScale(10, .6),
+            borderWidth: selectedInterest ? 2 : 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: moderateScale(5, .6),
+            padding: moderateScale(5, .6),
+        }}>{selectedInterest && <View style={{ position: 'absolute', top: 5, right: 5 }}>
+            <Icon name="checkcircleo" as={AntDesign} size={4} color={Color.themeColor} />
         </View>}
         <View style={{ width: windowWidth * 0.15, height: windowHeight * 0.055 }}>
             <CustomImage
-                onPress={()=>{setSelectedInterest(true)}}
+                onPress={() => { setSelectedInterest(!selectedInterest) }}
                 resizeMode="contain"
                 source={item?.image}
                 style={{
@@ -281,6 +294,6 @@ const [selectedInterest, setSelectedInterest] = useState(false)
                 }}
             />
         </View>
-        <CustomText style={{color:Color.black, fontSize:moderateScale(13,.6), textAlign:'center', marginTop:moderateScale(5,.3) }}>{item?.name}</CustomText>
+        <CustomText style={{ color: Color.black, fontSize: moderateScale(13, .6), textAlign: 'center', marginTop: moderateScale(5, .3) }}>{item?.name}</CustomText>
     </TouchableOpacity>)
 }
