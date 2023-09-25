@@ -15,15 +15,17 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 
 const UpdatePasswordScreen = () => {
+  const navigaiton = useNavigation()
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmpassword, setConfirmPassword] = useState('');
   return (
     <ScreenBoiler
-      statusBarBackgroundColor={'white'}
-      statusBarContentStyle={'dark-content'}>
+      statusBarBackgroundColor={'#3E3028'}
+      statusBarContentStyle={'light-content'}>
       <LinearGradient
         style={{
           width: windowWidth,
@@ -48,14 +50,15 @@ const UpdatePasswordScreen = () => {
               alignItems: 'center',
               paddingLeft: moderateScale(10, 0.6),
             }}>
-            <TouchableOpacity activeOpacity={0.8}>
               <Icon
                 name={'left'}
                 as={AntDesign}
                 size={moderateScale(20, 0.3)}
                 color={Color.white}
+                onPress={()=>{
+                  navigaiton.goBack()
+                }}
               />
-            </TouchableOpacity>
 
             <CustomText
               style={{

@@ -24,10 +24,13 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
+import { useNavigation } from '@react-navigation/native';
 
 const DonationCategories = () => {
+  const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [selectedTab, setSelectedTab] = useState('All');
+
   const dataArray = [
     {
       category: ' Fundraising Now',
@@ -172,7 +175,7 @@ const DonationCategories = () => {
                     justifyContent: 'center',
                   }}>
                   <CustomImage
-                    source={require('../Assets/Images/HeaderLogo1.png')}
+                    source={require('../Assets/Images/logoBig.png')}
                     style={{height: '100%', width: '100%'}}
                     resizeMode="contain"
                   />
@@ -194,14 +197,18 @@ const DonationCategories = () => {
                   width: windowWidth * 0.1,
                   //   justifyContent: 'space-evenly',
                 }}>
-                <TouchableOpacity activeOpacity={0.8}>
+                {/* <TouchableOpacity activeOpacity={0.8}> */}
                   <Icon
                     name={'home'}
                     as={Feather}
                     size={moderateScale(22, 0.3)}
                     color={Color.white}
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                
                   />
-                </TouchableOpacity>
+                {/* </TouchableOpacity> */}
               </View>
             </View>
             <TextInputWithTitle
@@ -322,11 +329,11 @@ export default DonationCategories;
 const styles = StyleSheet.create({
   txt1: {
     color: Color.white,
-    fontSize: moderateScale(18, 0.6),
+    fontSize: moderateScale(15, 0.6),
   },
   txt2: {
     color: Color.white,
-    fontSize: moderateScale(15, 0.6),
+    fontSize: moderateScale(13, 0.6),
   },
 });
 
@@ -352,6 +359,7 @@ const Card = ({item}) => {
           //   backgroundColor: 'green',
         }}>
         <CustomImage
+           onPress={()=> navigationService.navigate('DonationDetail', {item: item})}
           style={{width: '100%', height: '100%'}}
           source={item?.image}
           resizeMode={'cover'}

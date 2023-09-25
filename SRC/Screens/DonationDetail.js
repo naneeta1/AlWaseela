@@ -363,7 +363,7 @@ const DonationDetail = props => {
             </View>
             <CustomButton
               onPress={() => {
-                navigationService.navigate('DonateNow');
+                navigationService.navigate('DonateNowpage');
               }}
               text={'Donate Now'}
               textColor={Color.white}

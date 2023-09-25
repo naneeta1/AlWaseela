@@ -19,7 +19,7 @@ import navigationService from '../navigationService';
 import ScreenBoiler from '../Components/ScreenBoiler';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
@@ -27,8 +27,10 @@ import CustomButton from '../Components/CustomButton';
 import {SliderBox} from 'react-native-image-slider-box';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useNavigation } from '@react-navigation/native';
 
 const UserProfile = props => {
+  const navigation = useNavigation()
   const item = props?.route?.params?.item;
   console.log('🚀 ~ file: DonationDetail.js:31 ~ DonationDetail ~ item:', item);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,6 +76,7 @@ const UserProfile = props => {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
           colors={['white', 'white']}>
+             
           <View
             style={{
               backgroundColor: Color.themeColor,
@@ -82,6 +85,29 @@ const UserProfile = props => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
+               <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                width: windowWidth * 0.05,
+                height: windowWidth * 0.05,
+                borderRadius: (windowWidth * 0.05) / 2,
+                backgroundColor: '#E3e3e3',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position : 'absolute',
+                right : 15 ,
+                top : 15,
+              }}>
+              <Icon
+                name={'cross'}
+                as={Entypo}
+                size={moderateScale(17, 0.3)}
+                color={Color.white}
+                onPress={()=>{
+                  navigation.goBack()
+                }}
+              />
+            </TouchableOpacity>
             <View
               style={{
                 width: windowWidth * 0.12,

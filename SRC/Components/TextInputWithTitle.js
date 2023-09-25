@@ -209,6 +209,12 @@ const TextInputWithTitle = props => {
                 props.inputColor && {
                   color: props.inputColor,
                 },
+                props?.fontSize && {
+                  fontSize: props?.fontSize,
+                },
+                props?.isBold && {
+                  fontWeight : 'bold'
+                }
               ]}
               onChangeText={text => props.setText(text)}
               value={props.value}

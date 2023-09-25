@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Switch,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import Header from '../Components/Header';
@@ -28,14 +29,19 @@ import CustomButton from '../Components/CustomButton';
 import {SliderBox} from 'react-native-image-slider-box';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RecieptComponent from '../Components/RecieptComponent';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { useNavigation } from '@react-navigation/native';
+
 
 const DonateNow = props => {
+  const navigation = useNavigation()
   // const item = props?.route?.params?.item;
   // console.log('🚀 ~ file: DonationDetail.js:31 ~ DonationDetail ~ item:', item);
   const [isLoading, setIsLoading] = useState(false);
   const [quantity, setQuantity] = useState(0);
   const [enabled, setEnabled] = useState(false);
   const [isVisible, setisVisible] = useState(false);
+  const [dollors , setDollors] = useState(0.00)
 
   const dataArray = [
     {
@@ -115,6 +121,31 @@ const DonateNow = props => {
               isBold>
               Quantity
             </CustomText>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                width: windowWidth * 0.05,
+                height: windowWidth * 0.05,
+                borderRadius: (windowWidth * 0.05) / 2,
+                backgroundColor: '#E3e3e3',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position : 'absolute',
+                right : 15 ,
+                top : 15,
+              }}>
+              <Icon
+                name={'cross'}
+                as={Entypo}
+                size={moderateScale(17, 0.3)}
+                color={Color.white}
+                onPress={()=>{
+                  navigation.goBack()
+                }}
+              />
+            </TouchableOpacity>
+          {/* </View> */}
+
             <View
               style={{
                 flexDirection: 'row',
@@ -236,6 +267,9 @@ const DonateNow = props => {
                   color={Color.themeColor}
                   as={AntDesign}
                   size={6}
+                  onPress={()=>{
+                    dollors > 0 && setDollors(prev => prev - 10)
+                  }}
                 />
               </View>
               <View style={{flexDirection: 'row'}}>
@@ -246,7 +280,7 @@ const DonateNow = props => {
                     // backgroundColor: 'red',
                     width: windowWidth * 0.15,
                   }}>
-                  0.00$
+                  ${ dollors}
                 </CustomText>
                 <View
                   style={{
@@ -273,6 +307,9 @@ const DonateNow = props => {
                   color={Color.themeColor}
                   as={AntDesign}
                   size={6}
+                  onPress={()=>{
+                    setDollors(prev => prev + 10)
+                  }}
                 />
                 <CustomText
                   style={{
@@ -310,8 +347,14 @@ const DonateNow = props => {
             isBold
           />
         </LinearGradient>
+        <RecieptComponent setIsVisible={setisVisible} isVisible={isVisible} 
+        onPress={()=>{
+          navigationService.navigate('HomeScreen'),
+          ToastAndroid.show('You have bought the ticket' , ToastAndroid.SHORT)
+        }}
+        />
       </ScrollView>
-      <RecieptComponent setIsVisible={setisVisible} isVisible={isVisible} />
+    
     </ScreenBoiler>
   );
 };

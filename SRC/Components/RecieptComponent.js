@@ -11,7 +11,7 @@ import { Icon } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CustomButton from './CustomButton';
 
-const RecieptComponent = ({isVisible, setIsVisible, item}) => {
+const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
   const Data = [
     {
       type: 'from',
@@ -270,7 +270,7 @@ const RecieptComponent = ({isVisible, setIsVisible, item}) => {
           </View>
           <CustomButton
             onPress={() => {
-              setIsVisible(false)
+              onPress ? onPress() :   setIsVisible(false)
             }}
             text={'Close'}
             textColor={Color.white}
