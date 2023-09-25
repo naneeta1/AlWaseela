@@ -194,7 +194,7 @@ const Causes = (props) => {
 
                 <CustomButton
                     onPress={() => {
-                        navigationService.navigate('Notification')
+                        navigationService.navigate('SideDrawer')
                         // dispatch(setUserData());
                         //     dispatch(SetUserRole(response?.data?.user_info?.role))
                         // dispatch(setUserToken({ token: 'skdaksakdjlk' }));

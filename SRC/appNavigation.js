@@ -20,6 +20,8 @@ import Causes from './Screens/Causes';
 import FormScreen from './Screens/FormScreen';
 import SettingScreen from './Screens/SettingScreen';
 import Notification from './Screens/Notification';
+import SeeResult from './Screens/SeeResult';
+import SideDrawer from './Screens/SideDrawer';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
@@ -41,6 +43,8 @@ const AppNavigator = () => {
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          <RootNav.Screen name="SideDrawer" component={SideDrawer} />
+          <RootNav.Screen name="SeeResult" component={SeeResult} />
           <RootNav.Screen name="Notification" component={Notification} />
           <RootNav.Screen name="SettingScreen" component={SettingScreen} />
           <RootNav.Screen name="FormScreen" component={FormScreen} />
