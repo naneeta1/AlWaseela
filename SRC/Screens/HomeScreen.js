@@ -3,9 +3,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../Components/Header';
 import CustomText from '../Components/CustomText';
 import {windowHeight, windowWidth} from '../Utillity/utils';
@@ -22,8 +23,11 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
+import CustomButton from '../Components/CustomButton';
 
 const BankDetails = () => {
+const [isLoading, setIsLoading] = useState(false)
+
   const dataArray = [
     {
       category: ' Fundraising Now',
@@ -59,6 +63,7 @@ const BankDetails = () => {
       location: 'Culver City, United States',
     },
   ];
+
   return (
     <ScreenBoiler
       statusBarBackgroundColor={'white'}
@@ -312,6 +317,26 @@ const BankDetails = () => {
           {dataArray?.map((item, index) => {
             return <FundRaiseCard item={item} key={index} />;
           })}
+
+          <CustomButton
+            onPress={() => {
+                         navigationService.navigate('DonationCategories')
+            }}
+            text={
+              isLoading ? (
+                <ActivityIndicator size={'small'} color={Color.white} />
+              ) : (
+                'See All'
+              )
+            }
+            textColor={Color.white}
+            width={windowWidth * 0.75}
+            height={windowHeight * 0.06}
+            marginTop={moderateScale(15, 0.3)}
+            bgColor={Color.themeColor}
+            borderRadius={moderateScale(25, 0.3)}
+            // isGradient
+          />
         </LinearGradient>
       </ScrollView>
     </ScreenBoiler>
