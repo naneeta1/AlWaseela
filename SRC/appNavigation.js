@@ -21,6 +21,9 @@ import DonationCategories from './Screens/DonationCategories';
 import DonationDetail from './Screens/DonationDetail';
 import DonateNow from './Screens/DonateNow';
 import UserProfile from './Screens/UserProfile';
+import FormScreen from './Screens/FormScreen';
+import SettingScreen from './Screens/SettingScreen';
+import Notification from './Screens/Notification';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
@@ -42,6 +45,9 @@ const AppNavigator = () => {
           initialRouteName={'UserProfile'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          <RootNav.Screen name="Notification" component={Notification} />
+          <RootNav.Screen name="SettingScreen" component={SettingScreen} />
+          <RootNav.Screen name="FormScreen" component={FormScreen} />
           <RootNav.Screen name="HomeScreen" component={HomeScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Causes" component={Causes} />
