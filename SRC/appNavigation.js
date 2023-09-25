@@ -24,6 +24,7 @@ import UserProfile from './Screens/UserProfile';
 import FormScreen from './Screens/FormScreen';
 import SettingScreen from './Screens/SettingScreen';
 import Notification from './Screens/Notification';
+import FrequentlyAsked from './Screens/FrequentlyAsked';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
@@ -61,6 +62,8 @@ const AppNavigator = () => {
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="Signup" component={Signup} />
+          <RootNav.Screen name="FrequentlyAsked" component={FrequentlyAsked} />
+
           {/* <RootNav.Screen name="MyDrawer" component={MyDrawer} /> */}
           <RootNav.Screen
             name="WalkThroughScreen"
