@@ -49,6 +49,7 @@ const TextInputWithTitle = props => {
             borderWidth: props.border,
             borderColor: Color.veryLightGray,
             backgroundColor: props.backgroundColor,
+            borderBottomWidth:props.borderBottom,
           },
           props.elevation && {
             shadowColor: Color.themeColor,
@@ -221,7 +222,7 @@ const TextInputWithTitle = props => {
               editable={props.disable ? false : true}
               autoCapitalize="none"
               // onPressIn={()=>{console.log('fdadsas');}}
-              // textAlignVertical={props.textAlignVertical}
+              textAlign={props.textAlign}
             />
           </TouchableOpacity>
         )}

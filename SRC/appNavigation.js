@@ -24,7 +24,10 @@ import UserProfile from './Screens/UserProfile';
 import FormScreen from './Screens/FormScreen';
 import SettingScreen from './Screens/SettingScreen';
 import Notification from './Screens/Notification';
+import SeeResult from './Screens/SeeResult';
+import SideDrawer from './Screens/SideDrawer';
 import FrequentlyAsked from './Screens/FrequentlyAsked';
+import DonateNowpage from './Screens/DonateNowpage';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
@@ -46,6 +49,8 @@ const AppNavigator = () => {
           initialRouteName={'DonateNow'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          <RootNav.Screen name="SideDrawer" component={SideDrawer} />
+          <RootNav.Screen name="SeeResult" component={SeeResult} />
           <RootNav.Screen name="Notification" component={Notification} />
           <RootNav.Screen name="SettingScreen" component={SettingScreen} />
           <RootNav.Screen name="FormScreen" component={FormScreen} />
@@ -55,6 +60,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="DonationCategories" component={DonationCategories} />
           <RootNav.Screen name="DonationDetail" component={DonationDetail} />
           <RootNav.Screen name="DonateNow" component={DonateNow} />
+          <RootNav.Screen name="DonateNowpage" component={DonateNowpage} />
           <RootNav.Screen name="UserProfile" component={UserProfile} />
           
       

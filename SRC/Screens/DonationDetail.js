@@ -24,7 +24,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import CustomButton from '../Components/CustomButton';
-import {SliderBox} from 'react-native-image-slider-box';
+// import {SliderBox} from 'react-native-image-slider-box';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const DonationDetail = props => {
