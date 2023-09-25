@@ -43,7 +43,7 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'UserProfile'}
+          initialRouteName={'DonateNow'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
           <RootNav.Screen name="Notification" component={Notification} />
