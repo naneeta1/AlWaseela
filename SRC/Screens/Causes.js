@@ -194,7 +194,7 @@ const Causes = (props) => {
 
                 <CustomButton
                     onPress={() => {
-                        navigationService.navigate('SideDrawer')
+                        navigationService.navigate('ResetPassword')
                         // dispatch(setUserData());
                         //     dispatch(SetUserRole(response?.data?.user_info?.role))
                         // dispatch(setUserToken({ token: 'skdaksakdjlk' }));
