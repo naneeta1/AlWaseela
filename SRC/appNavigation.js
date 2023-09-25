@@ -28,6 +28,7 @@ import SeeResult from './Screens/SeeResult';
 import SideDrawer from './Screens/SideDrawer';
 import FrequentlyAsked from './Screens/FrequentlyAsked';
 import DonateNowpage from './Screens/DonateNowpage';
+import UpdatePasswordScreen from './Screens/UpdatePasswordScreen';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
@@ -49,7 +50,8 @@ const AppNavigator = () => {
         <RootNav.Navigator
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
-          {/* <RootNav.Screen name="SplashScreen" component={SplashScreen} /> */}
+          <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          <RootNav.Screen name="UpdatePasswordScreen" component={UpdatePasswordScreen} />
           <RootNav.Screen name="SideDrawer" component={SideDrawer} />
           <RootNav.Screen name="SeeResult" component={SeeResult} />
           <RootNav.Screen name="Notification" component={Notification} />
