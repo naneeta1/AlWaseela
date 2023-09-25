@@ -20,6 +20,7 @@ import Causes from './Screens/Causes';
 import FormScreen from './Screens/FormScreen';
 import SettingScreen from './Screens/SettingScreen';
 import Notification from './Screens/Notification';
+import FrequentlyAsked from './Screens/FrequentlyAsked';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
@@ -38,7 +39,7 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={firstScreen}
+          initialRouteName={'FrequentlyAsked'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
           <RootNav.Screen name="Notification" component={Notification} />
@@ -53,6 +54,8 @@ const AppNavigator = () => {
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="Signup" component={Signup} />
+          <RootNav.Screen name="FrequentlyAsked" component={FrequentlyAsked} />
+
           {/* <RootNav.Screen name="MyDrawer" component={MyDrawer} /> */}
           <RootNav.Screen
             name="WalkThroughScreen"
