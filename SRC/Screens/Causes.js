@@ -194,11 +194,11 @@ const Causes = (props) => {
 
                 <CustomButton
                     onPress={() => {
-                        navigationService.navigate('WalkThroughScreen')
+                        navigationService.navigate('HomeScreen')
                         // dispatch(setUserData());
                         //     dispatch(SetUserRole(response?.data?.user_info?.role))
-                        // dispatch(setUserToken({ token: 'skdaksakdjlk' }));
                         // LoginUser();
+                        // dispatch(setUserToken({ token: 'skdaksakdjlk' }));
                     }}
                     text={
                         isLoading ? (
@@ -216,7 +216,7 @@ const Causes = (props) => {
 
                 // isGradient
                 />
-                <CustomButton
+                {/* <CustomButton
                     onPress={() => {
                         // dispatch(setUserData());
                         //     dispatch(SetUserRole(response?.data?.user_info?.role))
@@ -238,7 +238,7 @@ const Causes = (props) => {
                     borderRadius={moderateScale(25, 0.3)}
 
                 // isGradient
-                />
+                /> */}
 
 
 

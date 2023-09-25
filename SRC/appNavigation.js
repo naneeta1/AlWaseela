@@ -31,6 +31,7 @@ import DonateNowpage from './Screens/DonateNowpage';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
+  console.log("🚀 ~ file: appNavigation.js:34 ~ AppNavigator ~ walkThrough:", walkThrough)
   const token = useSelector(state => state.authReducer.token);
   const RootNav = createNativeStackNavigator();
   const RootNavLogged = createNativeStackNavigator();
@@ -46,9 +47,9 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'DonateNow'}
+          initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
-          <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          {/* <RootNav.Screen name="SplashScreen" component={SplashScreen} /> */}
           <RootNav.Screen name="SideDrawer" component={SideDrawer} />
           <RootNav.Screen name="SeeResult" component={SeeResult} />
           <RootNav.Screen name="Notification" component={Notification} />

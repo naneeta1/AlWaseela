@@ -1,18 +1,34 @@
-import {StyleSheet, Text, View, ImageBackground} from 'react-native';
+import {StyleSheet, Text, View, ImageBackground , TouchableOpacity} from 'react-native';
 import React from 'react';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from './CustomText';
 import Color from '../Assets/Utilities/Color';
+import CustomImage from './CustomImage';
+import { mode } from 'native-base/lib/typescript/theme/tools';
+import navigationService from '../navigationService';
 
 const FundRaiseCard = ({item}) => {
     console.log(item?.fundRaising)
   return (
-    <View style={styles.container}>
+    <TouchableOpacity activeOpacity={0.9} style={styles.container} onPress={()=>{
+      navigationService.navigate('DonationDetail')
+    }}>
       <CustomText isBold style={styles.text}>
         {item?.category}
       </CustomText>
-      <View style={styles.card}>
+      <View style={[styles.card, !item?.alhamdullilahMoment && {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+    
+        elevation: 6,
+        alignItems : 'center'
+      }]}>
         <ImageBackground
           source={item?.image}
           style={{
@@ -44,12 +60,22 @@ const FundRaiseCard = ({item}) => {
 
         )}
         {item?.alhamdullilahMoment ?
-        <View style={styles.thanks}></View>
+        <View style={styles.thanks}>
+          <CustomImage 
+          source={require('../Assets/Images/mangives.png')}
+          style={{
+            width : moderateScale(100,0.6),
+            height : moderateScale(50,0.6),
+          }}
+          
+          />
+            <CustomText style={[styles.text1 , {width : windowWidth * 0.3,}]}>Sieze your alhamdullilah moment</CustomText>
+        </View>
 :
         <CustomText style={styles.text2}>{item?.location}</CustomText>
         }
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -70,16 +96,7 @@ const styles = ScaledSheet.create({
     backgroundColor: 'white',
     overflow: 'hidden',
     borderRadius: moderateScale(10, 0.6),
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-
-    elevation: 6,
-    alignItems : 'center'
+    
   },
   text: {
     width: windowWidth * 0.95,
@@ -108,5 +125,13 @@ const styles = ScaledSheet.create({
   },
   thanks : { 
     width : '100%',
+    height : windowHeight * 0.1 ,
+    backgroundColor : '#3E3028',
+    flexDirection : 'row',
+    justifyContent : 'space-between',
+    paddingHorizontal : moderateScale(20,0.6),
+    alignItems : 'center',
+    marginTop : moderateScale(30,0.3),
+    borderRadius : moderateScale(10,0.6),
   },
 });
