@@ -12,7 +12,7 @@ const FundRaiseCard = ({item}) => {
     console.log(item?.fundRaising)
   return (
     <TouchableOpacity activeOpacity={0.9} style={styles.container} onPress={()=>{
-      navigationService.navigate('DonationDetail')
+      navigationService.navigate('DonationDetail' , {item : item})
     }}>
       <CustomText isBold style={styles.text}>
         {item?.category}
