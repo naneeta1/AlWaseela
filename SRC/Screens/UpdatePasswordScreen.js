@@ -69,6 +69,7 @@ const UpdatePasswordScreen = () => {
         </View>
 
         <TextInputWithTitle
+          secureText={true}
           titleText={'Email'}
           placeholder={'Password'}
           setText={setPassword}
@@ -84,6 +85,7 @@ const UpdatePasswordScreen = () => {
         />
 
         <TextInputWithTitle
+          secureText={true}
           titleText={'Email'}
           placeholder={'Password'}
           setText={setNewPassword}
@@ -99,7 +101,7 @@ const UpdatePasswordScreen = () => {
         />
 
         <TextInputWithTitle
-          LeftIcon={true}
+          secureText={true}
           titleText={'Email'}
           placeholder={'Password'}
           setText={setConfirmPassword}
@@ -114,27 +116,28 @@ const UpdatePasswordScreen = () => {
           placeholderColor={Color.black}
         />
 
-        <CustomButton
-          onPress={() => {
-            navigationService.navigate('');
-          }}
-          text={'Update Password'}
-          textColor={Color.white}
-          // iconName={'pencil'}
-          // iconType={Entypo}
-          width={windowWidth * 0.9}
-          height={windowHeight * 0.06}
-          fontSize={moderateScale(13, 0.6)}
-          marginTop={moderateScale(20, 0.3)}
-          bgColor={Color.themeColor}
-          borderRadius={moderateScale(20, 0.3)}
-          iconStyle={{
-            fontSize: moderateScale(14, 0.6),
-  
-          }}
-          marginRight={moderateScale(5, 0.3)}
-          isBold
-        />
+        <View style={{position:'absolute',bottom:10}}>
+          <CustomButton
+            onPress={() => {
+              navigationService.navigate('');
+            }}
+            text={'Update Password'}
+            textColor={Color.white}
+            // iconName={'pencil'}
+            // iconType={Entypo}
+            width={windowWidth * 0.9}
+            height={windowHeight * 0.06}
+            fontSize={moderateScale(13, 0.6)}
+            marginTop={moderateScale(20, 0.3)}
+            bgColor={Color.themeColor}
+            borderRadius={moderateScale(20, 0.3)}
+            iconStyle={{
+              fontSize: moderateScale(14, 0.6),
+            }}
+            marginRight={moderateScale(5, 0.3)}
+            isBold
+          />
+        </View>
       </LinearGradient>
     </ScreenBoiler>
   );
