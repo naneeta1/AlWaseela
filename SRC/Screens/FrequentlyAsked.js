@@ -25,8 +25,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import CardContainer from '../Components/CardContainer';
 import FrequentlyAskedCard from '../Components/FrequentlyAskedCard';
+import { useNavigation } from '@react-navigation/native';
 
 const FrequentlyAsked = () => {
+  const navigation = useNavigation()
   const Data = [{
     question : '1. What is  Al Wasila?',
     answer : 'al waseela is a donation app for which helps needy people'
@@ -102,14 +104,15 @@ const FrequentlyAsked = () => {
             />
           </View>
 
-          <TouchableOpacity activeOpacity={0.8}>
+          {/* <TouchableOpacity activeOpacity={0.8}> */}
             <Icon
               name={'menu'}
               as={Feather}
               size={moderateScale(25, 0.3)}
               color={Color.veryLightGray}
+                           onPress={() => navigation.goBack()}
             />
-          </TouchableOpacity>
+          {/* </TouchableOpacity> */}
         </View>
         <CardContainer style={{
           // height : 200,

@@ -19,7 +19,7 @@ import navigationService from '../navigationService';
 import ScreenBoiler from '../Components/ScreenBoiler';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
@@ -27,8 +27,10 @@ import CustomButton from '../Components/CustomButton';
 import {SliderBox} from 'react-native-image-slider-box';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { useNavigation } from '@react-navigation/native';
 
 const UserProfile = props => {
+  const navigation = useNavigation()
   const item = props?.route?.params?.item;
   console.log('🚀 ~ file: DonationDetail.js:31 ~ DonationDetail ~ item:', item);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +65,7 @@ const UserProfile = props => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: moderateScale(20, 0.6),
+          backgroundColor : 'white'
         }}>
         <LinearGradient
           style={{
@@ -72,7 +75,8 @@ const UserProfile = props => {
           }}
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
-          colors={['#F6F3F3', '#F6F3F3']}>
+          colors={['white', 'white']}>
+             
           <View
             style={{
               backgroundColor: Color.themeColor,
@@ -81,6 +85,29 @@ const UserProfile = props => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
+               <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                width: windowWidth * 0.05,
+                height: windowWidth * 0.05,
+                borderRadius: (windowWidth * 0.05) / 2,
+                backgroundColor: '#E3e3e3',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position : 'absolute',
+                right : 15 ,
+                top : 15,
+              }}>
+              <Icon
+                name={'cross'}
+                as={Entypo}
+                size={moderateScale(17, 0.3)}
+                color={Color.white}
+                onPress={()=>{
+                  navigation.goBack()
+                }}
+              />
+            </TouchableOpacity>
             <View
               style={{
                 width: windowWidth * 0.12,
@@ -99,7 +126,7 @@ const UserProfile = props => {
                   justifyContent: 'center',
                 }}>
                 <CustomImage
-                  source={require('../Assets/Images/HeaderLogo1.png')}
+                  source={require('../Assets/Images/logoBig.png')}
                   style={{height: '100%', width: '100%'}}
                   resizeMode="contain"
                 />
@@ -127,7 +154,7 @@ const UserProfile = props => {
               backgroundColor: 'white',
               alignItems: 'center',
               borderRadius: moderateScale(20, 0.6),
-              height: moderateScale(40, 0.6),
+              // height: moderateScale(40, 0.6),
               shadowColor: Color.themeColor,
               shadowOffset: {
                 width: 0,
@@ -136,12 +163,13 @@ const UserProfile = props => {
               shadowOpacity: 0.32,
               shadowRadius: 5.46,
               elevation: 9,
+              paddingVertical : moderateScale(5,0.6)
             }}>
             <View
               style={{
                 marginTop: moderateScale(6, 0.3),
                 width: windowWidth * 0.83,
-                backgroundColor: Color.veryLightGray,
+                backgroundColor: '#EEEEEE',
                 borderRadius: moderateScale(20, 0.6),
                 height: moderateScale(5, 0.6),
               }}></View>
@@ -150,8 +178,9 @@ const UserProfile = props => {
                 flexDirection: 'row',
                 // paddingVertical: moderateScale(5, 0.6),
                 // backgroundColor: 'red',
-                width: windowWidth * 0.8,
+                width: windowWidth * 0.83,
                 justifyContent: 'space-between',
+                alignItems : 'center'
               }}>
               <View style={{justifyContent: 'center', flexDirection: 'row', marginTop:moderateScale(5,.3)}}>
                 <Icon
@@ -178,24 +207,24 @@ const UserProfile = props => {
           </View>
           <View
             style={{
-              marginTop: moderateScale(10, 0.3),
+              marginTop: moderateScale(20, 0.3),
               width: windowWidth * 0.9,
               // backgroundColor: 'red',
               borderColor: Color.veryLightGray,
-              borderWidth: 2,
-              backgroundColor: 'white',
+              borderWidth: 1,
+              // backgroundColor: 'white',
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: moderateScale(20, 0.6),
               height: moderateScale(40, 0.6),
-              shadowColor: Color.themeColor,
-              shadowOffset: {
-                width: 0,
-                height: 4,
-              },
-              shadowOpacity: 0.32,
-              shadowRadius: 5.46,
-              elevation: 9,
+              // shadowColor: Color.themeColor,
+              // shadowOffset: {
+              //   width: 0,
+              //   height: 4,
+              // },
+              // shadowOpacity: 0.32,
+              // shadowRadius: 5.46,
+              // elevation: 9,
             }}>
             <CustomText
               style={{
@@ -247,11 +276,12 @@ const UserProfile = props => {
                       </View>
                       <View>
                         <CustomText
+                        isBold
                           style={{
                             width: windowWidth * 0.2,
                             color: Color.black,
                             fontSize: moderateScale(15, 0.6),
-                            textAlign: 'center',
+                            textAlign: 'right',
                           }}>
                           {item?.amount}
                         </CustomText>
@@ -259,8 +289,8 @@ const UserProfile = props => {
                           style={{
                             width: windowWidth * 0.2,
                             color: Color.veryLightGray,
-                            fontSize: moderateScale(15, 0.6),
-                            textAlign: 'center',
+                            fontSize: moderateScale(12, 0.6),
+                            textAlign: 'right',
                           }}>
                           {item?.title}
                         </CustomText>
@@ -304,6 +334,8 @@ const UserProfile = props => {
                 flexDirection: 'row',
                 height: windowHeight * 0.2,
                 alignItems: 'center',
+                // justifyContent : 'space-evenly',
+                paddingLeft : moderateScale(30,.6),
                 borderRadius: moderateScale(20, 0.6),
                 shadowColor: Color.themeColor,
                 shadowOffset: {
@@ -319,9 +351,10 @@ const UserProfile = props => {
                   width: windowWidth * 0.1,
                   height: windowWidth * 0.1,
                   justifyContent: 'center',
+                  marginRight : moderateScale(20,0.6),
                 }}>
                 <CustomImage
-                  source={require('../Assets/Images/HeaderLogo1.png')}
+                  source={require('../Assets/Images/logoBig.png')}
                   style={{height: '100%', width: '100%'}}
                   resizeMode="contain"
                 />

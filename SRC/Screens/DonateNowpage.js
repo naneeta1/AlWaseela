@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Switch,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import Header from '../Components/Header';
@@ -29,11 +30,17 @@ import CustomButton from '../Components/CustomButton';
 import {SliderBox} from 'react-native-image-slider-box';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
+import { useNavigation } from '@react-navigation/native';
+import RecieptComponent from '../Components/RecieptComponent';
 
 const DonateNowpage = () => {
-  const [price, setPrice] = useState('');
+  const navigation = useNavigation()
+  const [price, setPrice] = useState('$0.00');
   const [enabled, setEnabled] = useState(false);
   const [quantity, setQuantity] = useState(0);
+  const [pressed , setPressed] = useState('ONE-TIME')
+  const [dollors , setDollors] = useState(0.00)
+  const [isVisible, setisVisible] = useState(false);
 
   return (
     <ScreenBoiler
@@ -63,8 +70,7 @@ const DonateNowpage = () => {
               alignItems: 'center',
             }}>
             <TextInputWithTitle
-              titleText={'Email'}
-              placeholder={'$0.00'}
+              placeholder={'fsdfs'}
               setText={setPrice}
               value={price}
               borderBottom={1}
@@ -76,6 +82,8 @@ const DonateNowpage = () => {
               color={Color.black}
               placeholderColor={Color.black}
               textAlign={'center'}
+              fontSize={moderateScale(20,0.6)}
+              isBold
               // elevation
             />
             <TouchableOpacity
@@ -84,7 +92,7 @@ const DonateNowpage = () => {
                 width: windowWidth * 0.05,
                 height: windowWidth * 0.05,
                 borderRadius: (windowWidth * 0.05) / 2,
-                backgroundColor: Color.veryLightGray,
+                backgroundColor: '#E3e3e3',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
@@ -93,6 +101,9 @@ const DonateNowpage = () => {
                 as={Entypo}
                 size={moderateScale(17, 0.3)}
                 color={Color.white}
+                onPress={()=>{
+                  navigation.goBack()
+                }}
               />
             </TouchableOpacity>
           </View>
@@ -108,30 +119,52 @@ const DonateNowpage = () => {
               alignSelf: 'center',
             }}>
             <TouchableOpacity
+            onPress={()=>{
+              setPressed('ONE-TIME')
+            }}
               activeOpacity={0.8}
-              style={{
+              style={[{
                 width: windowWidth * 0.4,
-                borderBottomWidth: 1,
-                borderColor: '#3E3028',
-              }}>
+               
+                paddingBottom : moderateScale(10,0.6)
+              },pressed =='ONE-TIME' &&{  borderBottomWidth: 1,
+                borderColor: '#3E3028',}]}>
               <CustomText
+                 onPress={()=>{
+                  setPressed('ONE-TIME')
+                }}
+              isBold
                 style={{
                   color: Color.black,
-                  fontSize: moderateScale(16, 0.6),
+                  fontSize: moderateScale(13, 0.6),
                   textAlign: 'center',
+                  textTransform  : 'uppercase'
                 }}>
                 ONE-TIME
               </CustomText>
             </TouchableOpacity>
 
             <TouchableOpacity
+               onPress={()=>{
+                setPressed('RECURRING')
+              }}
               activeOpacity={0.8}
-              style={{width: windowWidth * 0.4}}>
+              style={[{
+                width: windowWidth * 0.4,
+               
+                paddingBottom : moderateScale(10,0.6)
+              },pressed =='RECURRING' &&{  borderBottomWidth: 1,
+                borderColor: '#3E3028',}]}>
               <CustomText
+              isBold
+                 onPress={()=>{
+                  setPressed('RECURRING')
+                }}
                 style={{
                   color: Color.black,
-                  fontSize: moderateScale(16, 0.6),
+                  fontSize: moderateScale(13, 0.6),
                   textAlign: 'center',
+                  textTransform  : 'uppercase'
                 }}>
                 RECURRING
               </CustomText>
@@ -141,11 +174,12 @@ const DonateNowpage = () => {
           <View
             style={{
               width: windowWidth,
-              height: windowHeight * 0.26,
-              alignSelf: 'center',
+              // height: windowHeight * 0.26,
+              // alignSelf: 'center',
               marginTop: moderateScale(20, 0.3),
-              borderBottomWidth: 1,
+              borderBottomWidth: 2,
               borderColor: Color.veryLightGray,
+              paddingBottom : moderateScale(10,0.6),
             }}>
             <View
               style={{
@@ -158,22 +192,26 @@ const DonateNowpage = () => {
               }}>
               <View
                 style={{
-                  width: windowWidth * 0.31,
+                  // width: windowWidth * 0.31,
                   alignItems: 'center',
                   flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  // justifyContent: 'space-between',
+                  
                 }}>
                 <CustomText
+                isBold
                   style={{
-                    fontSize: moderateScale(16, 0.6),
-                    color: Color.veryLightGray,
+                    fontSize: moderateScale(13, 0.6),
+                    color: Color.themeLightGray,
+                    textTransform  : 'uppercase'
                   }}>
                   Purpose
                 </CustomText>
                 <CustomText
                   style={{
-                    fontSize: moderateScale(12, 0.6),
+                    fontSize: moderateScale(8, 0.6),
                     color: Color.veryLightGray,
+                    marginLeft : moderateScale(6,0.3),
                   }}>
                   Required
                 </CustomText>
@@ -200,7 +238,7 @@ const DonateNowpage = () => {
               style={{
                 marginTop: moderateScale(20, 0.3),
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                // justifyContent: 'space-between',
                 width: windowWidth * 0.3,
                 marginLeft: moderateScale(20, 0.3),
                 paddingHorizontal: moderateScale(10, 0.6),
@@ -208,9 +246,10 @@ const DonateNowpage = () => {
               <Checkbox value="test" colorScheme="gray" />
               <CustomText
                 style={{
-                  fontSize: moderateScale(13, 0.6),
+                  fontSize: moderateScale(12, 0.6),
+                  marginLeft : moderateScale(6,0.3),
                   color: Color.veryLightGray,
-                  width: windowWidth * 0.18,
+                  // width: windowWidth * 0.18,
                   textAlign: 'left',
                 }}>
                 Sadaqa
@@ -221,7 +260,7 @@ const DonateNowpage = () => {
               style={{
                 marginTop: moderateScale(15, 0.3),
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                // justifyContent: 'space-between',
                 width: windowWidth * 0.92,
                 marginLeft: moderateScale(20, 0.3),
                 paddingHorizontal: moderateScale(10, 0.6),
@@ -230,7 +269,8 @@ const DonateNowpage = () => {
               <CustomText
                 numberOfLines={1}
                 style={{
-                  fontSize: moderateScale(13, 0.6),
+                  fontSize: moderateScale(12, 0.6),
+                  marginLeft : moderateScale(6,0.3),
                   color: Color.veryLightGray,
                   width: windowWidth * 0.8,
                   // backgroundColor:'red',
@@ -244,7 +284,7 @@ const DonateNowpage = () => {
               style={{
                 marginTop: moderateScale(15, 0.3),
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                // justifyContent: 'space-between',
                 width: windowWidth * 0.92,
                 marginLeft: moderateScale(20, 0.3),
                 paddingHorizontal: moderateScale(10, 0.6),
@@ -253,9 +293,10 @@ const DonateNowpage = () => {
               <CustomText
                 numberOfLines={1}
                 style={{
-                  fontSize: moderateScale(13, 0.6),
+                  fontSize: moderateScale(12, 0.6),
                   color: Color.veryLightGray,
                   width: windowWidth * 0.8,
+                  marginLeft : moderateScale(6,0.3),
                   // backgroundColor:'red',
                   textAlign: 'left',
                 }}>
@@ -265,7 +306,7 @@ const DonateNowpage = () => {
 
             <CustomText
               style={{
-                fontSize: moderateScale(13, 0.6),
+                fontSize: moderateScale(11, 0.6),
                 color: Color.black,
                 width: windowWidth,
                 textAlign: 'left',
@@ -287,8 +328,9 @@ const DonateNowpage = () => {
               marginTop: moderateScale(30, 0.3),
             }}>
             <CustomText
+            isBold
               style={{
-                fontSize: moderateScale(14, 0.6),
+                fontSize: moderateScale(12, 0.6),
                 color: Color.veryLightGray,
               }}>
               In Honor Of Optional
@@ -319,7 +361,7 @@ const DonateNowpage = () => {
               color: Color.black,
               // backgroundColor: 'red',
               width: windowWidth,
-              paddingHorizontal: moderateScale(20, 0.6),
+              paddingHorizontal: moderateScale(10, 0.6),
             }}
             isBold>
             {`Add Fees (+$0.00)`}
@@ -331,13 +373,13 @@ const DonateNowpage = () => {
               // backgroundColor: 'red',
               width: windowWidth,
               justifyContent: 'space-between',
-              paddingHorizontal: moderateScale(20, 0.6),
+              paddingHorizontal: moderateScale(10, 0.6),
               alignItems: 'center',
             }}>
             <CustomText
               style={{
                 color: Color.veryLightGray,
-                fontSize: moderateScale(13, 0.6),
+                fontSize: moderateScale(11, 0.6),
               }}>
               Include Processing fee
             </CustomText>
@@ -355,11 +397,11 @@ const DonateNowpage = () => {
           <CustomText
             style={{
               // backgroundColor: 'red',
-              fontSize: moderateScale(12, 0.6),
+              fontSize: moderateScale(11, 0.6),
               color: Color.black,
               width: windowWidth,
               marginTop: moderateScale(10, 0.3),
-              paddingHorizontal: moderateScale(20, 0.6),
+              paddingHorizontal: moderateScale(10, 0.6),
             }}>
             See more
           </CustomText>
@@ -392,6 +434,9 @@ const DonateNowpage = () => {
                 color={Color.themeColor}
                 as={AntDesign}
                 size={6}
+                onPress={()=>{
+                  dollors > 0 && setDollors(prev => prev - 10)
+                }}
               />
             </View>
             <View style={{flexDirection: 'row'}}>
@@ -402,19 +447,22 @@ const DonateNowpage = () => {
                   // backgroundColor: 'red',
                   width: windowWidth * 0.15,
                 }}>
-                0.00$
+                ${ dollors}
               </CustomText>
               <View
                 style={{
                   backgroundColor: Color.themeColor,
                   paddingHorizontal: moderateScale(10, 0.6),
+                  alignItems : 'center',
+                  justifyContent : 'center'
                 }}>
                 <CustomText
                   style={{
                     color: Color.white,
-                    fontSize: moderateScale(13, 0.6),
+                    fontSize: moderateScale(11, 0.6),
+                    textTransform : 'uppercase'
                   }}>
-                  {'USD'.toUpperCase()}
+                  {'USD'}
                 </CustomText>
               </View>
             </View>
@@ -429,6 +477,9 @@ const DonateNowpage = () => {
                 color={Color.themeColor}
                 as={AntDesign}
                 size={6}
+                onPress={()=>{
+                  setDollors(prev => prev + 10)
+                }}
               />
               <CustomText
                 style={{
@@ -443,9 +494,7 @@ const DonateNowpage = () => {
           </View>
          
           <CustomButton
-            onPress={() => {
-              navigationService.navigate('');
-            }}
+          
             text={'Continue'}
             textColor={Color.white}
             // iconName={'pencil'}
@@ -461,9 +510,18 @@ const DonateNowpage = () => {
             }}
             marginRight={moderateScale(5, 0.3)}
             isBold
+                 onPress={() => {
+              setisVisible(true);
+            }}
           />
 
         </LinearGradient>
+        <RecieptComponent setIsVisible={setisVisible} isVisible={isVisible} 
+          onPress={()=>{
+            navigationService.navigate('HomeScreen'),
+            ToastAndroid.show('You have Donated successfully' , ToastAndroid.SHORT)
+          }}
+        />
       </ScrollView>
     </ScreenBoiler>
   );

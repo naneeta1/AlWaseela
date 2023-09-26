@@ -24,12 +24,14 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import CustomButton from '../Components/CustomButton';
-// import {SliderBox} from 'react-native-image-slider-box';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { SliderBox } from "react-native-image-slider-box";
+import { useNavigation } from '@react-navigation/native';
 
 const DonationDetail = props => {
+  const navigation = useNavigation();
   const item = props?.route?.params?.item;
-  console.log('🚀 ~ file: DonationDetail.js:31 ~ DonationDetail ~ item:', item);
+  console.log('🚀 ~ file: DonationDetail.js:31 ~ DonationDe das da tail ~ item:', item);
   const [isLoading, setIsLoading] = useState(false);
 
   const dataArray = [
@@ -109,6 +111,9 @@ const DonationDetail = props => {
               as={Ionicons}
               color={Color.black}
               size={6}
+              onPress={()=>{
+                navigation.goBack()
+              }}
             />
             <View
               style={{
@@ -174,7 +179,7 @@ const DonationDetail = props => {
                 fontSize: moderateScale(20, 0.6),
               }}
               isBold>
-              {item?.title}
+              {item?.tagLine}
             </CustomText>
             <CustomText
               style={{
@@ -185,20 +190,10 @@ const DonationDetail = props => {
                 paddingVertical: moderateScale(5, 0.6),
               }}
               isBold>
-              {item?.fund}
-              <CustomText
-                style={{
-                  // width: windowWidth * 0.9,
-                  marginTop: moderateScale(10, 0.3),
-                  // backgroundColor: 'red',
-                  fontSize: moderateScale(13, 0.6),
-                  paddingVertical: moderateScale(5, 0.6),
-                }}>
-                {' '}
-                {item?.desc}
-              </CustomText>
+              $6,679 Fund raised from $8,200
+            
             </CustomText>
-            <View
+             <View
               style={{
                 backgroundColor: Color.veryLightGray,
                 width: windowWidth * 0.9,
@@ -208,10 +203,10 @@ const DonationDetail = props => {
               <View
                 style={{
                   backgroundColor: Color.themeColor,
-                  width: (windowWidth * 0.9 * item?.percentage) / 100,
+                  width: '50%',
                   borderRadius: moderateScale(15, 0.6),
                   height: moderateScale(10, 0.6),
-                }}></View>
+                }}/>
             </View>
 
             <View
@@ -231,7 +226,7 @@ const DonationDetail = props => {
                   color: Color.black,
                 }}
                 isBold>
-                {item?.donators}
+              3,438 Donators
               </CustomText>
               <CustomText
                 style={{
@@ -240,7 +235,7 @@ const DonationDetail = props => {
                   fontSize: moderateScale(13, 0.6),
                   color: Color.black,
                 }}>
-                {item?.days}
+               11 Days left
               </CustomText>
             </View>
             <View
@@ -278,15 +273,16 @@ const DonationDetail = props => {
               </View>
               <CustomText
                 style={{fontSize: moderateScale(14, 0.6), color: Color.black}}>
-                {item?.donators}
+               3,438 Donators
               </CustomText>
             </View>
 
             <View
               style={{
                 width: windowWidth,
-                height: windowHeight * 0.08,
+                // height: windowHeight * 0.08,
                 flexDirection: 'row',
+                alignItems : 'center',
                 // backgroundColor: 'purple',
                 paddingHorizontal: moderateScale(20, 0.6),
               }}>
@@ -310,17 +306,18 @@ const DonationDetail = props => {
                   // backgroundColor: 'red',
                   paddingHorizontal: moderateScale(20, 0.6),
                   width: windowWidth * 0.6,
+
                 }}>
                 <CustomText
                   style={{fontSize: moderateScale(15, 0.6), color: 'black'}}>
                   Healthy Home
                 </CustomText>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row' , alignItems : 'center'}}>
                   <CustomText>verified</CustomText>
                   <Icon
                     name={'verified'}
                     as={MaterialIcons}
-                    size={5}
+                    size={4}
                     color={Color.black}
                   />
                 </View>
@@ -361,11 +358,12 @@ const DonationDetail = props => {
                   color: 'black',
                   fontSize: moderateScale(12, 0.6),
                   marginTop: moderateScale(10, 0.6),
+                  lineHeight : moderateScale(17,.6),
                 }}>{`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. `}</CustomText>
             </View>
             <CustomButton
               onPress={() => {
-                navigationService.navigate('DonateNow');
+                navigationService.navigate('DonateNowpage');
               }}
               text={'Donate Now'}
               textColor={Color.white}

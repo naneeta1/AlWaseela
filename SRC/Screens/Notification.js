@@ -15,12 +15,14 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
 
 const Notification = () => {
+  const navigation = useNavigation();
   return (
     <ScreenBoiler
-      statusBarBackgroundColor={'white'}
-      statusBarContentStyle={'dark-content'}>
+      statusBarBackgroundColor={'#3E3028'}
+      statusBarContentStyle={'light-content'}>
       <LinearGradient
         style={{
           width: windowWidth,
@@ -45,14 +47,17 @@ const Notification = () => {
               alignItems: 'center',
               paddingLeft: moderateScale(10, 0.6),
             }}>
-            <TouchableOpacity activeOpacity={0.8}>
-              <Icon
-                name={'left'}
-                as={AntDesign}
-                size={moderateScale(20, 0.3)}
-                color={Color.white}
-              />
-            </TouchableOpacity>
+            {/* <TouchableOpacity activeOpacity={0.8}> */}
+            <Icon
+              name={'left'}
+              as={AntDesign}
+              size={moderateScale(20, 0.3)}
+              color={Color.white}
+              onPress={() => {
+                navigation.goBack();
+              }}
+            />
+            {/* </TouchableOpacity> */}
 
             <CustomText
               style={{
@@ -87,22 +92,26 @@ const Notification = () => {
               }}
             />
 
-          <View style={{position:'absolute',top:55,left:80}}>
-            <Icon
-              name={'notifications'}
-              as={Ionicons}
-              color={Color.white}
-              size={moderateScale(40, 0.3)}
-            />
+            <View style={{position: 'absolute', top: 55, left: 80}}>
+              <Icon
+                name={'notifications'}
+                as={Ionicons}
+                color={Color.white}
+                size={moderateScale(40, 0.3)}
+              />
+            </View>
           </View>
 
-
-          </View>
-
-          <CustomText style={{fontSize:moderateScale(16,0.6),color:'#3E3028',textAlign:'center',marginTop:moderateScale(50,0.3)}}>You have no notifications</CustomText>
+          <CustomText
+            style={{
+              fontSize: moderateScale(16, 0.6),
+              color: '#3E3028',
+              textAlign: 'center',
+              marginTop: moderateScale(50, 0.3),
+            }}>
+            You have no notifications
+          </CustomText>
         </View>
-
-
 
         <View
           style={{

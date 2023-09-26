@@ -66,8 +66,8 @@ const [isLoading, setIsLoading] = useState(false)
 
   return (
     <ScreenBoiler
-      statusBarBackgroundColor={'white'}
-      statusBarContentStyle={'dark-content'}>
+      statusBarBackgroundColor={'#3E3028'}
+      statusBarContentStyle={'light-content'}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -113,7 +113,7 @@ const [isLoading, setIsLoading] = useState(false)
                     justifyContent: 'center',
                   }}>
                   <CustomImage
-                    source={require('../Assets/Images/HeaderLogo1.png')}
+                    source={require('../Assets/Images/logoBig.png')}
                     style={{height: '100%', width: '100%'}}
                     resizeMode="contain"
                   />
@@ -135,28 +135,37 @@ const [isLoading, setIsLoading] = useState(false)
                   width: windowWidth * 0.29,
                   justifyContent: 'space-evenly',
                 }}>
-                <TouchableOpacity activeOpacity={0.8}>
+                {/* <TouchableOpacity activeOpacity={0.8}> */}
                   <Icon
                     name={'notifications-outline'}
                     as={Ionicons}
                     size={moderateScale(22, 0.3)}
                     color={Color.white}
+                    onPress={()=>{
+                      navigationService.navigate('Notification')
+                    }}
                   />
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.8}>
+                {/* </TouchableOpacity> */}
+                {/* <TouchableOpacity activeOpacity={0.8}> */}
                   <Icon
                     name={'search'}
                     as={EvilIcons}
                     size={moderateScale(22, 0.3)}
                     color={Color.white}
+                    onPress={()=>{
+                      navigationService.navigate('DonationCategories')
+                    }}
                   />
-                </TouchableOpacity>
+                {/* </TouchableOpacity> */}
                 <TouchableOpacity activeOpacity={0.8}>
                   <Icon
                     name={'menu'}
                     as={Feather}
                     size={moderateScale(22, 0.3)}
                     color={Color.white}
+                    onPress={()=>{
+                      navigationService.navigate('SideDrawer')
+                    }}
                   />
                 </TouchableOpacity>
               </View>
@@ -174,7 +183,11 @@ const [isLoading, setIsLoading] = useState(false)
             <CustomText style={{fontSize: moderateScale(18, 0.6)}}>
               Counter Ponts
             </CustomText>
-            <CustomText style={{fontSize: moderateScale(15, 0.6)}}>
+            <CustomText 
+              onPress={()=>{
+                navigationService.navigate('DonationCategories')
+              }}
+            style={{fontSize: moderateScale(15, 0.6)}}>
               See More
             </CustomText>
           </View>
@@ -205,6 +218,7 @@ const [isLoading, setIsLoading] = useState(false)
                   LGBTQ
                 </CustomText>
                 <TouchableOpacity
+                onPress={() => navigationService.navigate('DonateNow')}
                   style={{
                     marginTop: moderateScale(5, 0.3),
                     width: windowWidth * 0.2,
@@ -214,6 +228,7 @@ const [isLoading, setIsLoading] = useState(false)
                     backgroundColor: '#3E3028',
                   }}>
                   <CustomText
+                    onPress={() => navigationService.navigate('DonateNow')}
                     style={{
                       textAlign: 'center',
                       fontSize: moderateScale(12, 0.6),
@@ -348,10 +363,10 @@ export default BankDetails;
 const styles = StyleSheet.create({
   txt1: {
     color: Color.white,
-    fontSize: moderateScale(18, 0.6),
+    fontSize: moderateScale(15, 0.6),
   },
   txt2: {
     color: Color.white,
-    fontSize: moderateScale(15, 0.6),
+    fontSize: moderateScale(13, 0.6),
   },
 });

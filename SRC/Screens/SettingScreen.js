@@ -23,23 +23,28 @@ import CustomButton from '../Components/CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setUserLogoutAuth } from '../Store/slices/auth';
 
 const SettingScreen = () => {
+  const navigation = useNavigation()
+  const dispatch = useDispatch()
   const data = [
     {
       name: 'Profile',
-      //   onPress: () => {
-      //     navigation.navigate('HomeScreen');
-      //   },
+        onPress: () => {
+          navigation.navigate('UserProfile');
+        },
       iconName: 'user-circle-o',
       iconType: FontAwesome,
     },
 
     {
       name: 'Password ',
-      //   onPress: () => {
-      //     navigation.navigate('SubscriptionScreen');
-      //   },
+        onPress: () => {
+          navigation.navigate('UpdatePasswordScreen');
+        },
       iconName: 'vpn-key',
       iconType: MaterialIcons,
     },
@@ -70,11 +75,11 @@ const SettingScreen = () => {
     },
     {
       name: 'Log out',
-      //   onPress: () => {
-      //     dispatch(setUserLogoutAuth());
-      //     dispatch(setUserLogOut());
+        onPress: () => {
+          dispatch(setUserLogoutAuth());
+          // dispatch(setUserLogOut());
 
-      //   },
+        },
       iconName: 'logout',
       iconType: MaterialIcons,
     },
@@ -82,7 +87,7 @@ const SettingScreen = () => {
 
   return (
     <ScreenBoiler
-      statusBarBackgroundColor={'white'}
+      statusBarBackgroundColor={'#3E3028'}
       statusBarContentStyle={'dark-content'}>
       <LinearGradient
         style={{
@@ -107,14 +112,17 @@ const SettingScreen = () => {
               justifyContent: 'space-between',
               alignSelf: 'center',
             }}>
-            <TouchableOpacity activeOpacity={0.8}>
+        
               <Icon
                 name={'left'}
                 as={AntDesign}
                 size={moderateScale(20, 0.3)}
                 color={Color.white}
+                onPress={()=>{
+                  navigation.goBack()
+                }}
               />
-            </TouchableOpacity>
+      
 
             <CustomText
               style={{fontSize: moderateScale(15, 0.6), color: Color.white}}>
@@ -124,6 +132,9 @@ const SettingScreen = () => {
             <View
               style={{width: windowWidth * 0.08, height: windowHeight * 0.04}}>
               <CustomImage
+                onPress={()=>{
+                  navigation.goBack()
+                }}
                 resizeMode="contain"
                 source={require('../Assets/Images/settingmenu.png')}
                 style={{

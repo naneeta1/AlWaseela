@@ -32,6 +32,7 @@ import UpdatePasswordScreen from './Screens/UpdatePasswordScreen';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
+  console.log("🚀 ~ file: appNavigation.js:34 ~ AppNavigator ~ walkThrough:", walkThrough)
   const token = useSelector(state => state.authReducer.token);
   const RootNav = createNativeStackNavigator();
   const RootNavLogged = createNativeStackNavigator();
@@ -47,7 +48,7 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'UpdatePasswordScreen'}
+          initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
           <RootNav.Screen name="UpdatePasswordScreen" component={UpdatePasswordScreen} />

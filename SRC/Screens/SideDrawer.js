@@ -18,13 +18,18 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SeeResultsComponent from '../Components/SeeResultsComponent';
+import { useNavigation } from '@react-navigation/native';
 
 const SideDrawer = () => {
+  const navigation = useNavigation()
   const data = [
     {
       id: 1,
       name: 'Discover Charities',
       image: require('../Assets/Images/location2.png'),
+      onPress: ()=>{
+        navigationService.navigate('DonationCategories')
+      }
     },
     {
       id: 2,
@@ -35,6 +40,9 @@ const SideDrawer = () => {
       id: 3,
       name: 'Search Fundraisers',
       image: require('../Assets/Images/menuSearch.png'),
+      onPress: ()=>{
+        navigationService.navigate('DonationCategories')
+      }
     },
     {
       id: 4,
@@ -50,11 +58,17 @@ const SideDrawer = () => {
       id: 6,
       name: 'Settings',
       image: require('../Assets/Images/settings.png'),
+      onPress: ()=>{
+        navigationService.navigate('SettingScreen')
+      }
     },
     {
       id: 7,
       name: 'FAQs',
       image: require('../Assets/Images/faq.png'),
+      onPress: ()=>{
+        navigationService.navigate('FrequentlyAsked')
+      }
     },
     {
       id: 8,
@@ -84,14 +98,14 @@ const SideDrawer = () => {
           marginTop: moderateScale(15, 0.3),
         }}>
         <View style={{width: windowWidth * 0.3}}>
-          <TouchableOpacity activeOpacity={0.8}>
+          {/* <TouchableOpacity activeOpacity={0.8}>
             <Icon
               name={'left'}
               as={AntDesign}
               color={Color.white}
               size={moderateScale(25, 0.3)}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <View
@@ -101,17 +115,23 @@ const SideDrawer = () => {
             width: windowWidth * 0.2,
             alignItems: 'center',
           }}>
-          <TouchableOpacity activeOpacity={0.8}>
+       
             <Icon
               name={'home'}
               as={AntDesign}
               color={Color.white}
               size={moderateScale(25, 0.3)}
+              onPress={()=>{
+                navigation.goBack()
+              }}
             />
-          </TouchableOpacity>
+        
           <View
             style={{width: windowWidth * 0.08, height: windowHeight * 0.04}}>
             <CustomImage
+               onPress={()=>{
+                navigation.goBack()
+              }}
               resizeMode="contain"
               source={require('../Assets/Images/settingmenu.png')}
               style={{
@@ -166,8 +186,9 @@ const SideDrawer = () => {
       <View style={{marginTop: moderateScale(20, 0.3)}}>
         {data.map((item, index) => (
           <TouchableOpacity
+          onPress={item?.onPress}
             activeOpacity={0.8}
-            onPress={item?.onPress}
+            // onPress={item?.onPress}
             style={{
               width: windowWidth * 0.92,
               paddingHorizontal: moderateScale(10, 0.6),
