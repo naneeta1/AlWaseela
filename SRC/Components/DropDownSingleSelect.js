@@ -60,7 +60,6 @@ const DropDownSingleSelect = ({
           marginTop: 0,
           alignItems: 'center',
           borderRadius: 10,
-          
           borderWidth: 1,
         },
         elevation && {
@@ -126,7 +125,7 @@ const DropDownSingleSelect = ({
           ...styles.dropDownBtnText,
           ...(item !== '' && {color: Colors ? Colors : Color.themeBlack}),
           ...(backgroundColor && {
-            color: `${Color.white}`,
+            color: `${Color.veryLightGray}`,
             fontSize: moderateScale(18, 0.3),
           }),
         }}

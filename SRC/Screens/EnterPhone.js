@@ -134,7 +134,7 @@ const EnterPhone = (props) => {
           }}>
           <CustomImage
             resizeMode="contain"
-            source={require('../Assets/Images/lock.png')}
+            source={require('../Assets/Images/lock2.png')}
             style={{
               width: '100%',
               height: '100%',

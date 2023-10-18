@@ -12,6 +12,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CustomButton from './CustomButton';
 
 const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
+
+  
   const Data = [
     {
       type: 'from',
@@ -64,6 +66,9 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
         alignItems: 'center',
       }}>
       <View style={styles.container}>
+        
+
+
         <View style={styles.Header}>
           <View>
             <CustomText

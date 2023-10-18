@@ -51,25 +51,25 @@ const SettingScreen = () => {
 
     {
       name: 'Preferences',
-      //   onPress: () => {
-      //     navigation.navigate('AssetScreen');
-      //   },
+        onPress: () => {
+          navigation.navigate('UpdatePreference');
+        },
       iconName: 'room-preferences',
       iconType: MaterialIcons,
     },
     {
       name: 'payment',
-      //   onPress: () => {
-      //     navigation.navigate('SearchScreen');
-      //   },
+        onPress: () => {
+          navigation.navigate('BankDetails');
+        },
       iconName: 'payment',
       iconType: MaterialIcons,
     },
     {
       name: 'Billing Address',
-      //   onPress: () => {
-      //     navigation.navigate('NotepadDesign');
-      //   },
+        onPress: () => {
+          navigation.navigate('BillingAddress');
+        },
       iconName: 'home',
       iconType: AntDesign,
     },

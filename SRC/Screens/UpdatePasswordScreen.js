@@ -15,10 +15,10 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomButton from '../Components/CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const UpdatePasswordScreen = () => {
-  const navigaiton = useNavigation()
+  const navigaiton = useNavigation();
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmpassword, setConfirmPassword] = useState('');
@@ -50,15 +50,15 @@ const UpdatePasswordScreen = () => {
               alignItems: 'center',
               paddingLeft: moderateScale(10, 0.6),
             }}>
-              <Icon
-                name={'left'}
-                as={AntDesign}
-                size={moderateScale(20, 0.3)}
-                color={Color.white}
-                onPress={()=>{
-                  navigaiton.goBack()
-                }}
-              />
+            <Icon
+              name={'left'}
+              as={AntDesign}
+              size={moderateScale(20, 0.3)}
+              color={Color.white}
+              onPress={() => {
+                navigaiton.goBack();
+              }}
+            />
 
             <CustomText
               style={{
@@ -72,6 +72,7 @@ const UpdatePasswordScreen = () => {
         </View>
 
         <TextInputWithTitle
+          secureText={true}
           titleText={'Email'}
           placeholder={'Password'}
           setText={setPassword}
@@ -87,6 +88,7 @@ const UpdatePasswordScreen = () => {
         />
 
         <TextInputWithTitle
+          secureText={true}
           titleText={'Email'}
           placeholder={'Password'}
           setText={setNewPassword}
@@ -102,6 +104,7 @@ const UpdatePasswordScreen = () => {
         />
 
         <TextInputWithTitle
+          secureText={true}
           LeftIcon={true}
           titleText={'Email'}
           placeholder={'Password'}
@@ -128,12 +131,11 @@ const UpdatePasswordScreen = () => {
           width={windowWidth * 0.9}
           height={windowHeight * 0.06}
           fontSize={moderateScale(13, 0.6)}
-          marginTop={moderateScale(20, 0.3)}
+          marginTop={moderateScale(50, 0.3)}
           bgColor={Color.themeColor}
           borderRadius={moderateScale(20, 0.3)}
           iconStyle={{
             fontSize: moderateScale(14, 0.6),
-  
           }}
           marginRight={moderateScale(5, 0.3)}
           isBold

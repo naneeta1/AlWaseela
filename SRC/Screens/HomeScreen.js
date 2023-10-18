@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState, useRef} from 'react';
 import Header from '../Components/Header';
 import CustomText from '../Components/CustomText';
 import {windowHeight, windowWidth} from '../Utillity/utils';
@@ -24,9 +24,12 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import CustomButton from '../Components/CustomButton';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
 const BankDetails = () => {
-const [isLoading, setIsLoading] = useState(false)
+  const refRBSheet = useRef();
+  const [isLoading, setIsLoading] = useState(false);
+  // const [ref, setRef] = useState(null);
 
   const dataArray = [
     {
@@ -136,26 +139,26 @@ const [isLoading, setIsLoading] = useState(false)
                   justifyContent: 'space-evenly',
                 }}>
                 {/* <TouchableOpacity activeOpacity={0.8}> */}
-                  <Icon
-                    name={'notifications-outline'}
-                    as={Ionicons}
-                    size={moderateScale(22, 0.3)}
-                    color={Color.white}
-                    onPress={()=>{
-                      navigationService.navigate('Notification')
-                    }}
-                  />
+                <Icon
+                  name={'notifications-outline'}
+                  as={Ionicons}
+                  size={moderateScale(22, 0.3)}
+                  color={Color.white}
+                  onPress={() => {
+                    navigationService.navigate('Notification');
+                  }}
+                />
                 {/* </TouchableOpacity> */}
                 {/* <TouchableOpacity activeOpacity={0.8}> */}
-                  <Icon
-                    name={'search'}
-                    as={EvilIcons}
-                    size={moderateScale(22, 0.3)}
-                    color={Color.white}
-                    onPress={()=>{
-                      navigationService.navigate('DonationCategories')
-                    }}
-                  />
+                <Icon
+                  name={'search'}
+                  as={EvilIcons}
+                  size={moderateScale(22, 0.3)}
+                  color={Color.white}
+                  onPress={() => {
+                    navigationService.navigate('DonationCategories');
+                  }}
+                />
                 {/* </TouchableOpacity> */}
                 <TouchableOpacity activeOpacity={0.8}>
                   <Icon
@@ -163,8 +166,8 @@ const [isLoading, setIsLoading] = useState(false)
                     as={Feather}
                     size={moderateScale(22, 0.3)}
                     color={Color.white}
-                    onPress={()=>{
-                      navigationService.navigate('SideDrawer')
+                    onPress={() => {
+                      navigationService.navigate('SideDrawer');
                     }}
                   />
                 </TouchableOpacity>
@@ -180,14 +183,14 @@ const [isLoading, setIsLoading] = useState(false)
               alignItems: 'center',
               marginTop: moderateScale(10, 0.3),
             }}>
-            <CustomText style={{fontSize: moderateScale(18, 0.6)}}>
-              Counter Ponts
+            <CustomText style={{fontSize: moderateScale(18, 0.6), color:'black'}} isBold>
+              Counter Points
             </CustomText>
-            <CustomText 
-              onPress={()=>{
-                navigationService.navigate('DonationCategories')
+            <CustomText
+              onPress={() => {
+                navigationService.navigate('DonationCategories');
               }}
-            style={{fontSize: moderateScale(15, 0.6)}}>
+              style={{fontSize: moderateScale(14, 0.6), color:'black', }} isBold>
               See More
             </CustomText>
           </View>
@@ -195,6 +198,7 @@ const [isLoading, setIsLoading] = useState(false)
           <View
             style={{
               width: windowWidth * 0.95,
+              // backgroundColor:'red',
               height: windowHeight * 0.3,
               marginTop: moderateScale(20, 0.3),
               alignSelf: 'center',
@@ -212,13 +216,13 @@ const [isLoading, setIsLoading] = useState(false)
               <View style={{alignItems: 'center'}}>
                 <CustomText
                   style={{
-                    fontSize: moderateScale(25, 0.6),
+                    fontSize: moderateScale(23, 0.6),
                     color: Color.white,
                   }}>
                   LGBTQ
                 </CustomText>
                 <TouchableOpacity
-                onPress={() => navigationService.navigate('DonateNow')}
+                  onPress={() => refRBSheet.current.open()}
                   style={{
                     marginTop: moderateScale(5, 0.3),
                     width: windowWidth * 0.2,
@@ -228,10 +232,10 @@ const [isLoading, setIsLoading] = useState(false)
                     backgroundColor: '#3E3028',
                   }}>
                   <CustomText
-                    onPress={() => navigationService.navigate('DonateNow')}
+                    onPress={() => refRBSheet.current.open()}
                     style={{
                       textAlign: 'center',
-                      fontSize: moderateScale(12, 0.6),
+                      fontSize: moderateScale(10, 0.6),
                       color: Color.white,
                     }}>
                     Buy Ticket
@@ -247,25 +251,33 @@ const [isLoading, setIsLoading] = useState(false)
                   alignItems: 'center',
                   marginTop: moderateScale(20, 0.3),
                 }}>
-                <Icon
-                  name={'hearto'}
-                  as={AntDesign}
-                  size={moderateScale(22, 0.3)}
-                  color={Color.white}
-                />
-                <Icon
-                  name={'sharealt'}
-                  as={AntDesign}
-                  size={moderateScale(22, 0.3)}
-                  color={Color.white}
-                />
+                <TouchableOpacity activeOpacity={0.7}>
+                  <Icon
+                    name={'hearto'}
+                    as={AntDesign}
+                    size={moderateScale(22, 0.3)}
+                    color={Color.white}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.7}>
+                  <Icon
+                    name={'sharealt'}
+                    as={AntDesign}
+                    size={moderateScale(22, 0.3)}
+                    color={Color.white}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
 
             <CustomImage
               source={require('../Assets/Images/AntilgbtQbox.png')}
-              style={{height: '100%', width: '100%'}}
-              resizeMode="contain"
+              style={{
+                height: '100%',
+                width: '100%',
+                borderRadius: moderateScale(10, 0.3),
+              }}
+              resizeMode="cover"
             />
           </View>
 
@@ -283,16 +295,16 @@ const [isLoading, setIsLoading] = useState(false)
                 marginTop: moderateScale(10, 0.3),
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: windowWidth * 0.37,
-                height: windowWidth * 0.37,
-                borderRadius: (windowWidth * 0.37) / 2,
+                width: windowWidth * 0.32,
+                height: windowWidth * 0.32,
+                borderRadius: (windowWidth * 0.3) / 2,
                 backgroundColor: '#EBEFF4',
                 alignSelf: 'center',
               }}>
               <View
                 style={{
-                  width: windowWidth * 0.29,
-                  height: windowWidth * 0.29,
+                  width: windowWidth * 0.24,
+                  height: windowWidth * 0.24,
                   marginTop: moderateScale(20, 0.3),
                 }}>
                 <CustomImage
@@ -313,21 +325,21 @@ const [isLoading, setIsLoading] = useState(false)
               Add a card or a bank
             </CustomText>
 
-            <View
-              style={{
-                marginTop: moderateScale(10, 0.3),
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: windowWidth * 0.6,
-                height: windowHeight * 0.05,
-                backgroundColor: '#3E3028',
-                borderRadius: moderateScale(50, 0.3),
-              }}>
-              <CustomText
-                style={{color: Color.white, fontSize: moderateScale(13, 0.6)}}>
-                Add a Payment Method
-              </CustomText>
-            </View>
+            <CustomButton
+              onPress={() => {
+                navigationService.navigate('BankDetails');
+              }}
+              isBold
+              text={'Add a Payment Method'}
+              textColor={Color.white}
+              width={windowWidth * 0.65}
+              height={windowHeight * 0.06}
+              fontSize={moderateScale(13, 0.6)}
+              marginTop={moderateScale(15, 0.3)}
+              bgColor={Color.themeColor}
+              borderRadius={moderateScale(20, 0.3)}
+              alignSelf={'center'}
+            />
           </View>
           {dataArray?.map((item, index) => {
             return <FundRaiseCard item={item} key={index} />;
@@ -335,7 +347,7 @@ const [isLoading, setIsLoading] = useState(false)
 
           <CustomButton
             onPress={() => {
-                         navigationService.navigate('DonationCategories')
+              navigationService.navigate('DonationCategories');
             }}
             text={
               isLoading ? (
@@ -350,9 +362,86 @@ const [isLoading, setIsLoading] = useState(false)
             marginTop={moderateScale(15, 0.3)}
             bgColor={Color.themeColor}
             borderRadius={moderateScale(25, 0.3)}
-            // isGradient
           />
         </LinearGradient>
+        {/* RBS SHEET OPEN  */}
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          dragFromTopOnly={true}
+          openDuration={250}
+          height={windowHeight * 0.4}
+          customStyles={{
+            container: {
+              borderTopEndRadius: moderateScale(30, 0.6),
+              borderTopLeftRadius: moderateScale(30, 0.6),
+              overflow: 'hidden',
+            },
+            draggableIcon: {
+              backgroundColor: '#000',
+            },
+          }}>
+          <View
+            style={{
+              height: windowHeight * 0.4,
+              width: windowWidth,
+              // backgroundColor: 'red',
+            }}>
+            <CustomText
+              isBold
+              style={{
+                marginTop: moderateScale(10, 0.3),
+                fontSize: moderateScale(16, 0.6),
+                color: Color.black,
+                width: windowWidth,
+                textAlign: 'center',
+              }}>
+              SUBSTANCE ABUSE
+            </CustomText>
+            <CustomText
+              numberOfLines={3}
+              style={{
+                marginTop: moderateScale(20, 0.3),
+                fontSize: moderateScale(14, 0.6),
+                color: Color.black,
+                width: windowWidth * 0.93,
+                alignSelf: 'center',
+                textAlign: 'center',
+              }}>
+              Substance abuse come in various forms light, moderate and extreme.
+              vapping is no diffrent from sniffing other forms of drugs.
+            </CustomText>
+
+            <CustomText
+              style={{
+                marginTop: moderateScale(30, 0.3),
+                fontSize: moderateScale(13, 0.6),
+                color: Color.black,
+                width: windowWidth,
+                textAlign: 'center',
+              }}>
+              Buy Ticket To help peoples
+            </CustomText>
+
+            <CustomButton
+              onPress={() => {
+                refRBSheet.current.close(),
+                  navigationService.navigate('DonateNow');
+              }}
+              isBold
+              text={'Buy Ticket'}
+              textColor={Color.white}
+              width={windowWidth * 0.85}
+              height={windowHeight * 0.06}
+              fontSize={moderateScale(13, 0.6)}
+              marginTop={moderateScale(30, 0.3)}
+              bgColor={Color.themeColor}
+              borderRadius={moderateScale(20, 0.3)}
+              alignSelf={'center'}
+            />
+          </View>
+        </RBSheet>
+        {/* RBS SHEET CLOSED  */}
       </ScrollView>
     </ScreenBoiler>
   );

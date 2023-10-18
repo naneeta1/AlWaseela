@@ -46,16 +46,14 @@ const SideDrawer = () => {
     },
     {
       id: 4,
-      name: 'Calculate Zakat',
-      image: require('../Assets/Images/balancesheet.png'),
+      name: 'GIving History',
+      image: require('../Assets/Images/invoice.png'),
+      onPress: ()=>{
+        navigationService.navigate('GivingHistory')
+      }
     },
     {
       id: 5,
-      name: 'GIving History',
-      image: require('../Assets/Images/invoice.png'),
-    },
-    {
-      id: 6,
       name: 'Settings',
       image: require('../Assets/Images/settings.png'),
       onPress: ()=>{
@@ -63,7 +61,7 @@ const SideDrawer = () => {
       }
     },
     {
-      id: 7,
+      id: 6,
       name: 'FAQs',
       image: require('../Assets/Images/faq.png'),
       onPress: ()=>{
@@ -71,12 +69,15 @@ const SideDrawer = () => {
       }
     },
     {
-      id: 8,
+      id: 7,
       name: 'Contact Our Team',
       image: require('../Assets/Images/speech-bubble.png'),
+      onPress: ()=>{
+        navigationService.navigate('ContactUs')
+      }
     },
     {
-      id: 9,
+      id: 8,
       name: 'Share This App',
       image: require('../Assets/Images/share.png'),
     },
@@ -192,6 +193,7 @@ const SideDrawer = () => {
             style={{
               width: windowWidth * 0.92,
               paddingHorizontal: moderateScale(10, 0.6),
+              paddingVertical: moderateScale(5, 0.6),
               borderBottomWidth: 0.5,
               borderColor: Color.white,
               margin: moderateScale(10, 0.3),

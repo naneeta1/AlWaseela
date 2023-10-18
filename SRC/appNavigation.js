@@ -29,6 +29,13 @@ import SideDrawer from './Screens/SideDrawer';
 import FrequentlyAsked from './Screens/FrequentlyAsked';
 import DonateNowpage from './Screens/DonateNowpage';
 import UpdatePasswordScreen from './Screens/UpdatePasswordScreen';
+import UpdatePreference from './Screens/UpdatePreference';
+import GivingHistory from './Screens/GivingHistory';
+import BankDetails from './Screens/BankDetails';
+import BillingAddress from './Screens/BillingAddress';
+import ContactUs from './Screens/ContactUs';
+import PaymentDoneScreen from './Screens/PaymentDoneScreen';
+
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
@@ -51,6 +58,12 @@ const AppNavigator = () => {
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
+          <RootNav.Screen name="PaymentDoneScreen" component={PaymentDoneScreen} />
+          <RootNav.Screen name="GivingHistory" component={GivingHistory} />
+          <RootNav.Screen name="BillingAddress" component={BillingAddress} />
+          <RootNav.Screen name="ContactUs" component={ContactUs} />
+          <RootNav.Screen name="BankDetails" component={BankDetails} />
+          <RootNav.Screen name="UpdatePreference" component={UpdatePreference} />
           <RootNav.Screen name="UpdatePasswordScreen" component={UpdatePasswordScreen} />
           <RootNav.Screen name="SideDrawer" component={SideDrawer} />
           <RootNav.Screen name="SeeResult" component={SeeResult} />

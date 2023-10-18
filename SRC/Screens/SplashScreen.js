@@ -8,6 +8,7 @@ import ScreenBoiler from "../Components/ScreenBoiler";
 import LinearGradient from "react-native-linear-gradient";
 import CustomText from "../Components/CustomText";
 import { View } from 'react-native'
+import FastImage from "react-native-fast-image";
 
 const SplashScreen = () => {
   return (
@@ -16,7 +17,7 @@ const SplashScreen = () => {
       statusBarBackgroundColor={'white'}
       statusBarContentStyle={"dark-content"}
     >
-      <LinearGradient
+      {/* <LinearGradient
         style={{
           width: windowWidth,
           alignItems: 'center',
@@ -27,11 +28,11 @@ const SplashScreen = () => {
         end={{ x: 1, y: 1 }}
         colors={[Color.white, Color.white]}
       // locations ={[0, 0.5, 0.6]}
-      >
+      > */}
 
 
 
-        <Animatable.View
+        {/* <Animatable.View
           animation="zoomIn"
           duration={2500}
           useNativeDriver
@@ -42,20 +43,21 @@ const SplashScreen = () => {
           }}
 
 
-        >
+        > */}
           <View style={styles.bottomImage}>
-            <CustomImage
-              source={require('../Assets/Images/logo.png')}
-              resizeMode={"stretch"}
-              style={{ width: '100%', height: '100%' }}
-            />
+          <FastImage
+          source={require('../Assets/Images/splash3.gif')}
+          style={{width: windowWidth, height: windowHeight}}
+          resizeMode={FastImage.resizeMode.contain}
+          animated
+        />
           </View>
           {/* <CustomText isBold style={{
             textAlign: 'center',
             fontSize: moderateScale(27, 0.6),
             marginTop: moderateScale(10, 0.3)
           }}>AlWasila</CustomText> */}
-          <CustomText style={{
+          {/* <CustomText style={{
             textAlign: 'center',
             fontSize: moderateScale(18, 0.6),
             color: Color.veryLightGray,
@@ -96,11 +98,11 @@ const SplashScreen = () => {
         </View>
 
           </View>
+ */}
 
+        {/* </Animatable.View> */}
 
-        </Animatable.View>
-
-      </LinearGradient>
+      {/* </LinearGradient> */}
     </ScreenBoiler>
   );
 };
@@ -115,8 +117,8 @@ const styles = ScaledSheet.create({
     backgroundColor: Color.themeColor
   },
   bottomImage: {
-    width: windowWidth * 0.8,
-    height: windowWidth * 0.8,
+    width: windowWidth ,
+    height:windowHeight,
   },
   // textContainer: {
   //   flexDirection: "row",

@@ -27,21 +27,21 @@ const WalkThroughScreen = props => {
   const slides = [
     {
       key: '1',
-      logo: require('../Assets/Images/walkthrough1.jpg'),
+      logo: require('../Assets/Images/secure.png'),
       title: 'Secure',
       subtitle:'Give securely and immediately',
       text: `Support reputable and charitable organizations by channeling your contributions through trusted financial partners such as stripe and plaid.`,
     },
     {
       key: '2',
-      logo: require('../Assets/Images/walkthrough2.jpg'),
+      logo: require('../Assets/Images/easy.png'),
       title: ' Easy',
       subtitle:'Accumulate your moments of gratitude (alhamdulilah) continuously',
       text: `Effortlessly eet your charitable responsibilities throughout the year by setting up recurring donations and taking advantage of gift aid`,
     },
     {
       key: '3',
-      logo: require('../Assets/Images/walkthrough3.jpg'),
+      logo: require('../Assets/Images/ImpactFul.png'),
       subtitle:'Create a lasting legacy',
       title: 'Impact ful',
       text: `Discover and support charities effortlessly with a single tap, making your contributions more purposeful and meaningful.`   },
@@ -71,10 +71,10 @@ const WalkThroughScreen = props => {
           style={{
             width: windowWidth,
             alignItems: 'center',
-            //   justifyContent: 'center',
+              // justifyContent: 'center',
             height: windowHeight,
           }}>
-            <View style={{width:windowWidth*0.6, height:windowHeight*0.45}}>
+            <View style={{width:windowWidth*0.3, height:windowHeight*0.3, marginTop:moderateScale(80,.3)}}>
           <Image
             source={item.logo}
             resizeMode={'contain'}

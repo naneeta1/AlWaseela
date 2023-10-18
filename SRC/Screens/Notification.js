@@ -77,9 +77,10 @@ const Notification = () => {
             alignSelf: 'center',
             justifyContent: 'center',
           }}>
+
           <View
             style={{
-              width: windowWidth * 0.5,
+              width: windowWidth,
               height: windowHeight * 0.2,
               alignSelf: 'center',
             }}>
@@ -92,19 +93,20 @@ const Notification = () => {
               }}
             />
 
-            <View style={{position: 'absolute', top: 55, left: 80}}>
+            <View style={{position: 'absolute',alignSelf:'center',bottom:50}}>
               <Icon
                 name={'notifications'}
                 as={Ionicons}
                 color={Color.white}
-                size={moderateScale(40, 0.3)}
+                size={moderateScale(50, 0.3)}
               />
             </View>
           </View>
 
           <CustomText
             style={{
-              fontSize: moderateScale(16, 0.6),
+              width:windowWidth,
+              fontSize: moderateScale(20, 0.6),
               color: '#3E3028',
               textAlign: 'center',
               marginTop: moderateScale(50, 0.3),
