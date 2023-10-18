@@ -294,6 +294,6 @@ const Chunks = ({ item }) => {
                 }}
             />
         </View>
-        <CustomText style={{ color: Color.black, fontSize: moderateScale(13, .6), textAlign: 'center', marginTop: moderateScale(5, .3) }}>{item?.name}</CustomText>
+        {/* <CustomText style={{ color: Color.black, fontSize: moderateScale(13, .6), textAlign: 'center', marginTop: moderateScale(5, .3) }}>{item?.name}</CustomText> */}
     </TouchableOpacity>)
 }
