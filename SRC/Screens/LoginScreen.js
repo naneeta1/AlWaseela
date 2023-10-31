@@ -16,7 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import navigationService from '../navigationService';
 import { useDispatch } from 'react-redux';
 import CardContainer from '../Components/CardContainer';
-import { SetUserRole, setUserToken } from '../Store/slices/auth';
+import { SetUserRole, setUserInterests, setUserToken } from '../Store/slices/auth';
 import { Post } from '../Axios/AxiosInterceptorFunction';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import { setUserData } from '../Store/slices/common';
@@ -34,49 +34,46 @@ const LoginScreen = (props) => {
 
   const dispatch = useDispatch();
 
-  // const LoginUser = async () => {
-  //   if (email == '' && password == '') {
-  //     return Platform.OS == 'android'
-  //       ? ToastAndroid.show(
-  //           'password and email is required',
-  //           ToastAndroid.SHORT,
-  //         )
-  //       : alert('password and email is required');
-  //   } else if (email == '') {
-  //     return Platform.OS == 'android'
-  //       ? ToastAndroid.show('email is required', ToastAndroid.SHORT)
-  //       : alert('email is required');
-  //   } else if (password == '') {
-  //     return Platform.OS == 'android'
-  //       ? ToastAndroid.show('password is required', ToastAndroid.SHORT)
-  //       : alert('password is required');
-  //   }
-  //   //  else if (userRole == '') {
-  //   //   return Platform.OS == 'android'
-  //   //     ? ToastAndroid.show('user role is required', ToastAndroid.SHORT)
-  //   //     : alert('user role is required');
-  //   // }
+  const LoginUser = async () => {
+    if (email == '' && password == '') {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show(
+            'password and email is required',
+            ToastAndroid.SHORT,
+          )
+        : alert('password and email is required');
+    } else if (email == '') {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('email is required', ToastAndroid.SHORT)
+        : alert('email is required');
+    } else if (password == '') {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('password is required', ToastAndroid.SHORT)
+        : alert('password is required');
+    }
+   
 
-  //   const url = 'login';
-  //   const body = {email: email.trim(), password: password};
-  //   setIsLoading(true);
-  //   const response = await Post(url, body, apiHeader());
-  //   setIsLoading(false);
+    const url = 'login';
+    
+    const body = {email: email.trim(), password: password};
+    setIsLoading(true);
+    const response = await Post(url, body, apiHeader());
+    setIsLoading(false);
 
-  //   // console.log('LoginResponse============>>>>>>>', response?.data);
-  //   if (response?.data?.success) {
-  //     console.log("Login Testing =============>>>>>>",response?.data?.user_info)
-  //     dispatch(setUserData(response?.data?.user_info));
-  //     dispatch(SetUserRole(response?.data?.user_info?.role))
-  //     dispatch(setUserToken({token: response?.data?.token}));
+    // console.log('LoginResponse============>>>>>>>', response?.data);
+    if (response != undefined) {
+     console.log("Login Testing =============>>>>>>",response?.data)
+     dispatch(setUserData(response?.data?.user));
+      dispatch(setUserInterests(response?.data?.user?.intrest))
+      dispatch(setUserToken({token: response?.data?.token}));
 
 
-  //   }
-  //   // dispatch(setUserData(response?.data?.user_info));
-  //     // dispatch(setUserToken({token: 'dfhksdjlsk'}));
-  //     // dispatch(SetUserRole('customer'))
+    }
+    // dispatch(setUserData(response?.data?.user_info));
+      // dispatch(setUserToken({token: 'dfhksdjlsk'}));
+      // dispatch(SetUserRole('customer'))
 
-  // };
+  };
 
   return (
     <ScreenBoiler
@@ -203,11 +200,7 @@ const LoginScreen = (props) => {
 
         <CustomButton
           onPress={() => {
-            // dispatch(setUserData());
-            //     dispatch(SetUserRole(response?.data?.user_info?.role))
-            dispatch(setUserToken({ token: 'skdaksakdjlk' }));
-            // navigationService.navigate('Causes')
-            // LoginUser();
+            LoginUser()  
           }}
           text={
             isLoading ? (

@@ -39,6 +39,9 @@ import PaymentDoneScreen from './Screens/PaymentDoneScreen';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
+  const interests = useSelector(state => state.authReducer.interests);
+  console.log("🚀 ~ file: appNavigation.js:43 ~ AppNavigator ~ interests:", interests)
+
   console.log("🚀 ~ file: appNavigation.js:34 ~ AppNavigator ~ walkThrough:", walkThrough)
   const token = useSelector(state => state.authReducer.token);
   const RootNav = createNativeStackNavigator();
@@ -50,7 +53,10 @@ const AppNavigator = () => {
       ? 'WalkThroughScreen'
       : token == null
       ? 'LoginScreen'
-      :'Causes';
+      : interests?.length > 0 ?
+      'HomeScreen'
+      :
+      'Causes';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>

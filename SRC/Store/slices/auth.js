@@ -8,6 +8,7 @@ const initialState = {
   userWalkThrough: false,
   isGoalCreated : false ,
   role : '',
+  interests : []
 };
 
 const AuthSlice = createSlice({
@@ -36,6 +37,9 @@ const AuthSlice = createSlice({
     setWalkThrough(state, action) {
       state.userWalkThrough = action.payload;
     },
+    setUserInterests(state , action){
+      state.interests = action.payload
+    }
   },
 });
 
@@ -46,7 +50,8 @@ export const {
   setUserToken,
   SetFCMToken,
   setWalkThrough,
-  SetUserRole
+  SetUserRole,
+  setUserInterests
   
   
 } = AuthSlice.actions;
