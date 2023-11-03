@@ -28,8 +28,10 @@ import {SliderBox} from 'react-native-image-slider-box';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const UserProfile = props => {
+  const userData = useSelector((State)=>State.commonReducer.userData)
   const navigation = useNavigation()
   const item = props?.route?.params?.item;
   console.log('🚀 ~ file: DonationDetail.js:31 ~ DonationDetail ~ item:', item);
@@ -139,7 +141,7 @@ const UserProfile = props => {
                 paddingVertical: moderateScale(10, 0.6),
               }}>
               <CustomText isBold style={styles.txt1}>
-                Abdul Rehman
+{userData?.name}
               </CustomText>
               <CustomText isBold style={styles.txt2}>
                 Your Impact
@@ -368,7 +370,7 @@ const UserProfile = props => {
                 //   backgroundColor: 'red',
                 }}
                 isBold>
-                Abdul
+                {userData?.name}
               </CustomText>
               <CustomText style={{
                 //   width: windowWidth * 0.5,
@@ -391,6 +393,7 @@ const styles = StyleSheet.create({
   txt1: {
     color: Color.white,
     fontSize: moderateScale(18, 0.6),
+    textAlign : 'center'
   },
   txt2: {
     color: Color.white,

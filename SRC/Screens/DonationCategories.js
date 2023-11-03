@@ -25,8 +25,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const DonationCategories = () => {
+  const userData = useSelector((State)=>State.commonReducer.userData)
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
   const [selectedTab, setSelectedTab] = useState('All');
@@ -184,7 +186,8 @@ const DonationCategories = () => {
 
               <View style={{width: windowWidth * 0.7}}>
                 <CustomText isBold style={styles.txt1}>
-                  Abdul Rehman
+                
+                {userData?.name}
                 </CustomText>
                 <CustomText isBold style={styles.txt2}>
                   Spread Goodress

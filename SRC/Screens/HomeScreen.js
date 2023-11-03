@@ -25,8 +25,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import CustomButton from '../Components/CustomButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { useSelector } from 'react-redux';
 
 const BankDetails = () => {
+  const userData = useSelector((State)=>State.commonReducer.userData)
+  console.log("🚀 ~ file: HomeScreen.js:32 ~ BankDetails ~ userData:", userData)
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
   // const [ref, setRef] = useState(null);
@@ -125,10 +128,10 @@ const BankDetails = () => {
 
               <View style={{width: windowWidth * 0.5}}>
                 <CustomText isBold style={styles.txt1}>
-                  Abdul Rehman
+                 {userData?.name}
                 </CustomText>
                 <CustomText isBold style={styles.txt2}>
-                  Spread Goodress
+                {userData?.intrest[0]?.name}
                 </CustomText>
               </View>
 

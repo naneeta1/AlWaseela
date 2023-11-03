@@ -117,6 +117,11 @@ const Causes = props => {
     const body = {
       names: interests,
     };
+    if(interests?.length == 0){
+      Platform.OS == 'android' ?
+      ToastAndroid.show('Please select any interest' , ToastAndroid.SHORT) :
+      alert('Please select any interest')
+    }
     console.log("🚀 ~ file: Causes.js:120 ~ UpdateInterests ~ body:", body)
     setIsLoading(true)
     const response = await Post(url , body , apiHeader(token))
@@ -261,11 +266,8 @@ const Causes = props => {
             // LoginUser();
           }}
           text={
-            isLoading ? (
-              <ActivityIndicator size={'small'} color={Color.white} />
-            ) : (
-              'Logout'
-            )
+          'Logout'
+         
           }
           textColor={Color.white}
           width={windowWidth * 0.75}

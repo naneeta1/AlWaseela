@@ -19,8 +19,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SeeResultsComponent from '../Components/SeeResultsComponent';
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 const SideDrawer = () => {
+  const userData = useSelector((State)=>State.commonReducer.userData)
   const navigation = useNavigation()
   const data = [
     {
@@ -147,13 +149,13 @@ const SideDrawer = () => {
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'space-between',
+          // justifyContent: 'space-between',
           width: windowWidth * 0.5,
           paddingVertical: moderateScale(10, 0.6),
           paddingHorizontal: moderateScale(5, 0.6),
           marginTop: moderateScale(20, 0.3),
         }}>
-        <View style={{width: windowWidth * 0.12, height: windowHeight * 0.07}}>
+        <View style={{width: windowWidth * 0.12, height: windowHeight * 0.07 }}>
           <CustomImage
             resizeMode="contain"
             source={require('../Assets/Images/Logo1.png')}
@@ -164,14 +166,16 @@ const SideDrawer = () => {
           />
         </View>
 
-        <View>
+        <View style={{
+          marginLeft : moderateScale(20,0.3)
+        }}>
           <CustomText
             style={{fontSize: moderateScale(18, 0.6), color: Color.white}}>
-            Abdul Rehman
+            {userData?.name}
           </CustomText>
           <CustomText
             style={{fontSize: moderateScale(14, 0.6), color: Color.white}}>
-            pakistan
+            {userData?.country}
           </CustomText>
         </View>
       </View>

@@ -17,8 +17,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
+import { useSelector } from 'react-redux';
 
 const ContactUs = () => {
+  const userData = useSelector((State)=>State.commonReducer.userData)
     const navigation = useNavigation()
   const [enquirytype, setEnquiryType] = useState('');
   const [message, setMessage] = useState('');
@@ -170,7 +172,7 @@ const ContactUs = () => {
                 fontSize: moderateScale(18, 0.6),
                 color: Color.black,
               }}>
-              Abdul Rehman
+             {userData?.name}
             </CustomText>
           </View>
 
@@ -192,9 +194,9 @@ const ContactUs = () => {
               marginTop: moderateScale(5, 0.6),
               color: '#757575',
             }}>
-            rehmanaptech50@gmail.com
+            {userData?.email}
           </CustomText>
-          <CustomText
+          {/* <CustomText
             style={{
               width: windowWidth,
               fontSize: moderateScale(16, 0.6),
@@ -203,7 +205,7 @@ const ContactUs = () => {
               color: '#757575',
             }}>
             Mobile
-          </CustomText>
+          </CustomText> */}
         </View>
 
         <CustomButton
