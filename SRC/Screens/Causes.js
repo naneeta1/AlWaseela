@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as Animatable from 'react-native-animatable';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
@@ -29,7 +29,7 @@ import {
   setUserInterests,
   setUserToken,
 } from '../Store/slices/auth';
-import {Post} from '../Axios/AxiosInterceptorFunction';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {setUserData} from '../Store/slices/common';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
@@ -38,100 +38,117 @@ import {Icon} from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const Causes = props => {
-    const token = useSelector((State)=>State?.authReducer?.token)
-    console.log("🚀 ~ file: Causes.js:42 ~ Causes ~ token:", token)
+  // const interests1 = useSelector(state => state.authReducer.interests);
+  // console.log("🚀 ~ file: Causes.js:42 ~ Causes ~ interests:", interests1)
+  const token = useSelector(State => State?.authReducer?.token);
+  console.log('🚀 ~ file: Causes.js:42 ~ Causes ~ token:', token);
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [interests, setInterests] = useState([]);
-  console.log("🚀 ~ file: Causes.js:45 ~ Causes ~ interests:", interests)
+  const [data, setData] = useState([]);
+  const [interests, setInterests] = useState('');
+  console.log('🚀 ~ file: Causes.js:45 ~ Causes ~ interests:', interests);
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
 
-  const data = [
-    {
-      id: 1,
-      image: require('../Assets/Images/card1.png'),
-      name: 'Alwida',
-    },
-    {
-      id: 2,
-      image: require('../Assets/Images/card2.png'),
-      name: 'Khair List',
-    },
-    {
-      id: 3,
-      image: require('../Assets/Images/card3.png'),
-      name: 'Markaz-e-shifa',
-    },
-    {
-      id: 4,
-      image: require('../Assets/Images/card4.png'),
-      name: 'Counter Points',
-    },
-    {
-      id: 5,
-      image: require('../Assets/Images/card5.png'),
-      name: 'Qatrah',
-    },
-    {
-      id: 6,
-      image: require('../Assets/Images/card6.png'),
-      name: 'Rehen Sehen',
-    },
-    {
-      id: 7,
-      image: require('../Assets/Images/card7.png'),
-      name: 'Rozgar',
-    },
-    {
-      id: 8,
-      image: require('../Assets/Images/card8.png'),
-      name: 'Sasta Bazaar',
-    },
-    {
-      id: 9,
-      image: require('../Assets/Images/card9.png'),
-      name: 'Saya',
-    },
-    {
-      id: 10,
-      image: require('../Assets/Images/card10.png'),
-      name: 'The Alphabet game',
-    },
-    {
-      id: 11,
-      image: require('../Assets/Images/card11.png'),
-      name: 'Ummati',
-    },
-    {
-      id: 12,
-      image: require('../Assets/Images/card12.png'),
-      name: 'Jinn Tv',
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: 1,
+  //     image: require('../Assets/Images/card1.png'),
+  //     name: 'Alwida',
+  //   },
+  //   {
+  //     id: 2,
+  //     image: require('../Assets/Images/card2.png'),
+  //     name: 'Khair List',
+  //   },
+  //   {
+  //     id: 3,
+  //     image: require('../Assets/Images/card3.png'),
+  //     name: 'Markaz-e-shifa',
+  //   },
+  //   {
+  //     id: 4,
+  //     image: require('../Assets/Images/card4.png'),
+  //     name: 'Counter Points',
+  //   },
+  //   {
+  //     id: 5,
+  //     image: require('../Assets/Images/card5.png'),
+  //     name: 'Qatrah',
+  //   },
+  //   {
+  //     id: 6,
+  //     image: require('../Assets/Images/card6.png'),
+  //     name: 'Rehen Sehen',
+  //   },
+  //   {
+  //     id: 7,
+  //     image: require('../Assets/Images/card7.png'),
+  //     name: 'Rozgar',
+  //   },
+  //   {
+  //     id: 8,
+  //     image: require('../Assets/Images/card8.png'),
+  //     name: 'Sasta Bazaar',
+  //   },
+  //   {
+  //     id: 9,
+  //     image: require('../Assets/Images/card9.png'),
+  //     name: 'Saya',
+  //   },
+  //   {
+  //     id: 10,
+  //     image: require('../Assets/Images/card10.png'),
+  //     name: 'The Alphabet game',
+  //   },
+  //   {
+  //     id: 11,
+  //     image: require('../Assets/Images/card11.png'),
+  //     name: 'Ummati',
+  //   },
+  //   {
+  //     id: 12,
+  //     image: require('../Assets/Images/card12.png'),
+  //     name: 'Jinn Tv',
+  //   },
+  // ];
 
-  const UpdateInterests = async () => {
-    const url = 'intrest_update';
-    const body = {
-      names: interests,
-    };
-    if(interests?.length == 0){
-      Platform.OS == 'android' ?
-      ToastAndroid.show('Please select any interest' , ToastAndroid.SHORT) :
-      alert('Please select any interest')
-    }
-    console.log("🚀 ~ file: Causes.js:120 ~ UpdateInterests ~ body:", body)
-    setIsLoading(true)
-    const response = await Post(url , body , apiHeader(token))
-    setIsLoading(false)
-    if(response != undefined){
-      dispatch(setUserData(response?.data?.user));
-      dispatch(setUserInterests(response?.data?.user?.intrest))
-        console.log(response?.data?.user?.intrest)
+  // const UpdateInterests = async () => {
+  //   const url = 'intrest_update';
+  //   const body = {
+  //     names: interests,
+  //   };
+  //   if(interests?.length == 0){
+  //     Platform.OS == 'android' ?
+  //     ToastAndroid.show('Please select any interest' , ToastAndroid.SHORT) :
+  //     alert('Please select any interest')
+  //   }
+  //   console.log("🚀 ~ file: Causes.js:120 ~ UpdateInterests ~ body:", body)
+  //   setIsLoading(true)
+  //   const response = await Post(url , body , apiHeader(token))
+  //   setIsLoading(false)
+  //   if(response != undefined){
+  //     dispatch(setUserData(response?.data?.user));
+  //     dispatch(setUserInterests(response?.data?.user?.intrest))
+  //       console.log(response?.data?.user?.intrest)
+  //   }
+  // };
+  const getInterest = async () => {
+    const url = `Intrest`;
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      console.log('response ?????', response?.data);
+      setData(response?.data);
     }
   };
+
+  useEffect(() => {
+    getInterest();
+  }, []);
 
   return (
     <ScreenBoiler
@@ -224,12 +241,13 @@ const Causes = props => {
               <Chunks
                 item={item}
                 onPress={() => {
-                    console.log(  interests.includes(item?.name) , interests.indexOf(item?.name))
-                  let TempData = [...interests];
-                  interests.includes(item?.name)
-                    ? (TempData.splice(interests.indexOf(item?.name), 1),
-                      setInterests(TempData))
-                    : setInterests(prev => [...prev, item?.name]);
+                  //   console.log(  interests.includes(item?.name) , interests.indexOf(item?.name))
+                  // let TempData = [...interests];
+                  // interests.includes(item?.name)
+                  //   ? (TempData.splice(interests.indexOf(item?.name), 1),
+                  //     setInterests(TempData))
+                  // :
+                  setInterests(item?.name);
                 }}
                 data={interests}
               />
@@ -239,7 +257,17 @@ const Causes = props => {
 
         <CustomButton
           onPress={() => {
-            UpdateInterests()
+            // UpdateInterests()
+            if (interests == '') {
+              return Platform.OS == 'android'
+                ? ToastAndroid.show(
+                    'Please Select any category to proceed',
+                    ToastAndroid.SHORT,
+                  )
+                : alert('Please Select any category to proceed');
+            }
+            dispatch(setUserInterests(interests))
+            navigation.navigate('HomeScreen', {category: interests});
           }}
           text={
             isLoading ? (
@@ -262,13 +290,10 @@ const Causes = props => {
             dispatch(setUserData());
             //     dispatch(SetUserRole(response?.data?.user_info?.role))
             dispatch(setUserToken({token: null}));
-            dispatch(setUserInterests([]));
+            // dispatch(setUserInterests([]));
             // LoginUser();
           }}
-          text={
-          'Logout'
-         
-          }
+          text={'Logout'}
           textColor={Color.white}
           width={windowWidth * 0.75}
           height={windowHeight * 0.06}
@@ -307,7 +332,9 @@ const Chunks = ({item, onPress, data}) => {
       style={{
         width: windowWidth * 0.27,
         height: windowHeight * 0.11,
-        borderColor: data?.includes(item?.name) ? Color.black : Color.veryLightGray,
+        borderColor: data?.includes(item?.name)
+          ? Color.black
+          : Color.veryLightGray,
         borderRadius: moderateScale(10, 0.6),
         borderWidth: data?.includes(item?.name) ? 2 : 1,
         justifyContent: 'center',
@@ -316,7 +343,7 @@ const Chunks = ({item, onPress, data}) => {
         padding: moderateScale(5, 0.6),
       }}>
       {data?.includes(item?.name) && (
-        <View style={{position: 'absolute', top: 5, right: 5}}>
+        <View style={{position: 'absolute', top: 5, right: 5, zIndex: 1}}>
           <Icon
             name="checkcircleo"
             as={AntDesign}
@@ -325,14 +352,15 @@ const Chunks = ({item, onPress, data}) => {
           />
         </View>
       )}
-      <View style={{width: windowWidth * 0.15, height: windowHeight * 0.055}}>
+      <View style={{width: windowWidth * 0.2, height: windowHeight * 0.1}}>
         <CustomImage
           onPress={onPress}
-          resizeMode="contain"
-          source={item?.image}
+          resizeMode="stretch"
+          source={{uri: item?.Image}}
           style={{
             width: '100%',
             height: '100%',
+            // backgroundColor : 'red'
             // marginTop: moderateScale(25, 0.3),
           }}
         />

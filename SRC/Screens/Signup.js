@@ -6,12 +6,17 @@ import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import ScreenBoiler from '../Components/ScreenBoiler';
 import LinearGradient from 'react-native-linear-gradient';
+import CountryPicker, {DARK_THEME} from 'react-native-country-picker-modal';
+import {Icon} from 'native-base'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import {
   ActivityIndicator,
   Alert,
   Platform,
   ToastAndroid,
   View,
+  TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
@@ -32,10 +37,10 @@ import {useNavigation} from '@react-navigation/native';
 const Signup = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [cPassword, setCPassword] = useState('');
-  const [country, setCountry] = useState('');
   const navigation = useNavigation();
   const sizesArray = ['Pakistan', 'china', 'India', 'Sri lanka'];
 
@@ -47,8 +52,8 @@ const Signup = props => {
       name: fullName,
       email: email,
       password: password,
-      // confirmPassword : cPassword,
-      country: country,
+      number : contact,
+      country: country?.name,
     };
     for (let key in body) {
       if (body[key] == '') {
@@ -73,15 +78,34 @@ const Signup = props => {
        : alert('User Register Sucessfully');
         dispatch(setUserToken({token : response?.data?.token}))
         dispatch(setUserData(response?.data?.user))
-        dispatch(setUserInterests(response?.data?.user?.intrest))
+        // dispatch(setUserInterests(response?.data?.user?.intrest))
       }
+     
     
+    
+  };
+  const [showNumberModal, setShowNumberModal] = useState(false);
+  const [countryCode, setCountryCode] = useState('');
+  const [country, setCountry] = useState({});
+  const [number, setNumber] = useState('');
+  const [withCallingCode, setWithCallingCode] = useState(true);
+  const [withFilter, setFilter] = useState(true);
+
+  const onSelect = country => {
+    console.log('dasdasdasdads =>', country);
+    setCountryCode(country.cca2);
+    setCountry(country);
   };
 
   return (
     <ScreenBoiler
       statusBarBackgroundColor={'white'}
       statusBarContentStyle={'dark-content'}>
+        <ScrollView 
+        
+        showsVerticalScrollIndicator={false}
+        
+        >
       <LinearGradient
         style={{
           width: windowWidth,
@@ -167,7 +191,26 @@ const Signup = props => {
           marginTop={moderateScale(15, 0.3)}
           color={Color.black}
           placeholderColor={Color.veryLightGray}
+        
           // elevation
+        />
+          <TextInputWithTitle
+          // iconName={'key-outline'}
+          // iconType={Ionicons}
+          // LeftIcon={true}
+          titleText={'Phone number'}
+          placeholder={'contact'}
+          setText={setContact}
+          value={contact}
+          viewHeight={0.07}
+          viewWidth={0.75}
+          inputWidth={0.7}
+          border={1}
+          backgroundColor={Color.white}
+           marginTop={moderateScale(15, 0.3)}
+          color={Color.black}
+          placeholderColor={Color.veryLightGray}
+          keyboardType={'numeric'}
         />
 
         <TextInputWithTitle
@@ -213,7 +256,7 @@ const Signup = props => {
           placeholderColor={Color.veryLightGray}
           // elevation
         />
-        <DropDownSingleSelect
+        {/* <DropDownSingleSelect
           array={sizesArray}
           item={country}
           setItem={setCountry}
@@ -229,7 +272,49 @@ const Signup = props => {
           borderColor={Color.veryLightGray}
           // elevation
           // backgroundColor={'white'}
-        />
+        /> */}
+             <TouchableOpacity
+                activeOpacity={0.9}
+                onPress={() => {
+                    setShowNumberModal(true);
+                }}
+                style={[styles.birthday, {justifyContent: 'flex-start'}]}>
+                <CountryPicker
+                  {...{
+                    countryCode,
+                    withCallingCode,
+                    onSelect,
+                    withFilter
+                 
+                  }}
+                  visible={showNumberModal}
+                  onClose={() => {
+                    setShowNumberModal(false);
+                  }}
+                />
+
+                {Object.keys(country).length > 0 && (
+                  <CustomText
+                    style={{
+                      fontSize: moderateScale(15, 0.6),
+                      color: '#5E5E5E',
+                    }}>{country?.name}</CustomText>
+                )}
+
+                <Icon
+                  name={'angle-down'}
+                  as={FontAwesome}
+                  size={moderateScale(20, 0.6)}
+                  color={Color.themeColor}
+                  onPress={() => {
+                    setShowNumberModal(true);
+                  }}
+                  style={{
+                    position: 'absolute',
+                    right: moderateScale(5, 0.3),
+                  }}
+                />
+              </TouchableOpacity>
 
         <CustomText style={styles.text}>
           By Registering You agree to our{' '}
@@ -261,6 +346,7 @@ const Signup = props => {
           // isGradient
         />
       </LinearGradient>
+      </ScrollView>
     </ScreenBoiler>
   );
 };
@@ -283,6 +369,18 @@ const styles = ScaledSheet.create({
     // color: Color.white,
     paddingVertical: moderateScale(10, 0.6),
     color: Color.black,
+  },
+  birthday: {
+    width: windowWidth * 0.76,
+    height: windowHeight * 0.07,
+    borderRadius: moderateScale(10, 0.6),
+    borderWidth: 1,
+    borderColor: Color.veryLightGray,
+    flexDirection: 'row',
+    paddingHorizontal: moderateScale(10, 0.6),
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop:moderateScale(15 ,0.3)
   },
 });
 

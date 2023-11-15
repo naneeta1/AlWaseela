@@ -26,6 +26,8 @@ import {useNavigation} from '@react-navigation/native';
 import RecieptComponent from '../Components/RecieptComponent';
 
 const PaymentDoneScreen = props => {
+  const amount = props?.route?.params?.amount ;
+  console.log("🚀 ~ file: PaymentDoneScreen.js:30 ~ PaymentDoneScreen ~ amount:", amount)
   const [isLoading, setIsLoading] = useState(false);
 //   const [email, setEmail] = useState('');
 //   const [password, setPassword] = useState('');
@@ -217,12 +219,13 @@ const PaymentDoneScreen = props => {
           setIsVisible={setIsVisible}
           isVisible={isVisible}
           onPress={() => {
-            navigationService.navigate('HomeScreen'),
+            navigationService.navigate('Causes'),
               ToastAndroid.show(
                 'You have Donated successfully',
                 ToastAndroid.SHORT,
               );
           }}
+          item={amount}
         />
       </LinearGradient>
     </ScreenBoiler>

@@ -19,56 +19,64 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import SeeResultsComponent from '../Components/SeeResultsComponent';
 import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserLogoutAuth } from '../Store/slices/auth';
+import { setUserLogOut } from '../Store/slices/common';
 
 const SideDrawer = () => {
+  const dispatch =useDispatch()
   const userData = useSelector((State)=>State.commonReducer.userData)
   const navigation = useNavigation()
   const data = [
-    {
-      id: 1,
-      name: 'Discover Charities',
-      image: require('../Assets/Images/location2.png'),
-      onPress: ()=>{
-        navigationService.navigate('DonationCategories')
-      }
-    },
-    {
-      id: 2,
-      name: 'Map',
-      image: require('../Assets/Images/worldwide.png'),
-    },
-    {
-      id: 3,
-      name: 'Search Fundraisers',
-      image: require('../Assets/Images/menuSearch.png'),
-      onPress: ()=>{
-        navigationService.navigate('DonationCategories')
-      }
-    },
+    // {
+    //   id: 1,
+    //   name: 'Discover Charities',
+    //   image: require('../Assets/Images/location2.png'),
+    //   onPress: ()=>{
+    //     navigationService.navigate('DonationCategories')
+    //   }
+    // },
+   
+    // {
+    //   id: 3,
+    //   name: 'Report',
+    //   image: require('../Assets/Images/menuSearch.png'),
+    //   onPress: ()=>{
+    //     // navigationService.navigate('DonationCategories')
+    //   }
+    // },
     {
       id: 4,
       name: 'GIving History',
       image: require('../Assets/Images/invoice.png'),
       onPress: ()=>{
-        navigationService.navigate('GivingHistory')
+        // navigationService.navigate('GivingHistory')
       }
     },
-    {
-      id: 5,
-      name: 'Settings',
-      image: require('../Assets/Images/settings.png'),
-      onPress: ()=>{
-        navigationService.navigate('SettingScreen')
-      }
-    },
+    // {
+    //   id: 5,
+    //   name: 'Settings',
+    //   image: require('../Assets/Images/settings.png'),
+    //   onPress: ()=>{
+    //     navigationService.navigate('SettingScreen')
+    //   }
+    // },
+    // {
+    //   id: 6,
+    //   name: 'FAQs',
+    //   image: require('../Assets/Images/faq.png'),
+    //   onPress: ()=>{
+    //     navigationService.navigate('FrequentlyAsked')
+    //   }
+    // },
     {
       id: 6,
-      name: 'FAQs',
-      image: require('../Assets/Images/faq.png'),
-      onPress: ()=>{
-        navigationService.navigate('FrequentlyAsked')
-      }
+      name: 'Password ',
+        onPress: () => {
+          navigation.navigate('UpdatePasswordScreen');
+        },
+        image: require('../Assets/Images/key.png'),
+   
     },
     {
       id: 7,
@@ -79,9 +87,30 @@ const SideDrawer = () => {
       }
     },
     {
+      id: 9,
+      name: 'payment',
+        onPress: () => {
+          navigation.navigate('BankDetails');
+        },
+        image: require('../Assets/Images/cash.png'),
+    },
+    {
       id: 8,
       name: 'Share This App',
       image: require('../Assets/Images/share.png'),
+    },
+     {
+      id: 2,
+      name: 'LogOut',
+      image: require('../Assets/Images/logout.png'),
+      onPress: () => {
+        dispatch(setUserLogoutAuth());
+        dispatch(setUserLogOut());
+
+      },
+      // onPress: ()=>{
+      //   navigationService.navigate('ContactUs')
+      // }
     },
   ];
 
@@ -113,10 +142,12 @@ const SideDrawer = () => {
 
         <View
           style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: windowWidth * 0.2,
-            alignItems: 'center',
+            // alignSelf : 'flex-end',
+            // flexDirection: 'row',
+            // justifyContent: 'space-between',
+            // width: windowWidth * 0.2,
+            // alignItems: 'right',
+            // backgroundColor : 'red'
           }}>
        
             <Icon
@@ -129,7 +160,7 @@ const SideDrawer = () => {
               }}
             />
         
-          <View
+          {/* <View
             style={{width: windowWidth * 0.08, height: windowHeight * 0.04}}>
             <CustomImage
                onPress={()=>{
@@ -142,7 +173,7 @@ const SideDrawer = () => {
                 height: '100%',
               }}
             />
-          </View>
+          </View> */}
         </View>
       </View>
 
@@ -216,6 +247,7 @@ const SideDrawer = () => {
                 style={{
                   width: '100%',
                   height: '100%',
+                  tintColor:'white'
                 }}
               />
             </View>

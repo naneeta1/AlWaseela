@@ -10,15 +10,17 @@ import CustomImage from './CustomImage';
 import { Icon } from 'native-base';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CustomButton from './CustomButton';
+import { useSelector } from 'react-redux';
 
 const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
+  const userData = useSelector(State => State.commonReducer.userData);
 
   
   const Data = [
     {
       type: 'from',
-      name: 'Hammad Saqib',
-      number: 2865749,
+      name: userData?.name,
+      number: userData?.id,
     },
     {
       type: 'To',
@@ -26,8 +28,8 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
       number: null,
     },
     {
-      type: 'Bank',
-      name: 'Meezan',
+      type: 'Paid through',
+      name: 'Stripe',
       number: null,
     },
     {
@@ -172,7 +174,7 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
               fontSize: moderateScale(20, 0.6),
             }}
             isBold>
-            Rs. 12,300
+           ${item}
           </CustomText>
         </View>
         <CustomText

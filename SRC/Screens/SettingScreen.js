@@ -31,32 +31,25 @@ const SettingScreen = () => {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const data = [
-    {
-      name: 'Profile',
-        onPress: () => {
-          navigation.navigate('UserProfile');
-        },
-      iconName: 'user-circle-o',
-      iconType: FontAwesome,
-    },
+    // {
+    //   name: 'Profile',
+    //     onPress: () => {
+    //       navigation.navigate('UserProfile');
+    //     },
+    //   iconName: 'user-circle-o',
+    //   iconType: FontAwesome,
+    // },
 
-    {
-      name: 'Password ',
-        onPress: () => {
-          navigation.navigate('UpdatePasswordScreen');
-        },
-      iconName: 'vpn-key',
-      iconType: MaterialIcons,
-    },
+   
 
-    {
-      name: 'Preferences',
-        onPress: () => {
-          navigation.navigate('UpdatePreference');
-        },
-      iconName: 'room-preferences',
-      iconType: MaterialIcons,
-    },
+    // {
+    //   name: 'Preferences',
+    //     onPress: () => {
+    //       navigation.navigate('UpdatePreference');
+    //     },
+    //   iconName: 'room-preferences',
+    //   iconType: MaterialIcons,
+    // },
     {
       name: 'payment',
         onPress: () => {
@@ -65,14 +58,14 @@ const SettingScreen = () => {
       iconName: 'payment',
       iconType: MaterialIcons,
     },
-    {
-      name: 'Billing Address',
-        onPress: () => {
-          navigation.navigate('BillingAddress');
-        },
-      iconName: 'home',
-      iconType: AntDesign,
-    },
+    // {
+    //   name: 'Billing Address',
+    //     onPress: () => {
+    //       navigation.navigate('BillingAddress');
+    //     },
+    //   iconName: 'home',
+    //   iconType: AntDesign,
+    // },
     {
       name: 'Log out',
         onPress: () => {

@@ -39,8 +39,7 @@ import PaymentDoneScreen from './Screens/PaymentDoneScreen';
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
-  const interests = useSelector(state => state.authReducer.interests);
-  console.log("🚀 ~ file: appNavigation.js:43 ~ AppNavigator ~ interests:", interests)
+
 
   console.log("🚀 ~ file: appNavigation.js:34 ~ AppNavigator ~ walkThrough:", walkThrough)
   const token = useSelector(state => state.authReducer.token);
@@ -53,10 +52,7 @@ const AppNavigator = () => {
       ? 'WalkThroughScreen'
       : token == null
       ? 'LoginScreen'
-      : interests?.length > 0 ?
-      'HomeScreen'
-      :
-      'Causes';
+      :'Causes';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
@@ -65,6 +61,7 @@ const AppNavigator = () => {
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
           <RootNav.Screen name="PaymentDoneScreen" component={PaymentDoneScreen} />
+          <RootNav.Screen name="Causes" component={Causes} />
           <RootNav.Screen name="GivingHistory" component={GivingHistory} />
           <RootNav.Screen name="BillingAddress" component={BillingAddress} />
           <RootNav.Screen name="ContactUs" component={ContactUs} />
@@ -78,7 +75,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="FormScreen" component={FormScreen} />
           <RootNav.Screen name="HomeScreen" component={HomeScreen} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
-          <RootNav.Screen name="Causes" component={Causes} />
+          {/* <RootNav.Screen name="Causes" component={Causes} /> */}
           <RootNav.Screen name="DonationCategories" component={DonationCategories} />
           <RootNav.Screen name="DonationDetail" component={DonationDetail} />
           <RootNav.Screen name="DonateNow" component={DonateNow} />

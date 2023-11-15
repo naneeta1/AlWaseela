@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Header from '../Components/Header';
 import CustomText from '../Components/CustomText';
 import {windowHeight, windowWidth} from '../Utillity/utils';
@@ -25,14 +25,23 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import CustomButton from '../Components/CustomButton';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { SliderBox } from "react-native-image-slider-box";
-import { useNavigation } from '@react-navigation/native';
+import {SliderBox} from 'react-native-image-slider-box';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {Get} from '../Axios/AxiosInterceptorFunction';
+import moment from 'moment';
+import Share from 'react-native-share';
 
 const DonationDetail = props => {
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const token = useSelector(state => state.authReducer.token);
+
   const item = props?.route?.params?.item;
-  console.log('🚀 ~ file: DonationDetail.js:31 ~ DonationDe das da tail ~ item:', item);
+  // console.log('🚀 ~ file: DonationDetail.js:31 ~ Donatf dsfdsf fionDf dsfsdf  e das  fda tail ~ item:', item);
   const [isLoading, setIsLoading] = useState(false);
+  const [detail, setDetail] = useState({});
+  console.log("🚀 ~ file: DonationDetail.js:44 ~ DonationDetail ~ detail:", detail?.url)
 
   const dataArray = [
     {
@@ -77,207 +86,268 @@ const DonationDetail = props => {
     require('../Assets/Images/donation5.jpg'),
   ];
 
+
+  const fun = async () => {
+    const shareResponse = await Share.open({url : detail?.url});
+    console.log("🚀 ~ file: DonationDetail.js:91 ~ fun ~ shareResponse:", shareResponse)
+  };
+  const getCampaign = async () => {
+    const url = `campaigns_detail/${item?.id}`;
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      console.log(
+        'response ???fsdffsf?fffsffdfdsf f sdffhf  ddf  sdff dfs?',
+        response?.data,
+      );
+      // console.log()
+      setDetail(response?.data);
+    }
+  };
+
+  useEffect(() => {
+    getCampaign();
+  }, [isFocused]);
+
   return (
     <ScreenBoiler
       statusBarBackgroundColor={'white'}
       statusBarContentStyle={'dark-content'}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: moderateScale(20, 0.6),
-        }}>
-        <LinearGradient
+      {isLoading ? (
+        <View
           style={{
             width: windowWidth,
-            minHeight: windowHeight,
-            // alignItems: 'center',
-          }}
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          colors={['#F6F3F3', '#F6F3F3']}>
-          <View
+            height: windowHeight,
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <ActivityIndicator color={Color.themeColor} size={'large'} />
+        </View>
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: moderateScale(20, 0.6),
+          }}>
+          <LinearGradient
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingVertical: moderateScale(20, 0.6),
-              paddingHorizontal: moderateScale(5, 0.6),
               width: windowWidth,
-              position: 'absolute',
-              top: 0,
-              zIndex: 1,
-            }}>
-            <Icon
-              name={'arrow-back'}
-              as={Ionicons}
-              color={Color.black}
-              size={6}
-              onPress={()=>{
-                navigation.goBack()
-              }}
-            />
+              minHeight: windowHeight,
+              // alignItems: 'center',
+            }}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 1}}
+            colors={['#F6F3F3', '#F6F3F3']}>
             <View
               style={{
                 flexDirection: 'row',
-                width: windowWidth * 0.21,
                 justifyContent: 'space-between',
-              }}>
-              <View
-                style={{
-                  // width: windowWidth * 0.1,
-                  // height: windowHeight * 0.02,
-                  backgroundColor: 'rgba(0,0,0,0.3)',
-                  padding: moderateScale(5, 0.6),
-                  borderRadius: moderateScale(10, 0.6),
-                }}>
-                <Icon
-                  name={'sharealt'}
-                  as={AntDesign}
-                  color={Color.black}
-                  size={6}
-                />
-              </View>
-              <View
-                style={{
-                  // width: windowWidth * 0.1,
-                  // height: windowHeight * 0.02,
-                  backgroundColor: 'rgba(0,0,0,0.3)',
-                  padding: moderateScale(5, 0.6),
-                  borderRadius: moderateScale(10, 0.6),
-                }}>
-                <Icon
-                  name={'hearto'}
-                  as={AntDesign}
-                  color={Color.black}
-                  size={6}
-                />
-              </View>
-            </View>
-          </View>
-
-          <SliderBox
-            images={images}
-            sliderBoxHeight={250}
-            onCurrentImagePressed={index =>
-              console.warn(`image ${index} pressed`)
-            }
-            dotColor={Color.themeColor}
-            inactiveDotColor="#90A4AE"
-          />
-
-          <View
-            style={{
-              // backgroundColor:'green',
-              alignItems: 'center',
-              paddingVertical: moderateScale(10, 0.6),
-              paddingHorizontal: moderateScale(10, 0.6),
-            }}>
-            <CustomText
-              style={{
-                width: windowWidth * 0.9,
-                // backgroundColor: 'green',
-                color: 'black',
-                fontSize: moderateScale(20, 0.6),
-              }}
-              isBold>
-              {item?.tagLine}
-            </CustomText>
-            <CustomText
-              style={{
-                width: windowWidth * 0.9,
-                marginTop: moderateScale(10, 0.3),
-                // backgroundColor: 'red',
-                fontSize: moderateScale(14, 0.6),
-                paddingVertical: moderateScale(5, 0.6),
-              }}
-              isBold>
-              $6,679 Fund raised from $8,200
-            
-            </CustomText>
-             <View
-              style={{
-                backgroundColor: Color.veryLightGray,
-                width: windowWidth * 0.9,
-                borderRadius: moderateScale(15, 0.6),
-                height: moderateScale(10, 0.6),
-              }}>
-              <View
-                style={{
-                  backgroundColor: Color.themeColor,
-                  width: '50%',
-                  borderRadius: moderateScale(15, 0.6),
-                  height: moderateScale(10, 0.6),
-                }}/>
-            </View>
-
-            <View
-              style={{
-                width: windowWidth * 0.9,
-                flexDirection: 'row',
-                // backgroundColor: 'red',
+                paddingVertical: moderateScale(20, 0.6),
                 paddingHorizontal: moderateScale(5, 0.6),
+                width: windowWidth,
+                position: 'absolute',
+                top: 0,
+                zIndex: 1,
+              }}>
+              <Icon
+                name={'arrow-back'}
+                as={Ionicons}
+                color={Color.black}
+                size={6}
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+              <View
+                style={{
+                  flexDirection: 'row',
+                  // width: windowWidth * 0.21,
+                  justifyContent: 'space-between',
+                }}>
+                <View
+                  style={{
+                    // width: windowWidth * 0.1,
+                    // height: windowHeight * 0.02,
+                    backgroundColor: 'rgba(0,0,0,0.3)',
+                    padding: moderateScale(5, 0.6),
+                    borderRadius: moderateScale(10, 0.6),
+                  }}>
+                  <Icon
+                    name={'sharealt'}
+                    as={AntDesign}
+                    color={Color.black}
+                    size={6}
+                    onPress={()=>{
+                      fun()
+                    }}
+                  />
+                </View>
+                {/* <View
+                  style={{
+                    // width: windowWidth * 0.1,
+                    // height: windowHeight * 0.02,
+                    backgroundColor: 'rgba(0,0,0,0.3)',
+                    padding: moderateScale(5, 0.6),
+                    borderRadius: moderateScale(10, 0.6),
+                  }}>
+                  <Icon
+                    name={'hearto'}
+                    as={AntDesign}
+                    color={Color.black}
+                    size={6}
+                  />
+                </View> */}
+              </View>
+            </View>
+
+            <SliderBox
+              images={[detail?.image]}
+              sliderBoxHeight={250}
+              onCurrentImagePressed={index =>
+                console.warn(`image ${index} pressed`)
+              }
+              dotColor={Color.themeColor}
+              inactiveDotColor="#90A4AE"
+            />
+
+            <View
+              style={{
+                // backgroundColor:'green',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                paddingVertical: moderateScale(10, 0.6),
+                paddingHorizontal: moderateScale(10, 0.6),
               }}>
               <CustomText
+                numberOfLines={2}
                 style={{
-                  width: windowWidth * 0.4,
-                  fontSize: moderateScale(15, 0.6),
-                  marginTop: moderateScale(5, 0.3),
-                  color: Color.black,
+                  width: windowWidth * 0.9,
+                  // backgroundColor: 'green',
+                  color: 'black',
+                  fontSize: moderateScale(20, 0.6),
                 }}
                 isBold>
-              3,438 Donators
+                {detail?.tagLine}
               </CustomText>
+              {
+                item?.type == 'variable' ?
+                <>
               <CustomText
                 style={{
-                  // backgroundColor: 'orange',
-                  // width: windowWidth * 0.2,
-                  fontSize: moderateScale(13, 0.6),
-                  color: Color.black,
-                }}>
-               11 Days left
+                  width: windowWidth * 0.9,
+                  marginTop: moderateScale(10, 0.3),
+                  // backgroundColor: 'red',
+                  fontSize: moderateScale(14, 0.6),
+                  paddingVertical: moderateScale(5, 0.6),
+                }}
+                isBold>
+                {`$${detail?.collected} Fund raised from $${detail?.target}`}
               </CustomText>
-            </View>
-            <View
-              style={{
-                width: windowWidth,
-                height: windowHeight * 0.1,
-                flexDirection: 'row',
-                // backgroundColor:'green',
-                paddingVertical: moderateScale(10, 0.6),
-                paddingHorizontal: moderateScale(20, 0.6),
-                justifyContent: 'space-between',
-                alignItems: 'center',
-
-                // borderColor: Color.themeColor,
-                // borderWidth: 1,
-              }}>
               <View
                 style={{
-                  width: windowWidth * 0.2,
-                  height: windowHeight * 0.04,
-                  // flexDirection: 'row',
-                  borderColor: Color.themeColor,
-                  borderWidth: 1,
-                  borderRadius: moderateScale(20, 0.6),
+                  backgroundColor: Color.veryLightGray,
+                  width: windowWidth * 0.9,
+                  borderRadius: moderateScale(15, 0.6),
+                  height: moderateScale(10, 0.6),
+                }}>
+                <View
+                  style={{
+                    backgroundColor: Color.themeColor,
+                    width: `${(detail?.collected / detail?.target) * 100}%`,
+                    borderRadius: moderateScale(15, 0.6),
+                    height: moderateScale(10, 0.6),
+                  }}
+                />
+              </View>
+
+              <View
+                style={{
+                  width: windowWidth * 0.9,
+                  flexDirection: 'row',
+                  // backgroundColor: 'red',
+                  paddingHorizontal: moderateScale(5, 0.6),
                   alignItems: 'center',
-                  justifyContent: 'center',
+                  justifyContent: 'space-between',
                 }}>
                 <CustomText
                   style={{
-                    fontSize: moderateScale(12, 0.6),
+                    width: windowWidth * 0.4,
+                    fontSize: moderateScale(15, 0.6),
+                    marginTop: moderateScale(5, 0.3),
+                    color: Color.black,
+                  }}
+                  isBold>
+                  {detail?.donators} donators
+                </CustomText>
+                <CustomText
+                  style={{
+                    // backgroundColor: 'orange',
+                    // width: windowWidth * 0.2,
+                    fontSize: moderateScale(13, 0.6),
                     color: Color.black,
                   }}>
-                  Medical
+                  {moment(detail?.expire_date).diff(moment(), 'days')} days left
                 </CustomText>
               </View>
-              <CustomText
-                style={{fontSize: moderateScale(14, 0.6), color: Color.black}}>
-               3,438 Donators
+                </>
+                :
+                <CustomText
+                style={{
+                  width: windowWidth * 0.9,
+                  marginTop: moderateScale(10, 0.3),
+                  // backgroundColor: 'red',
+                  fontSize: moderateScale(14, 0.6),
+                  paddingVertical: moderateScale(5, 0.6),
+                }}
+                isBold>
+                {`PKR${detail?.fix_amount} will be charged for buying ticket`}
               </CustomText>
-            </View>
+              }
+              <View
+                style={{
+                  width: windowWidth,
+                  height: windowHeight * 0.1,
+                  flexDirection: 'row',
+                  // backgroundColor:'green',
+                  paddingVertical: moderateScale(10, 0.6),
+                  paddingHorizontal: moderateScale(20, 0.6),
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
 
-            <View
+                  // borderColor: Color.themeColor,
+                  // borderWidth: 1,
+                }}>
+                <View
+                  style={{
+                    // width: windowWidth * 0.2,
+                    height: windowHeight * 0.04,
+                    paddingHorizontal : moderateScale(5,0.6),
+                    // flexDirection: 'row',
+                    borderColor: Color.themeColor,
+                    borderWidth: 1,
+                    borderRadius: moderateScale(20, 0.6),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <CustomText
+                    style={{
+                      fontSize: moderateScale(12, 0.6),
+                      color: Color.black,
+                    }}>
+                    {item?.category}
+                  </CustomText>
+                </View>
+                <CustomText
+                  style={{
+                    fontSize: moderateScale(14, 0.6),
+                    color: Color.black,
+                  }}>
+                  {detail?.donators} donators
+                </CustomText>
+              </View>
+
+              {/* <View
               style={{
                 width: windowWidth,
                 // height: windowHeight * 0.08,
@@ -341,49 +411,58 @@ const DonationDetail = props => {
                   Follow
                 </CustomText>
               </View>
+            </View> */}
+              <View style={{paddingHorizontal: moderateScale(20, 0.6)}}>
+                <CustomText
+                  style={{
+                    width: windowWidth * 0.9,
+                    color: 'black',
+                    fontSize: moderateScale(20, 0.6),
+                  }}
+                  isBold>
+                  Story
+                </CustomText>
+                <CustomText
+                  style={{
+                    width: windowWidth * 0.9,
+                    color: 'black',
+                    fontSize: moderateScale(12, 0.6),
+                    marginTop: moderateScale(10, 0.6),
+                    lineHeight: moderateScale(17, 0.6),
+                  }}>{detail?.description}</CustomText>
+              </View>
             </View>
-            <View style={{paddingHorizontal: moderateScale(20, 0.6)}}>
-              <CustomText
-                style={{
-                  width: windowWidth * 0.9,
-                  color: 'black',
-                  fontSize: moderateScale(20, 0.6),
+              <View style={{
+                position : 'absolute',
+                bottom : moderateScale(50,0.6),
+                alignSelf : 'center'
+              }}>
+
+             
+              <CustomButton
+                onPress={() => {
+                  navigationService.navigate('DonateNowpage',{campaignData : detail});
                 }}
-                isBold>
-                Story
-              </CustomText>
-              <CustomText
-                style={{
-                  width: windowWidth * 0.9,
-                  color: 'black',
-                  fontSize: moderateScale(12, 0.6),
-                  marginTop: moderateScale(10, 0.6),
-                  lineHeight : moderateScale(17,.6),
-                }}>{`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. `}</CustomText>
-            </View>
-            <CustomButton
-              onPress={() => {
-                navigationService.navigate('DonateNowpage');
-              }}
-              text={'Donate Now'}
-              textColor={Color.white}
-              // iconName={'pencil'}
-              // iconType={Entypo}
-              width={windowWidth * 0.7}
-              height={windowHeight * 0.06}
-              fontSize={moderateScale(13, 0.6)}
-              marginTop={moderateScale(20, 0.3)}
-              bgColor={Color.themeColor}
-              borderRadius={moderateScale(20, 0.3)}
-              iconStyle={{
-                fontSize: moderateScale(14, 0.6),
-              }}
-              marginRight={moderateScale(5, 0.3)}
-              isBold
-            />
-          </View>
-        </LinearGradient>
-      </ScrollView>
+                text={'Donate Now'}
+                textColor={Color.white}
+                // iconName={'pencil'}
+                // iconType={Entypo}
+                width={windowWidth * 0.7}
+                height={windowHeight * 0.06}
+                fontSize={moderateScale(13, 0.6)}
+                marginTop={moderateScale(20, 0.3)}
+                bgColor={Color.themeColor}
+                borderRadius={moderateScale(20, 0.3)}
+                iconStyle={{
+                  fontSize: moderateScale(14, 0.6),
+                }}
+                marginRight={moderateScale(5, 0.3)}
+                isBold
+              />
+               </View>
+          </LinearGradient>
+        </ScrollView>
+      )}
     </ScreenBoiler>
   );
 };

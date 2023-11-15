@@ -18,10 +18,10 @@ import {
 } from './SRC/Utillity/utils';
 import SplashScreen from './SRC/Screens/SplashScreen';
 import AppNavigator, {DrawerRoot} from './SRC/appNavigation';
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 
 const App = () => {
-  const [publishableKey, setPublishableKey] = useState('');
 
   const fetchPublishableKey = async () => {
     const key = await fetchKey(); // fetch key from your server here
@@ -33,7 +33,9 @@ const App = () => {
 
   console.reportErrorsAsExceptions = false;
   return (
-    
+    <StripeProvider
+    publishableKey={'pk_test_51JIdZVJehHGbCsaCYiCquX3mKuZDrym2d3EU31L8fDxs8886NBrqsg3rYrp8bHIdl7wvARE7vxLuNfhsrY5SFbCw00tHX5coQC'}
+  >
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NativeBaseProvider>
@@ -41,6 +43,7 @@ const App = () => {
         </NativeBaseProvider>
       </PersistGate>
     </Provider>
+    </StripeProvider>
     
   );
 };
@@ -53,6 +56,7 @@ const MainContainer = () => {
     async function GetPermission() {
       await requestCameraPermission();
       await requestWritePermission();
+      
       await requestLocationPermission();
     }
     GetPermission();

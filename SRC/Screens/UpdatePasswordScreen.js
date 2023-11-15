@@ -1,8 +1,8 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ToastAndroid, Platform, ActivityIndicator} from 'react-native';
 import React, {useState} from 'react';
 import Header from '../Components/Header';
 import CustomText from '../Components/CustomText';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
@@ -16,12 +16,49 @@ import CustomButton from '../Components/CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const UpdatePasswordScreen = () => {
+  const navigation = useNavigation()
+  const token = useSelector(state => state.authReducer.token);
   const navigaiton = useNavigation();
   const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmpassword, setConfirmPassword] = useState('');
+  const [newPassword, setNewPassword] = useState(''); 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChangePassword = async () => {
+    const url = 'update-password';
+
+    const body = {
+      current_password: password,
+      new_password: newPassword,
+     
+    };
+
+    for (let key in body) {
+      if (body[key] == '') {
+        return Platform.OS == 'android'
+          ? ToastAndroid.show(`${key} is empty`, ToastAndroid.SHORT)
+          : alert(`${key} is empty`);
+      }
+    }
+
+
+
+    setIsLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setIsLoading(false);
+    
+    // console.log("🚀 ~ file: ChangePassword.js:69 ~ handleChangePassword ~ response:", response?.data)
+    
+    if (response != undefined) {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(`Password has been changed successfully`, ToastAndroid.SHORT)
+        : alert(`Password has been changed successfully`);
+        navigation.goBack();
+    }
+  };
   return (
     <ScreenBoiler
       statusBarBackgroundColor={'#3E3028'}
@@ -74,7 +111,7 @@ const UpdatePasswordScreen = () => {
         <TextInputWithTitle
           secureText={true}
           titleText={'Email'}
-          placeholder={'Password'}
+          placeholder={'Current Password'}
           setText={setPassword}
           value={password}
           borderBottom={1}
@@ -90,7 +127,7 @@ const UpdatePasswordScreen = () => {
         <TextInputWithTitle
           secureText={true}
           titleText={'Email'}
-          placeholder={'Password'}
+          placeholder={'New Password'}
           setText={setNewPassword}
           value={newPassword}
           borderBottom={1}
@@ -103,28 +140,20 @@ const UpdatePasswordScreen = () => {
           placeholderColor={Color.black}
         />
 
-        <TextInputWithTitle
-          secureText={true}
-          titleText={'Email'}
-          placeholder={'Password'}
-          setText={setConfirmPassword}
-          value={confirmpassword}
-          borderBottom={1}
-          viewHeight={0.07}
-          viewWidth={0.9}
-          inputWidth={0.8}
-          borderColor={'#000'}
-          marginTop={moderateScale(15, 0.3)}
-          color={Color.black}
-          placeholderColor={Color.black}
-        />
+      
 
-        <View style={{position:'absolute',bottom:10}}>
+        <View style={{position:'absolute',bottom:100}}>
           <CustomButton
             onPress={() => {
-              navigationService.navigate('');
-            }}
-            text={'Update Password'}
+             
+              handleChangePassword()
+            }
+            }
+            text={
+              isLoading ? (
+                <ActivityIndicator color={'white'} size={'small'} />
+              ) : (
+              'Update Password')}
             textColor={Color.white}
             // iconName={'pencil'}
             // iconType={Entypo}

@@ -64,7 +64,7 @@ const LoginScreen = (props) => {
     if (response != undefined) {
      console.log("Login Testing =============>>>>>>",response?.data)
      dispatch(setUserData(response?.data?.user));
-      dispatch(setUserInterests(response?.data?.user?.intrest))
+      // dispatch(setUserInterests(response?.data?.user?.intrest))
       dispatch(setUserToken({token: response?.data?.token}));
 
 

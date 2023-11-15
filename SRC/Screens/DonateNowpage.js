@@ -7,11 +7,13 @@ import {
   Switch,
   ScrollView,
   ToastAndroid,
+  Platform,
+  
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState ,useEffect} from 'react';
 import Header from '../Components/Header';
 import CustomText from '../Components/CustomText';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
@@ -32,15 +34,88 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import {useNavigation} from '@react-navigation/native';
 import RecieptComponent from '../Components/RecieptComponent';
+import {CardField, createToken} from '@stripe/stripe-react-native';
+import {Post} from '../Axios/AxiosInterceptorFunction';
+import {useSelector} from 'react-redux';
 
-const DonateNowpage = () => {
+const DonateNowpage = ({route}) => {
+  const campaignData = route?.params?.campaignData;
+  const token = useSelector(state => state.authReducer.token);
+
+  console.log(
+    '🚀 ~ file: DonateNowpage.js:38 ~ DonateNowvfxvpage ~ campaignData:',
+    campaignData,
+  );
   const navigation = useNavigation();
   const [price, setPrice] = useState('$0.00');
   const [enabled, setEnabled] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [pressed, setPressed] = useState('ONE-TIME');
-  const [dollors, setDollors] = useState(0.0);
+  const [dollors, setDollors] = useState(campaignData?.fix_amount > 0 ? campaignData?.fix_amount : 0.0);
   const [isVisible, setisVisible] = useState(false);
+  const [purpose, setPurpose] = useState([]);
+  const [stripeToken, setStripeToken] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(
+    '🚀 ~ file: DonateNowpage.js:50 ~ DonateNowpage ~ purpose:',
+    purpose,
+  );
+
+  const Donate = async () => {
+    setIsLoading(true);
+    const responseData = await createToken({
+      type: 'Card',
+    });
+    console.log(
+      '🚀 ~ file: AddCard.js:90 ~ addCard ~ responseData',
+      JSON.stringify(responseData?.token?.id, null, 2),
+    );
+
+    if (responseData.error) {
+      setIsLoading(false);
+      console.log(responseData.error);
+      return alert(responseData?.error?.message);
+    }
+    if (responseData != undefined) {
+      const url = 'campaigns/donate';
+      const body = {
+        stripeToken: responseData?.token?.id,
+        amount: dollors,
+        quantity : quantity,
+        campaign_id: campaignData?.id,
+      };
+    //  return console.log("🚀 ~ file: DonateNowpage.js:87 ~ Donate ~ body:", body)
+      // if(stripeToken == ''){
+      //   return Platform.OS == 'android' ?
+      //   ToastAndroid.show('Card not added or wrong information added' , ToastAndroid.SHORT)
+      //   :alert('Card not added or wrong information added')
+      // }
+      if (dollors == 0.0) {
+        setIsLoading(false);
+        return Platform.OS == 'android'
+          ? ToastAndroid.show('please add amount', ToastAndroid.SHORT)
+          : alert('please add amount');
+      }
+      setIsLoading(true);
+      const response = await Post(url, body, apiHeader(token));
+      setIsLoading(false);
+
+      if (response != undefined) {
+        console.log('response ======== > ', response?.data);
+        navigationService.navigate('PaymentDoneScreen',{amount : dollors});
+        Platform.OS == 'android'
+          ? ToastAndroid.show('Payment Successfull', ToastAndroid.SHORT)
+          : alert('Payment Successfull');
+      }
+    }
+  };
+
+  useEffect(() => {
+    if(quantity > 0){
+      setDollors (quantity * campaignData?.fix_amount)
+    }
+  }, [quantity])
+  
 
   return (
     <ScreenBoiler
@@ -69,23 +144,7 @@ const DonateNowpage = () => {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <TextInputWithTitle
-              placeholder={'fsdfs'}
-              setText={setPrice}
-              value={price}
-              borderBottom={1}
-              // viewHeight={0.07}
-              viewWidth={0.75}
-              inputWidth={0.7}
-              borderColor={'#000'}
-              marginTop={moderateScale(15, 0.3)}
-              color={Color.black}
-              placeholderColor={Color.black}
-              textAlign={'center'}
-              fontSize={moderateScale(20, 0.6)}
-              isBold
-              // elevation
-            />
+           
             <TouchableOpacity
               activeOpacity={0.8}
               style={{
@@ -107,8 +166,35 @@ const DonateNowpage = () => {
               />
             </TouchableOpacity>
           </View>
-
           <View
+           style={{
+            alignSelf : 'center'
+          }}
+          >
+
+        
+          <TextInputWithTitle
+              placeholder={dollors}
+              setText={setDollors}
+              value={`Rs${dollors}`}
+              borderBottom={1}
+              // viewHeight={0.07}
+              viewWidth={0.75}
+              inputWidth={0.7}
+              borderColor={'#000'}
+              marginTop={moderateScale(15, 0.3)}
+              color={Color.black}
+              placeholderColor={Color.black}
+              textAlign={'center'}
+              fontSize={moderateScale(20, 0.6)}
+              isBold
+              disable
+             
+              // elevation
+            />
+              </View>
+
+          {/* <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-around',
@@ -145,11 +231,11 @@ const DonateNowpage = () => {
                   textAlign: 'center',
                   textTransform: 'uppercase',
                 }}>
-                ONE-TIME
+               {campaignData?.type == 'fixed' ? campaignData?.category : 'ONE-TIME'} 
               </CustomText>
             </TouchableOpacity>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {
                 setPressed('RECURRING');
               }}
@@ -178,10 +264,10 @@ const DonateNowpage = () => {
                 }}>
                 RECURRING
               </CustomText>
-            </TouchableOpacity>
-          </View>
+            </TouchableOpacity> 
+          </View> */}
 
-          <View
+          {/* <View
             style={{
               width: windowWidth,
               // height: windowHeight * 0.26,
@@ -252,7 +338,15 @@ const DonateNowpage = () => {
                 marginLeft: moderateScale(20, 0.3),
                 paddingHorizontal: moderateScale(10, 0.6),
               }}>
-              <Checkbox value="test" colorScheme="gray" />
+              <Checkbox
+                value="test"
+                colorScheme="gray"
+                // isChecked={purpose == 'Sadaqa'}
+                onChange={data => {
+                  console.log(data);
+                  data ? setPurpose('Sadaqa') : setPurpose('');
+                }}
+              />
               <CustomText
                 style={{
                   fontSize: moderateScale(12, 0.6),
@@ -264,6 +358,7 @@ const DonateNowpage = () => {
                 Sadaqa
               </CustomText>
             </View>
+           
 
             <View
               style={{
@@ -324,8 +419,8 @@ const DonateNowpage = () => {
               }}>
               See More
             </CustomText>
-          </View>
-
+          </View> */}
+{/* 
           <View
             style={{
               width: windowWidth * 0.95,
@@ -413,7 +508,10 @@ const DonateNowpage = () => {
               paddingHorizontal: moderateScale(10, 0.6),
             }}>
             See more
-          </CustomText>
+          </CustomText> */}
+
+{
+  campaignData?.type == 'variable' ?
 
           <View
             style={{
@@ -436,7 +534,7 @@ const DonateNowpage = () => {
                   marginRight: moderateScale(5, 0.3),
                 }}
                 isBold>
-                $10
+                10
               </CustomText>
               <Icon
                 name={'minuscircleo'}
@@ -456,7 +554,7 @@ const DonateNowpage = () => {
                   // backgroundColor: 'red',
                   width: windowWidth * 0.15,
                 }}>
-                ${dollors}
+                Rs{dollors}
               </CustomText>
               <View
                 style={{
@@ -471,7 +569,7 @@ const DonateNowpage = () => {
                     fontSize: moderateScale(11, 0.6),
                     textTransform: 'uppercase',
                   }}>
-                  {'USD'}
+                  {'PKR'}
                 </CustomText>
               </View>
             </View>
@@ -497,13 +595,74 @@ const DonateNowpage = () => {
                   marginLeft: moderateScale(5, 0.3),
                 }}
                 isBold>
-                $10
+                10
               </CustomText>
             </View>
           </View>
+          :   <View
+          style={{
+            alignSelf : 'center',
+            flexDirection: 'row',
+            // backgroundColor: 'red',
+            width: windowWidth * 0.6,
+            justifyContent: 'space-between',
+            paddingVertical: moderateScale(10, 0.6),
+            alignItems: 'center',
+          }}>
+          <Icon
+            onPress={() => {
+              quantity > 0 && setQuantity(prev => prev - 1);
+            }}
+            name={'minuscircleo'}
+            color={Color.themeColor}
+            as={AntDesign}
+            size={6}
+          />
+          <CustomText
+            style={{fontSize: moderateScale(20, 0.6), color: Color.black}}>
+            {quantity}
+          </CustomText>
+          <Icon
+            onPress={() => {
+              setQuantity(prev => prev + 1);
+            }}
+            name={'pluscircleo'}
+            color={Color.themeColor}
+            as={AntDesign}
+            size={6}
+          />
+        </View>
+}
+          <CardField
+            postalCodeEnabled={false}
+            placeholders={{
+              number: '4242 4242 4242 4242',
+            }}
+            cardStyle={{
+              backgroundColor: '#FFFFFF',
+              textColor: '#000000',
+            }}
+            style={{
+              width: '100%',
+              height: 50,
+              marginVertical: 30,
+            }}
+            onCardChange={cardDetails => {
+              console.log('cardDetails', cardDetails);
+            }}
+            onFocus={focusedField => {
+              console.log('focusField', focusedField);
+            }}
+          />
 
           <CustomButton
-            text={'Continue'}
+            text={
+              isLoading ? (
+                <ActivityIndicator color={'white'} size={'small'} />
+              ) : (
+                'Continue'
+              )
+            }
             textColor={Color.white}
             // iconName={'pencil'}
             // iconType={Entypo}
@@ -519,12 +678,12 @@ const DonateNowpage = () => {
             marginRight={moderateScale(5, 0.3)}
             isBold
             onPress={() => {
+              Donate();
               // setisVisible(true);
-              navigationService.navigate('PaymentDoneScreen')
+              // navigationService.navigate('PaymentDoneScreen');
             }}
           />
         </LinearGradient>
-      
       </ScrollView>
     </ScreenBoiler>
   );
