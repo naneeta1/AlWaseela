@@ -242,7 +242,7 @@ const DonationDetail = props => {
                   paddingVertical: moderateScale(5, 0.6),
                 }}
                 isBold>
-                {`$${detail?.collected} Fund raised from $${detail?.target}`}
+                {`Rs${detail?.collected} Fund raised from Rs${detail?.target}`}
               </CustomText>
               <View
                 style={{
@@ -292,6 +292,55 @@ const DonationDetail = props => {
               </View>
                 </>
                 :
+                <>
+                  <View
+            style={{
+              width: windowWidth * 0.9,
+              height: moderateScale(10, 0.6),
+              alignSelf: 'center',
+              backgroundColor: '#DDDDDD',
+              marginTop: moderateScale(10, 0.3),
+              borderRadius: moderateScale(20, 0.6),
+            }}>
+            <View
+              style={{
+                width: `${(item?.ticket_counter / item?.ticket_tickets) * 100}%` ,
+                height: moderateScale(10, 0.6),
+
+                backgroundColor: '#3E3028',
+
+                borderRadius: moderateScale(20, 0.6),
+              }}></View>
+          </View>
+           <View
+           style={{
+             width: windowWidth * 0.9,
+             justifyContent : 'space-between',
+             flexDirection : 'row',
+            //  height: moderateScale(10, 0.6),
+             alignSelf: 'center',marginBottom :10,
+           }}>
+              <CustomText
+                  style={{
+                    width: windowWidth * 0.4,
+                    fontSize: moderateScale(12, 0.6),
+                    // marginTop: moderateScale(5, 0.3),
+                    color: Color.black,
+                  }}
+                  isBold
+                  >
+                  {`Sold tickets ${item?.ticket_counter}` }    
+                </CustomText>
+                <CustomText
+                  style={{
+                    // width: windowWidth * 0.4,
+                    fontSize: moderateScale(12, 0.6),
+                    // marginTop: moderateScale(5, 0.3),
+                    color: Color.black,
+                  }}
+                  isBold>
+                  {`total tickets ${item?.ticket_tickets}` } </CustomText>
+           </View>
                 <CustomText
                 style={{
                   width: windowWidth * 0.9,
@@ -303,6 +352,7 @@ const DonationDetail = props => {
                 isBold>
                 {`PKR${detail?.fix_amount} will be charged for buying ticket`}
               </CustomText>
+                </>
               }
               <View
                 style={{
@@ -443,7 +493,7 @@ const DonationDetail = props => {
                 onPress={() => {
                   navigationService.navigate('DonateNowpage',{campaignData : detail});
                 }}
-                text={'Donate Now'}
+                text={   item?.type == 'variable' ? 'Donate Now' : 'Buy Ticket'}
                 textColor={Color.white}
                 // iconName={'pencil'}
                 // iconType={Entypo}
