@@ -531,19 +531,22 @@ const BankDetails = ({route}) => {
                 return (
                   <View
                     style={{
-                      width: windowWidth * 0.9,
+                      marginTop : moderateScale(10,0.3),
+                      width: windowWidth * 0.95,
+                      borderRadius: moderateScale(10, 0.6),
                       height: windowHeight * 0.2,
                       justifyContent: 'center',
                       alignItems: 'center',
+                      backgroundColor : 'white'
                     }}>
-                    <CustomImage
+                    {/* <CustomImage
                       source={require('../Assets/Images/noData.png')}
                       style={{
                         width: windowWidth * 0.4,
                         height: windowHeight * 0.1,
                       }}
-                    />
-                    <CustomText isBold>Data Not found</CustomText>
+                    /> */}
+                    {/* <CustomText isBold>Data Not found</CustomText> */}
                   </View>
                 );
               }}
@@ -582,21 +585,24 @@ const BankDetails = ({route}) => {
               ListEmptyComponent={() => {
                 return (
                   <View
+                  style={{
+                  marginTop : moderateScale(10,0.3),
+                    width: windowWidth * 0.95,
+                    borderRadius: moderateScale(10, 0.6),
+                    height: windowHeight * 0.2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor : 'white'
+                  }}>
+                  {/* <CustomImage
+                    source={require('../Assets/Images/noData.png')}
                     style={{
-                      width: windowWidth * 0.9,
-                      height: windowHeight * 0.2,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <CustomImage
-                      source={require('../Assets/Images/noData.png')}
-                      style={{
-                        width: windowWidth * 0.4,
-                        height: windowHeight * 0.1,
-                      }}
-                    />
-                    <CustomText isBold>Data Not found</CustomText>
-                  </View>
+                      width: windowWidth * 0.4,
+                      height: windowHeight * 0.1,
+                    }}
+                  /> */}
+                  {/* <CustomText isBold>Data Not found</CustomText> */}
+                </View>
                 );
               }}
             />
@@ -619,19 +625,22 @@ const BankDetails = ({route}) => {
                 return (
                   <View
                     style={{
-                      width: windowWidth * 0.9,
+                      marginTop : moderateScale(10,0.3),
+                      width: windowWidth * 0.95,
+                      borderRadius: moderateScale(10, 0.6),
                       height: windowHeight * 0.2,
                       justifyContent: 'center',
                       alignItems: 'center',
+                      backgroundColor : 'white'
                     }}>
-                    <CustomImage
+                    {/* <CustomImage
                       source={require('../Assets/Images/noData.png')}
                       style={{
                         width: windowWidth * 0.4,
                         height: windowHeight * 0.1,
                       }}
-                    />
-                    <CustomText isBold>Data Not found</CustomText>
+                    /> */}
+                    {/* <CustomText isBold>Data Not found</CustomText> */}
                   </View>
                 );
               }}

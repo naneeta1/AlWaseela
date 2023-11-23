@@ -46,7 +46,7 @@ const FundRaiseCard = ({item}) => {
               width={windowWidth * 0.15}
               height={windowHeight * 0.03}
               fontSize={moderateScale(7, 0.6)}
-              // marginTop={moderateScale(30, 0.3)}
+              // marginTop={moderateScale(30, 0.3)}d
               bgColor={Color.themeColor}
               borderRadius={moderateScale(20, 0.3)}
               alignSelf={'center'}
@@ -85,7 +85,8 @@ const FundRaiseCard = ({item}) => {
               backgroundColor : 'rgba(0,0,0,0.4)',
               width : '90%',
               borderRadius : moderateScale(5,0.6),
-              alignSelf : 'center'
+              alignSelf : 'center',
+              marginBottom : moderateScale(10,0.3),
 }}>
               <CustomText numberOfLines={2} style={styles.text1}>
             {item?.tagLine}
@@ -94,7 +95,7 @@ const FundRaiseCard = ({item}) => {
         </ImageBackground>
       
         
-        {item?.fundRaising && item?.type == 'variable' &&(
+        {/* {item?.fundRaising && item?.type == 'variable' &&( */}
           <>
           <View
             style={{
@@ -107,7 +108,7 @@ const FundRaiseCard = ({item}) => {
             }}>
             <View
               style={{
-                width: `${(item?.collected / item?.target) * 100}%`,
+                width: item?.type == 'variable' ? `${(item?.collected / item?.target) * 100}%` : `${(item?.ticket_counter / item?.ticket_tickets) * 100}%` ,
                 height: moderateScale(10, 0.6),
 
                 backgroundColor: '#3E3028',
@@ -121,7 +122,7 @@ const FundRaiseCard = ({item}) => {
              justifyContent : 'space-between',
              flexDirection : 'row',
             //  height: moderateScale(10, 0.6),
-             alignSelf: 'center',
+             alignSelf: 'center',marginBottom :10,
            }}>
               <CustomText
                   style={{
@@ -132,7 +133,7 @@ const FundRaiseCard = ({item}) => {
                   }}
                   isBold
                   >
-                  Target : Rs{item?.target} 
+                  {item?.type == 'variable' ? `Target : Rs ${item?.target} ` : `Sold tickets ${item?.ticket_counter}` }    
                 </CustomText>
                 <CustomText
                   style={{
@@ -142,12 +143,12 @@ const FundRaiseCard = ({item}) => {
                     color: Color.black,
                   }}
                   isBold>
-                  {item?.donators} donators</CustomText>
+                  {item?.type == 'variable' ? `${item?.donators} donators` : `total tickets ${item?.ticket_tickets}` } </CustomText>
            </View>
            </>
           
-        )}
-        {item?.type == 'variable' ? (
+        {/* )} */}
+        {/* {item?.type == 'variable' ? (
           // <View style={styles.thanks}>
           //   <CustomImage
           //     source={require('../Assets/Images/mangives.png')}
@@ -162,9 +163,10 @@ const FundRaiseCard = ({item}) => {
           // </View>
           <></>
         ) : (
-          <CustomText style={styles.text2}>{item?.location}</CustomText>
+          <></>
+          // <CustomText style={styles.text2}>{item?.location}</CustomText>
          
-        )}
+        )} */}
       </View>
     </TouchableOpacity>
   );
@@ -183,7 +185,7 @@ const styles = ScaledSheet.create({
   card: {
     width: windowWidth * 0.95,
     // height: windowHeight * 0.24,
-    paddingBottom: moderateScale(20, 0.6),
+    // paddingBottom: moderateScale(20, 0.6),
     backgroundColor: 'white',
     overflow: 'hidden',
     borderRadius: moderateScale(10, 0.6),
