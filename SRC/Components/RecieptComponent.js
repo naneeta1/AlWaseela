@@ -20,7 +20,7 @@ const RecieptComponent = ({isVisible, setIsVisible, item, onPress}) => {
     try {
       const options = {
         title: 'Share via',
-        message: 'Donated this amount for the good causes on AlWaseela',
+        message: 'Donated this amount for the good causes on PowerBox',
         socialMedia:Share.Social.FACEBOOK
       };
       await Share.open(options)

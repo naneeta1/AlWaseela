@@ -34,7 +34,7 @@ const WalkThroughScreen = props => {
     },
     {
       key: '2',
-      logo: require('../Assets/Images/easy.png'),
+      logo: require('../Assets/Images/lock2.png'),
       title: ' Easy',
       subtitle:'Accumulate your moments of gratitude (alhamdulilah) continuously',
       text: `Effortlessly eet your charitable responsibilities throughout the year by setting up recurring donations and taking advantage of gift aid`,

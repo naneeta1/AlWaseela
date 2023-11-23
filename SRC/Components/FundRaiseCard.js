@@ -80,8 +80,8 @@ const FundRaiseCard = ({item}) => {
             style={{
               paddingVertical:moderateScale(10,.6),
               backgroundColor: 'rgba(0,0,0,0.6)',
-              width: '100%',
-              textAlign: 'left',
+              width: '95%',
+              // textAlign: 'left',
               borderRadius: moderateScale(5, 0.6),
               alignSelf: 'center',
               // marginBottom: moderateScale(10, 0.3),
@@ -204,7 +204,7 @@ const styles = ScaledSheet.create({
   text1: {
     marginHorizontal: moderateScale(15, 0.6),
     // width: '80%',
-    textAlign: 'center',
+    // textAlign: 'center',
     marginBottom: moderateScale(7, 0.3),
     fontSize: moderateScale(12, 0.6),
     lineHeight: moderateScale(17, 0.6),

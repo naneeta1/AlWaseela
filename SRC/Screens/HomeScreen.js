@@ -230,12 +230,13 @@ const BankDetails = ({route}) => {
 
               <View
                 style={{
-                  flexDirection: 'row',
+                  // flexDirection: 'row',
                   width: windowWidth * 0.29,
-                  justifyContent: 'space-evenly',
+                  alignItems : 'flex-end'
+                  // justifyContent: 'space-evenly',
                 }}>
                 {/* <TouchableOpacity activeOpacity={0.8}> */}
-                <Icon
+                {/* <Icon
                   name={'notifications-outline'}
                   as={Ionicons}
                   size={moderateScale(22, 0.3)}
@@ -243,7 +244,7 @@ const BankDetails = ({route}) => {
                   onPress={() => {
                     navigationService.navigate('Notification');
                   }}
-                />
+                /> */}
                 {/* </TouchableOpacity> */}
                 {/* <TouchableOpacity activeOpacity={0.8}> */}
                 {/* <Icon
@@ -561,7 +562,7 @@ const BankDetails = ({route}) => {
                   }}
                 />
                 <CustomText style={[styles.text1, {width: windowWidth * 0.3}]}>
-                  Size your alhamdullilah moment
+                  Sieze your alhamdullilah moment
                 </CustomText>
               </View>
 
