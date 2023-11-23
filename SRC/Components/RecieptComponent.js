@@ -7,15 +7,28 @@ import CustomText from './CustomText';
 import moment from 'moment';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from './CustomImage';
-import { Icon } from 'native-base';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import {Icon} from 'native-base';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomButton from './CustomButton';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import Share from "react-native-share";
 
-const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
+const RecieptComponent = ({isVisible, setIsVisible, item, onPress}) => {
   const userData = useSelector(State => State.commonReducer.userData);
 
-  
+  const shareOnFacebook = async () => {
+    try {
+      const options = {
+        title: 'Share via',
+        message: 'Donated this amount for the good causes on AlWaseela',
+        socialMedia:Share.Social.FACEBOOK
+      };
+      await Share.open(options)
+    } catch (error) {
+      console.error('Error while sharing on Facebook:', error.message)
+    }
+  };
+
   const Data = [
     {
       type: 'from',
@@ -38,10 +51,12 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
       number: null,
     },
   ];
+
   const socialMedia = [
     {
       image: require('../Assets/Images/fb.png'),
       namne: 'facebook',
+      onPress: () => {shareOnFacebook()},
     },
     {
       image: require('../Assets/Images/instagram.png'),
@@ -60,6 +75,7 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
       namne: 'whatsapp',
     },
   ];
+
   return (
     <Modal
       isVisible={isVisible}
@@ -68,9 +84,6 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
         alignItems: 'center',
       }}>
       <View style={styles.container}>
-        
-
-
         <View style={styles.Header}>
           <View>
             <CustomText
@@ -174,7 +187,7 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
               fontSize: moderateScale(20, 0.6),
             }}
             isBold>
-           ${item}
+            {item}PKR
           </CustomText>
         </View>
         <CustomText
@@ -214,8 +227,9 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
                   justifyContent: 'center',
                   borderColor: '#3E3028',
                   borderWidth: 1,
-                }}>
+                }} onPress={item?.onPress}>
                 <CustomImage
+                onPress={item?.onPress}
                   source={item?.image}
                   style={{
                     width: moderateScale(20, 0.6),
@@ -238,30 +252,30 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
         <View
           style={{
             flexDirection: 'row',
-            padding : moderateScale(4,0.6),
+            padding: moderateScale(4, 0.6),
             borderWidth: 1,
             borderColor: Color.veryLightGray,
-               justifyContent: 'space-between',
+            justifyContent: 'space-between',
             width: windowWidth * 0.8,
             marginTop: moderateScale(10, 0.3),
             alignItems: 'center',
           }}>
-            <Icon 
-            name ={'copy'}
+          <Icon
+            name={'copy'}
             as={FontAwesome}
-            size={moderateScale(12,0.6)}
+            size={moderateScale(12, 0.6)}
             color={'#3E3028'}
-            />
-              <CustomText
-          style={{
-            fontSize: moderateScale(9, 0.6),
-            marginLeft : moderateScale(10, 0.6),
-            width : windowWidth * 0.5,
-            color : '#3E3028'
-          }}>
-          example.com/share-link
-        </CustomText>
-        <CustomButton
+          />
+          <CustomText
+            style={{
+              fontSize: moderateScale(9, 0.6),
+              marginLeft: moderateScale(10, 0.6),
+              width: windowWidth * 0.5,
+              color: '#3E3028',
+            }}>
+            example.com/share-link
+          </CustomText>
+          <CustomButton
             // onPress={() => {
             //   navigationService.navigate('DonateNow');
             // }}
@@ -271,23 +285,22 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
             height={windowHeight * 0.03}
             fontSize={moderateScale(8, 0.6)}
             bgColor={'#3E3028'}
-            borderRadius={moderateScale(2, 0.3)}    
-          
+            borderRadius={moderateScale(2, 0.3)}
           />
-          </View>
-          <CustomButton
-            onPress={() => {
-              onPress ? onPress() :   setIsVisible(false)
-            }}
-            text={'Close'}
-            textColor={Color.white}
-            width={windowWidth * 0.3}
-            height={windowHeight * 0.05}
-            fontSize={moderateScale(14, 0.6)}
-            bgColor={'#3E3028'}
-            borderRadius={moderateScale(10, 0.3)}    
-            marginTop={moderateScale(20, 0.3)}
-          />
+        </View>
+        <CustomButton
+          onPress={() => {
+            onPress ? onPress() : setIsVisible(false);
+          }}
+          text={'Close'}
+          textColor={Color.white}
+          width={windowWidth * 0.3}
+          height={windowHeight * 0.05}
+          fontSize={moderateScale(14, 0.6)}
+          bgColor={'#3E3028'}
+          borderRadius={moderateScale(10, 0.3)}
+          marginTop={moderateScale(20, 0.3)}
+        />
       </View>
     </Modal>
   );
@@ -298,7 +311,7 @@ export default RecieptComponent;
 const styles = ScaledSheet.create({
   container: {
     width: windowWidth * 0.9,
-    paddingBottom : moderateScale(20,0.6),
+    paddingBottom: moderateScale(20, 0.6),
     // height: windowHeight * 0.88,
     borderRadius: moderateScale(20, 0.6),
     backgroundColor: 'white',

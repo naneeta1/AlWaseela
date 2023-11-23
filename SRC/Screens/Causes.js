@@ -161,7 +161,6 @@ const Causes = props => {
           backgroundColor: 'white',
           minHeight: windowHeight,
           flexGrow: 0,
-          //   justifyContent: 'center',
         }}
         contentContainerStyle={{
           paddingBottom: moderateScale(30, 0.6),
@@ -171,9 +170,6 @@ const Causes = props => {
           style={{
             height: windowHeight * 0.07,
             width: windowWidth * 0.2,
-            // position: 'absolute',
-            // backgroundColor:'red',
-            // top: 10,
             right: 10,
             alignSelf: 'flex-end',
           }}>
@@ -183,7 +179,6 @@ const Causes = props => {
             style={{
               width: '100%',
               height: '100%',
-              // marginTop: moderateScale(25, 0.3),
             }}
           />
         </View>
@@ -201,7 +196,6 @@ const Causes = props => {
             style={{
               width: '100%',
               height: '100%',
-              // marginTop: moderateScale(25, 0.3),
             }}
           />
         </View>
@@ -225,84 +219,86 @@ const Causes = props => {
           later
         </CustomText>
 
-        <FlatList
-          numColumns={3}
-          showsVerticalScrollIndicator={false}
-          data={data}
-          style={{
-            marginBottom: moderateScale(20, 0.6),
-          }}
-          contentContainerStyle={{
-            alignSelf: 'center',
-            marginTop: moderateScale(5, 0.3),
-          }}
-          renderItem={({item, index}) => {
-            return (
-              <Chunks
-                item={item}
-                onPress={() => {
-                  //   console.log(  interests.includes(item?.name) , interests.indexOf(item?.name))
-                  // let TempData = [...interests];
-                  // interests.includes(item?.name)
-                  //   ? (TempData.splice(interests.indexOf(item?.name), 1),
-                  //     setInterests(TempData))
-                  // :
-                  setInterests(item?.name);
-                }}
-                data={interests}
-              />
-            );
-          }}
-        />
+        {isLoading ? (
+          <View style={{height: windowHeight * 0.4, width: windowWidth * 0.7, justifyContent:'center'}}>
+            <ActivityIndicator size={'large'} color={Color.themeColor} />
+          </View>
+        ) : (
+          <>
+            <FlatList
+              numColumns={3}
+              showsVerticalScrollIndicator={false}
+              data={data}
+              style={{
+                marginBottom: moderateScale(20, 0.6),
+              }}
+              contentContainerStyle={{
+                alignSelf: 'center',
+                marginTop: moderateScale(5, 0.3),
+              }}
+              renderItem={({item, index}) => {
+                return (
+                  <Chunks
+                    item={item}
+                    onPress={() => {
+                      //   console.log(  interests.includes(item?.name) , interests.indexOf(item?.name))
+                      // let TempData = [...interests];
+                      // interests.includes(item?.name)
+                      //   ? (TempData.splice(interests.indexOf(item?.name), 1),
+                      //     setInterests(TempData))
+                      // :
+                      setInterests(item?.name);
+                    }}
+                    data={interests}
+                  />
+                );
+              }}
+            />
 
-        <CustomButton
-          onPress={() => {
-            // UpdateInterests()
-            if (interests == '') {
-              return Platform.OS == 'android'
-                ? ToastAndroid.show(
-                    'Please Select any category to proceed',
-                    ToastAndroid.SHORT,
-                  )
-                : alert('Please Select any category to proceed');
-            }
-            dispatch(setUserInterests(interests))
-            navigation.navigate('HomeScreen', {category: interests});
-          }}
-          text={
-            isLoading ? (
-              <ActivityIndicator size={'small'} color={Color.white} />
-            ) : (
-              'Continue'
-            )
-          }
-          textColor={Color.white}
-          width={windowWidth * 0.75}
-          height={windowHeight * 0.06}
-          marginTop={moderateScale(10, 0.3)}
-          bgColor={Color.themeColor}
-          borderRadius={moderateScale(25, 0.3)}
+            <CustomButton
+              onPress={() => {
+                // UpdateInterests()
+                if (interests == '') {
+                  return Platform.OS == 'android'
+                    ? ToastAndroid.show(
+                        'Please Select any category to proceed',
+                        ToastAndroid.SHORT,
+                      )
+                    : alert('Please Select any category to proceed');
+                }
+                dispatch(setUserInterests(interests));
+                navigation.navigate('HomeScreen', {category: interests});
+              }}
+              text={'Continue'}
+              textColor={Color.white}
+              width={windowWidth * 0.75}
+              height={windowHeight * 0.06}
+              marginTop={moderateScale(10, 0.3)}
+              bgColor={Color.themeColor}
+              borderRadius={moderateScale(25, 0.3)}
 
-          // isGradient
-        />
-        <CustomButton
-          onPress={() => {
-            dispatch(setUserData());
-            //     dispatch(SetUserRole(response?.data?.user_info?.role))
-            dispatch(setUserToken({token: null}));
-            // dispatch(setUserInterests([]));
-            // LoginUser();
-          }}
-          text={'Logout'}
-          textColor={Color.white}
-          width={windowWidth * 0.75}
-          height={windowHeight * 0.06}
-          marginTop={moderateScale(10, 0.3)}
-          bgColor={Color.themeColor}
-          borderRadius={moderateScale(25, 0.3)}
+              // isGradient
+            />
+            <CustomButton
+              onPress={() => {
+                dispatch(setUserData());
+                //     dispatch(SetUserRole(response?.data?.user_info?.role))
+                dispatch(setUserToken({token: null}));
+                // dispatch(setUserInterests([]));
+                // LoginUser();
+              }}
+              text={'Logout'}
+              textColor={Color.white}
+              width={windowWidth * 0.75}
+              height={windowHeight * 0.06}
+              marginTop={moderateScale(10, 0.3)}
+              bgColor={Color.themeColor}
+              borderRadius={moderateScale(25, 0.3)}
 
-          // isGradient
-        />
+              // isGradient
+            />
+          </>
+        )}
       </ScrollView>
     </ScreenBoiler>
   );
@@ -324,7 +320,6 @@ const styles = ScaledSheet.create({
 export default Causes;
 
 const Chunks = ({item, onPress, data}) => {
-  const [selectedInterest, setSelectedInterest] = useState(false);
 
   return (
     <TouchableOpacity
@@ -352,20 +347,17 @@ const Chunks = ({item, onPress, data}) => {
           />
         </View>
       )}
-      <View style={{width: windowWidth * 0.2, height: windowHeight * 0.1}}>
+      <View style={{width: windowWidth * 0.2, height: windowHeight * 0.1, paddingVertical:moderateScale(5,.6)}}>
         <CustomImage
           onPress={onPress}
-          resizeMode="stretch"
+          resizeMode={"stretch"}
           source={{uri: item?.Image}}
           style={{
             width: '100%',
-            height: '100%',
-            // backgroundColor : 'red'
-            // marginTop: moderateScale(25, 0.3),
+            height: '100%',         
           }}
         />
       </View>
-      {/* <CustomText style={{ color: Color.black, fontSize: moderateScale(13, .6), textAlign: 'center', marginTop: moderateScale(5, .3) }}>{item?.name}</CustomText> */}
     </TouchableOpacity>
   );
 };

@@ -76,18 +76,20 @@ const FundRaiseCard = ({item}) => {
           source={{uri: item?.image}}
           style={{
             width: '100%',
-            height: windowHeight * 0.2,
+            height: windowHeight * 0.23,
             justifyContent: 'flex-end',
             // paddingLeft : '20%',
           }}>
             <View style={{
-              padding : moderateScale(5,0.6),
-              backgroundColor : 'rgba(0,0,0,0.4)',
-              width : '90%',
+              // padding : moderateScale(5,0.6),
+              backgroundColor : 'rgba(0,0,0,0.6)',
+              width : '100%',
+              textAlign:'left',
+              // backgroundColor:'red',
               borderRadius : moderateScale(5,0.6),
               alignSelf : 'center'
 }}>
-              <CustomText numberOfLines={2} style={styles.text1}>
+              <CustomText numberOfLines={2} style={styles.text1} isBold>
             {item?.tagLine}
           </CustomText>
           </View>
@@ -132,7 +134,7 @@ const FundRaiseCard = ({item}) => {
                   }}
                   isBold
                   >
-                  Target : Rs{item?.target} 
+                  Target : PKR{item?.target} 
                 </CustomText>
                 <CustomText
                   style={{
@@ -195,9 +197,9 @@ const styles = ScaledSheet.create({
     fontSize: moderateScale(14, 0.6),
   },
   text1: {
-    marginLeft: moderateScale(20, 0.6),
-    width: '80%',
-    textAlign: 'left',
+    marginHorizontal: moderateScale(15, 0.6),
+    // width: '80%',
+    textAlign: 'center',
     marginBottom: moderateScale(7, 0.3),
     fontSize: moderateScale(12, 0.6),
     lineHeight: moderateScale(17, 0.6),
