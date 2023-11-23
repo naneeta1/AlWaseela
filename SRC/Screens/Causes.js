@@ -347,7 +347,7 @@ const Chunks = ({item, onPress, data}) => {
           />
         </View>
       )}
-      <View style={{width: windowWidth * 0.2, height: windowHeight * 0.1, paddingVertical:moderateScale(5,.6)}}>
+      <View style={{width: windowWidth * 0.2, height: windowHeight * 0.1}}>
         <CustomImage
           onPress={onPress}
           resizeMode={"stretch"}

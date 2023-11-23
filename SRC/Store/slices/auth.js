@@ -7,6 +7,8 @@ const initialState = {
   isVerified: false,
   userWalkThrough: false,
   isGoalCreated : false ,
+  location:{},
+  isLocationEnabled : false,
   role : '',
   interests : []
 };
@@ -39,6 +41,12 @@ const AuthSlice = createSlice({
     },
     setUserInterests(state , action){
       state.interests = action.payload
+    },
+    setLocation(state , action){
+      state.location = action.payload
+    },
+    setLocationEnabled(state , action){
+      state.isLocationEnabled = action.payload
     }
   },
 });
@@ -48,6 +56,8 @@ export const {
   setUserLogin,
   setUserLogoutAuth,
   setUserToken,
+  setLocation,
+  setLocationEnabled,
   SetFCMToken,
   setWalkThrough,
   SetUserRole,

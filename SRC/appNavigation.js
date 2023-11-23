@@ -35,10 +35,12 @@ import BankDetails from './Screens/BankDetails';
 import BillingAddress from './Screens/BillingAddress';
 import ContactUs from './Screens/ContactUs';
 import PaymentDoneScreen from './Screens/PaymentDoneScreen';
+import ScreenEnabler from './Screens/ScreenEnabler';
 
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
+  const locationEnabled = useSelector(state => state.authReducer.isLocationEnabled);
 
 
   console.log("🚀 ~ file: appNavigation.js:34 ~ AppNavigator ~ walkThrough:", walkThrough)
@@ -51,7 +53,9 @@ const AppNavigator = () => {
       !walkThrough
       ? 'WalkThroughScreen'
       : token == null
-      ? 'LoginScreen'
+      ? 'LoginScreen':
+      !locationEnabled ? 
+      'ScreenEnabler'
       :'Causes';
 
     return (
@@ -61,6 +65,7 @@ const AppNavigator = () => {
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
           <RootNav.Screen name="PaymentDoneScreen" component={PaymentDoneScreen} />
+          <RootNav.Screen name="ScreenEnabler" component={ScreenEnabler} />
           <RootNav.Screen name="Causes" component={Causes} />
           <RootNav.Screen name="GivingHistory" component={GivingHistory} />
           <RootNav.Screen name="BillingAddress" component={BillingAddress} />
