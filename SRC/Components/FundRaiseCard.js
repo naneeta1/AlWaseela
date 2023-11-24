@@ -78,7 +78,7 @@ const FundRaiseCard = ({item}) => {
           }}>
           <View
             style={{
-              paddingVertical:moderateScale(10,.6),
+              // paddingVertical:moderateScale(5,.6),
               backgroundColor: 'rgba(0,0,0,0.6)',
               width: '95%',
               // textAlign: 'left',

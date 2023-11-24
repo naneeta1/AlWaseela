@@ -41,6 +41,7 @@ import ScreenEnabler from './Screens/ScreenEnabler';
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const locationEnabled = useSelector(state => state.authReducer.isLocationEnabled);
+  console.log("🚀 ~ file: appNavigation.js:44 ~ AppNavigator ~ locationEnabled:", locationEnabled)
 
 
   console.log("🚀 ~ file: appNavigation.js:34 ~ AppNavigator ~ walkThrough:", walkThrough)

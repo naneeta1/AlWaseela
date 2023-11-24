@@ -7,6 +7,7 @@ import {
   ScrollView,
   FlatList,
   Platform,
+  AppState
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import Header from '../Components/Header';
@@ -27,12 +28,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import CustomButton from '../Components/CustomButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
 import {mode} from 'native-base/lib/typescript/theme/tools';
 import GetLocation from 'react-native-get-location';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import { setLocationEnabled } from '../Store/slices/auth';
+import RNSettings from 'react-native-settings';
 
 const BankDetails = ({route}) => {
   const isFocused = useIsFocused();
@@ -41,6 +44,7 @@ const BankDetails = ({route}) => {
     '🚀 ~ file: HomeScreen.js:37 ~ BankDetails ~ interests:',
     interests,
   );
+  const dispatch = useDispatch()
   const category = route?.params?.category;
   console.log(
     '🚀 ~ file: HomeScreen.js:39 ~ BankDetails ~ category:',
@@ -54,11 +58,15 @@ const BankDetails = ({route}) => {
   const [nearYou, setNearYou] = useState([]);
   const [newHere, setNewHere] = useState([]);
   const [location, setLocation] = useState({});
+  console.log(
+    '🚀 ~ file: HomeScreen.js:57 ~ BankDetails ~ location:',
+    location,
+  );
   // console.log('🚀 ~ file: HomeScreen.js:42 ~ BankDetails ~ nearYou:', nearYou);
   const [fundRaisingNow, setfundRaisingNow] = useState([]);
   const [dynamicinterests, setDynamicInterests] = useState([]);
   const [selectedDynamicinterests, setSelectedDynamicinterests] = useState('');
-
+  const [locationLoader, setLocationLoader] = useState(false);
 
   const dataArray = [
     {
@@ -98,7 +106,7 @@ const BankDetails = ({route}) => {
 
   const getLocation = async () => {
     if (Platform.OS === 'android') {
-      setIsLoading(true);
+      setLocationLoader(true);
       RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
         interval: 10000,
         fastInterval: 5000,
@@ -112,20 +120,21 @@ const BankDetails = ({route}) => {
               'this is the main location ======================= >>>>>>',
               location,
             );
-            const {longitude, latitude} = location;
+            // const {longitude, latitude} = location;
             setLocation(location);
-            setIsLoading(false);
+            setLocationLoader(false);
           });
 
           dispatch(setLocationEnabled(true));
         })
         .catch(err => {
-          setIsLoading(true);
+          dispatch(setLocationEnabled(false));
+          setLocationLoader(true);
         });
     }
   };
+
   const getCampaign = async () => {
-    
     const url = `campaigns/${
       selectedDynamicinterests != '' ? selectedDynamicinterests : category
     }/${location?.longitude}/${location?.latitude}`;
@@ -141,7 +150,7 @@ const BankDetails = ({route}) => {
   };
 
   const getInterest = async () => {
-    const url = `Intrest/${location?.lng}/${location?.lat}`;
+    const url = `Intrest/${location?.longitude}/${location?.latitude}`;
     // setIsLoading(true);
     const response = await Get(url, token);
     // setIsLoading(false);
@@ -159,9 +168,49 @@ const BankDetails = ({route}) => {
   }, [location]);
 
   useEffect(() => {
-    getLocation()
+    // getLocation();
     getCampaign();
   }, [isFocused, selectedDynamicinterests]);
+
+  const appState = useRef(AppState.currentState);
+
+  const _handleAppStateChange = nextAppState => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      console.log('App has come to the foreground!');
+      RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
+        if (result == RNSettings.ENABLED) {
+          console.log('location is enabled');
+          dispatch(setLocationEnabled(true));
+          
+        } else {
+          console.log('location is not enabled');
+          dispatch(setLocationEnabled(false));
+        }
+      });
+    } else {
+      console.log('App has come to the background!');
+    }
+
+    appState.current = nextAppState;
+    // setAppStateVisible(appState.current);
+    console.log('AppState', appState.current);
+  };
+
+  useEffect(() => {
+    AppState.addEventListener('change', _handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', _handleAppStateChange);
+    };
+  }, []);
+
+
+
+
+  
 
   return (
     <ScreenBoiler
@@ -232,7 +281,7 @@ const BankDetails = ({route}) => {
                 style={{
                   // flexDirection: 'row',
                   width: windowWidth * 0.29,
-                  alignItems : 'flex-end'
+                  alignItems: 'flex-end',
                   // justifyContent: 'space-evenly',
                 }}>
                 {/* <TouchableOpacity activeOpacity={0.8}> */}
@@ -502,7 +551,7 @@ const BankDetails = ({route}) => {
               })}
             </ScrollView>
           </View>
-          {isLoading ? (
+          {isLoading || locationLoader ? (
             <View
               style={{
                 width: windowWidth,
@@ -624,7 +673,14 @@ const BankDetails = ({route}) => {
                 }}
                 ListEmptyComponent={() => {
                   return (
-                    <View style={{justifyContent:'center', alignItems:'center'}}>
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'white',
+                        width: windowWidth * 0.95,
+                        borderRadius: moderateScale(10, 0.6),
+                      }}>
                       <View
                         style={{
                           marginTop: moderateScale(10, 0.3),
@@ -644,7 +700,14 @@ const BankDetails = ({route}) => {
                           resizeMode={'stretch'}
                         />
                       </View>
-                      <CustomText style={{fontSize:moderateScale(17,.6), marginTop:moderateScale(10,.3)}} isBold>Coming Soon </CustomText>
+                      <CustomText
+                        style={{
+                          fontSize: moderateScale(17, 0.6),
+                          marginTop: moderateScale(10, 0.3),
+                        }}
+                        isBold>
+                        Coming Soon{' '}
+                      </CustomText>
                     </View>
                   );
                 }}
