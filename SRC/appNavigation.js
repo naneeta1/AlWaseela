@@ -36,6 +36,7 @@ import BillingAddress from './Screens/BillingAddress';
 import ContactUs from './Screens/ContactUs';
 import PaymentDoneScreen from './Screens/PaymentDoneScreen';
 import ScreenEnabler from './Screens/ScreenEnabler';
+import TransectionHistory from './Screens/TransectionHistory';
 
 
 const AppNavigator = () => {
@@ -94,7 +95,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="FrequentlyAsked" component={FrequentlyAsked} />
-
+          <RootNav.Screen name="TransectionHistory" component={TransectionHistory} />
           {/* <RootNav.Screen name="MyDrawer" component={MyDrawer} /> */}
           <RootNav.Screen
             name="WalkThroughScreen"
