@@ -126,11 +126,7 @@ const DonationDetail = props => {
           <ActivityIndicator color={Color.themeColor} size={'large'} />
         </View>
       ) : (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: moderateScale(20, 0.6),
-          }}>
+      
           <LinearGradient
             style={{
               width: windowWidth,
@@ -350,7 +346,7 @@ const DonationDetail = props => {
                   paddingVertical: moderateScale(5, 0.6),
                 }}
                 isBold>
-                {`PKR${detail?.fix_amount} will be charged for buying ticket`}
+                {`Price: PKR${detail?.fix_amount}`}
               </CustomText>
                 </>
               }
@@ -462,7 +458,7 @@ const DonationDetail = props => {
                 </CustomText>
               </View>
             </View> */}
-              <View style={{paddingHorizontal: moderateScale(20, 0.6)}}>
+              {/* <View style={{paddingHorizontal: moderateScale(20, 0.6)}}> */}
                 <CustomText
                   style={{
                     width: windowWidth * 0.9,
@@ -472,6 +468,17 @@ const DonationDetail = props => {
                   isBold>
                   Story
                 </CustomText>
+                <ScrollView
+          showsVerticalScrollIndicator={false}
+          // contentContainerStyle={{
+          //   paddingBottom: moderateScale(20, 0.6),
+          // }}
+          style={{
+            height : windowHeight * 0.2,
+            // backgroundColor : 'red'
+          }}
+          
+          >
                 <CustomText
                   style={{
                     width: windowWidth * 0.9,
@@ -479,8 +486,10 @@ const DonationDetail = props => {
                     fontSize: moderateScale(12, 0.6),
                     marginTop: moderateScale(10, 0.6),
                     lineHeight: moderateScale(17, 0.6),
+                    textAlign : 'justify'
                   }}>{detail?.description}</CustomText>
-              </View>
+                    </ScrollView>
+              {/* </View> */}
             </View>
               <View style={{
                 position : 'absolute',
@@ -511,7 +520,7 @@ const DonationDetail = props => {
               />
                </View>
           </LinearGradient>
-        </ScrollView>
+      
       )}
     </ScreenBoiler>
   );

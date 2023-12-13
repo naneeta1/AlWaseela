@@ -1,8 +1,8 @@
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity,Platform,ToastAndroid} from 'react-native';
 import React, {useState} from 'react';
 import Header from '../Components/Header';
 import CustomText from '../Components/CustomText';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
@@ -18,19 +18,48 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import { useSelector } from 'react-redux';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const ContactUs = () => {
   const userData = useSelector((State)=>State.commonReducer.userData)
+  const token = useSelector(state => state.authReducer.token);
     const navigation = useNavigation()
-  const [enquirytype, setEnquiryType] = useState('');
+  // const [enquirytype, setEnquiryType] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const sizesArray = [
-    'Enquiry Type',
-    'Enquiry Type',
-    'Enquiry Type',
-    'Enquiry Type',
-  ];
+  // const sizesArray = [
+  //   'Enquiry Type',
+  //   'Enquiry Type',
+  //   'Enquiry Type',
+  //   'Enquiry Type',
+  // ];
+  const sendQuestion = async () => {
+    const url = 'auth/support';
+    const body = {
+      description: message,
+    };
+  
+   
+    if (message == '') {
+      return Platform.OS == 'android'
+      ? ToastAndroid.show(`Please write some message`, ToastAndroid.SHORT)
+      : alert(`Please write some message`);
+    }
+    
+    setLoading(true);
+
+    const response = await Post(url, body, apiHeader(token));
+    setLoading(false);
+    if (response != undefined) {
+      console.log("🚀 ~ file: Support.js:98 ~ sendQuestion ~ response:", response?.data)
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Your query sent Successfully', ToastAndroid.SHORT)
+        : alert('Your query sent Successfully');
+        navigation.goBack()
+      // navigationService.navigate('HomeScreen');
+    }
+  }; 
 
   return (
     <ScreenBoiler
@@ -219,6 +248,7 @@ const ContactUs = () => {
           bgColor={Color.themeColor}
           borderRadius={moderateScale(20, 0.3)}
           alignSelf={'center'}
+          onPress={sendQuestion}
         />
       </LinearGradient>
     </ScreenBoiler>

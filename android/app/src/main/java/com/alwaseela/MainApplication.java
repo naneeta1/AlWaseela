@@ -1,4 +1,4 @@
-package com.alwaseela;
+package com.PowerBox;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

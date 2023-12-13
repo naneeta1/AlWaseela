@@ -35,10 +35,14 @@ import BankDetails from './Screens/BankDetails';
 import BillingAddress from './Screens/BillingAddress';
 import ContactUs from './Screens/ContactUs';
 import PaymentDoneScreen from './Screens/PaymentDoneScreen';
+import ScreenEnabler from './Screens/ScreenEnabler';
+import TransectionHistory from './Screens/TransectionHistory';
 
 
 const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
+  const locationEnabled = useSelector(state => state.authReducer.isLocationEnabled);
+  console.log("🚀 ~ file: appNavigation.js:44 ~ AppNavigator ~ locationEnabled:", locationEnabled)
 
 
   console.log("🚀 ~ file: appNavigation.js:34 ~ AppNavigator ~ walkThrough:", walkThrough)
@@ -48,11 +52,10 @@ const AppNavigator = () => {
 
   const AppNavigatorContainer = () => {
   const firstScreen = 
-      // !walkThrough
-      // ? 'WalkThroughScreen'
-      // : 
-      token == null
-      ? 'LoginScreen'
+     token == null
+      ? 'LoginScreen':
+      !locationEnabled ? 
+      'ScreenEnabler'
       :'WalkThroughScreen';
 
     return (
@@ -62,6 +65,7 @@ const AppNavigator = () => {
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="SplashScreen" component={SplashScreen} />
           <RootNav.Screen name="PaymentDoneScreen" component={PaymentDoneScreen} />
+          <RootNav.Screen name="ScreenEnabler" component={ScreenEnabler} />
           <RootNav.Screen name="Causes" component={Causes} />
           <RootNav.Screen name="GivingHistory" component={GivingHistory} />
           <RootNav.Screen name="BillingAddress" component={BillingAddress} />
@@ -89,7 +93,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="FrequentlyAsked" component={FrequentlyAsked} />
-
+          <RootNav.Screen name="TransectionHistory" component={TransectionHistory} />
           {/* <RootNav.Screen name="MyDrawer" component={MyDrawer} /> */}
           <RootNav.Screen
             name="WalkThroughScreen"

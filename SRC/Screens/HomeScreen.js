@@ -6,6 +6,8 @@ import {
   ActivityIndicator,
   ScrollView,
   FlatList,
+  Platform,
+  AppState
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import Header from '../Components/Header';
@@ -26,11 +28,14 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FundRaiseCard from '../Components/FundRaiseCard';
 import CustomButton from '../Components/CustomButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
 import {mode} from 'native-base/lib/typescript/theme/tools';
 import GetLocation from 'react-native-get-location';
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import { setLocationEnabled } from '../Store/slices/auth';
+import RNSettings from 'react-native-settings';
 
 const BankDetails = ({route}) => {
   const isFocused = useIsFocused();
@@ -39,6 +44,7 @@ const BankDetails = ({route}) => {
     '🚀 ~ file: HomeScreen.js:37 ~ BankDetails ~ interests:',
     interests,
   );
+  const dispatch = useDispatch()
   const category = route?.params?.category;
   console.log(
     '🚀 ~ file: HomeScreen.js:39 ~ BankDetails ~ category:',
@@ -51,13 +57,16 @@ const BankDetails = ({route}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [nearYou, setNearYou] = useState([]);
   const [newHere, setNewHere] = useState([]);
-    const [location , setLocation] = useState({})
+  const [location, setLocation] = useState({});
+  console.log(
+    '🚀 ~ file: HomeScreen.js:57 ~ BankDetails ~ location:',
+    location,
+  );
   // console.log('🚀 ~ file: HomeScreen.js:42 ~ BankDetails ~ nearYou:', nearYou);
   const [fundRaisingNow, setfundRaisingNow] = useState([]);
   const [dynamicinterests, setDynamicInterests] = useState([]);
   const [selectedDynamicinterests, setSelectedDynamicinterests] = useState('');
-
-  // const [ref, setRef] = useState(null);
+  const [locationLoader, setLocationLoader] = useState(false);
 
   const dataArray = [
     {
@@ -95,24 +104,40 @@ const BankDetails = ({route}) => {
     },
   ];
 
+  const getLocation = async () => {
+    if (Platform.OS === 'android') {
+      setLocationLoader(true);
+      RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+        interval: 10000,
+        fastInterval: 5000,
+      })
+        .then(data => {
+          GetLocation.getCurrentPosition({
+            enableHighAccuracy: true,
+            timeout: 60000,
+          }).then(location => {
+            console.log(
+              'this is the main location ======================= >>>>>>',
+              location,
+            );
+            // const {longitude, latitude} = location;
+            setLocation(location);
+            setLocationLoader(false);
+          });
+
+          dispatch(setLocationEnabled(true));
+        })
+        .catch(err => {
+          dispatch(setLocationEnabled(false));
+          setLocationLoader(true);
+        });
+    }
+  };
+
   const getCampaign = async () => {
-    setIsLoading(true);
-      GetLocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 60000,
-      }).then ( async(location) => {
-        console.log(
-          'this is the main location ======================= >>>>>>',
-          location,
-        );
-        const {longitude, latitude} = location;
-        setLocation({lng : longitude , lat : latitude})
-       
-      // return  console.log("🚀 ~ file: HomeScreen.js:108 ~ getCampaign ~ longitude:", longitude)
-      
     const url = `campaigns/${
       selectedDynamicinterests != '' ? selectedDynamicinterests : category
-    }/${longitude}/${latitude}`;
+    }/${location?.longitude}/${location?.latitude}`;
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
@@ -122,25 +147,10 @@ const BankDetails = ({route}) => {
       setfundRaisingNow(response?.data?.funds_now);
       setNewHere(response?.data?.Newhere);
     }
-  })
   };
 
   const getInterest = async () => {
-    // setIsLoading(true);
-    // GetLocation.getCurrentPosition({
-    //   enableHighAccuracy: true,
-    //   timeout: 60000,
-    // }).then ( async(location) => {
-    //   console.log(
-    //     'this is the main location ======================= >>>>>>',
-    //     location,
-    //   );
-    //   const {longitude, latitude} = location;
-    
-    // // return  console.log("🚀 ~ file: HomeScreen.js:108 ~ getCampaign ~ longitude:", longitude)
-    
-  
-    const url = `Intrest/${location?.lng}/${location?.lat}`;
+    const url = `Intrest/${location?.longitude}/${location?.latitude}`;
     // setIsLoading(true);
     const response = await Get(url, token);
     // setIsLoading(false);
@@ -148,20 +158,60 @@ const BankDetails = ({route}) => {
       console.log('response ?????', response?.data);
       setDynamicInterests(response?.data);
     }
-  // })
+    // })
   };
-  useEffect(() => {
-    if(Object.keys(location).length > 0){
 
+  useEffect(() => {
+    if (Object.keys(location).length > 0) {
       getInterest();
     }
   }, [location]);
 
   useEffect(() => {
+    // getLocation();
     getCampaign();
   }, [isFocused, selectedDynamicinterests]);
 
+  const appState = useRef(AppState.currentState);
+
+  const _handleAppStateChange = nextAppState => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      console.log('App has come to the foreground!');
+      RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
+        if (result == RNSettings.ENABLED) {
+          console.log('location is enabled');
+          dispatch(setLocationEnabled(true));
+          
+        } else {
+          console.log('location is not enabled');
+          dispatch(setLocationEnabled(false));
+        }
+      });
+    } else {
+      console.log('App has come to the background!');
+    }
+
+    appState.current = nextAppState;
+    // setAppStateVisible(appState.current);
+    console.log('AppState', appState.current);
+  };
+
+  useEffect(() => {
+    AppState.addEventListener('change', _handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', _handleAppStateChange);
+    };
+  }, []);
+
+
+
+
   
+
   return (
     <ScreenBoiler
       statusBarBackgroundColor={'#3E3028'}
@@ -171,82 +221,82 @@ const BankDetails = ({route}) => {
         contentContainerStyle={{
           paddingBottom: moderateScale(20, 0.6),
         }}>
-      
-          <LinearGradient
+        <LinearGradient
+          style={{
+            width: windowWidth,
+            minHeight: windowHeight,
+            alignItems: 'center',
+          }}
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 1}}
+          colors={['#F6F3F3', '#F6F3F3']}>
+          <View
             style={{
               width: windowWidth,
-              minHeight: windowHeight,
-              alignItems: 'center',
-            }}
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 1}}
-            colors={['#F6F3F3', '#F6F3F3']}>
+              height: windowHeight * 0.07,
+              backgroundColor: '#3E3028',
+              justifyContent: 'center',
+            }}>
             <View
               style={{
-                width: windowWidth,
-                height: windowHeight * 0.07,
-                backgroundColor: '#3E3028',
-                justifyContent: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingHorizontal: moderateScale(10, 0.3),
               }}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
+                  width: windowWidth * 0.09,
+                  height: windowWidth * 0.09,
+                  borderRadius: (windowWidth * 0.09) / 2,
+                  borderWidth: 1,
+                  borderColor: Color.white,
                   alignItems: 'center',
-                  paddingHorizontal: moderateScale(10, 0.3),
+                  justifyContent: 'center',
                 }}>
                 <View
                   style={{
-                    width: windowWidth * 0.09,
-                    height: windowWidth * 0.09,
-                    borderRadius: (windowWidth * 0.09) / 2,
-                    borderWidth: 1,
-                    borderColor: Color.white,
-                    alignItems: 'center',
+                    width: windowWidth * 0.05,
+                    height: windowWidth * 0.05,
                     justifyContent: 'center',
                   }}>
-                  <View
-                    style={{
-                      width: windowWidth * 0.05,
-                      height: windowWidth * 0.05,
-                      justifyContent: 'center',
-                    }}>
-                    <CustomImage
-                      source={require('../Assets/Images/logoBig.png')}
-                      style={{height: '100%', width: '100%'}}
-                      resizeMode="contain"
-                    />
-                  </View>
-                </View>
-
-                <View style={{width: windowWidth * 0.5}}>
-                  <CustomText isBold style={styles.txt1}>
-                    {userData?.name}
-                  </CustomText>
-                  <CustomText isBold style={styles.txt2}>
-                    {userData?.intrest[0]?.name}
-                  </CustomText>
-                </View>
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.29,
-                    justifyContent: 'space-evenly',
-                  }}>
-                  {/* <TouchableOpacity activeOpacity={0.8}> */}
-                  <Icon
-                    name={'notifications-outline'}
-                    as={Ionicons}
-                    size={moderateScale(22, 0.3)}
-                    color={Color.white}
-                    onPress={() => {
-                      navigationService.navigate('Notification');
-                    }}
+                  <CustomImage
+                    source={require('../Assets/Images/logoBig.png')}
+                    style={{height: '100%', width: '100%'}}
+                    resizeMode="contain"
                   />
-                  {/* </TouchableOpacity> */}
-                  {/* <TouchableOpacity activeOpacity={0.8}> */}
-                  {/* <Icon
+                </View>
+              </View>
+
+              <View style={{width: windowWidth * 0.5}}>
+                <CustomText isBold style={styles.txt1}>
+                  {userData?.name}
+                </CustomText>
+                <CustomText isBold style={styles.txt2}>
+                  {userData?.intrest[0]?.name}
+                </CustomText>
+              </View>
+
+              <View
+                style={{
+                  // flexDirection: 'row',
+                  width: windowWidth * 0.29,
+                  alignItems: 'flex-end',
+                  // justifyContent: 'space-evenly',
+                }}>
+                {/* <TouchableOpacity activeOpacity={0.8}> */}
+                {/* <Icon
+                  name={'notifications-outline'}
+                  as={Ionicons}
+                  size={moderateScale(22, 0.3)}
+                  color={Color.white}
+                  onPress={() => {
+                    navigationService.navigate('Notification');
+                  }}
+                /> */}
+                {/* </TouchableOpacity> */}
+                {/* <TouchableOpacity activeOpacity={0.8}> */}
+                {/* <Icon
                     name={'search'}
                     as={EvilIcons}
                     size={moderateScale(22, 0.3)}
@@ -255,23 +305,23 @@ const BankDetails = ({route}) => {
                       navigationService.navigate('DonationCategories');
                     }}
                   /> */}
-                  {/* </TouchableOpacity> */}
-                  <TouchableOpacity activeOpacity={0.8}>
-                    <Icon
-                      name={'menu'}
-                      as={Feather}
-                      size={moderateScale(22, 0.3)}
-                      color={Color.white}
-                      onPress={() => {
-                        navigationService.navigate('SideDrawer');
-                      }}
-                    />
-                  </TouchableOpacity>
-                </View>
+                {/* </TouchableOpacity> */}
+                <TouchableOpacity activeOpacity={0.8}>
+                  <Icon
+                    name={'menu'}
+                    as={Feather}
+                    size={moderateScale(22, 0.3)}
+                    color={Color.white}
+                    onPress={() => {
+                      navigationService.navigate('SideDrawer');
+                    }}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
+          </View>
 
-            {/* <View
+          {/* <View
             style={{
               width: windowWidth * 0.95,
               flexDirection: 'row',
@@ -294,7 +344,7 @@ const BankDetails = ({route}) => {
             </CustomText>
           </View> */}
 
-            {/* <View
+          {/* <View
             style={{
               width: windowWidth * 0.95,
               // backgroundColor:'red',
@@ -380,7 +430,7 @@ const BankDetails = ({route}) => {
             />
           </View> */}
 
-            {/* <View
+          {/* <View
             style={{
               alignItems: 'center',
               width: windowWidth * 0.9,
@@ -441,253 +491,235 @@ const BankDetails = ({route}) => {
             />
           </View> */}
 
-            <View
-              style={{
-                width: windowWidth,
-                // height: windowHeight * 0.07,
-                //   backgroundColor: 'red',
-                marginVertical: moderateScale(10, 0.6),
-              }}>
-              <CustomText
-                isBold
-                style={[
-                  styles.text,
-                  {
-                    marginLeft: moderateScale(10, 0.6),
-                    marginBottom: moderateScale(10, 0.3),
-                  },
-                ]}>
-                Categories
-              </CustomText>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                {dynamicinterests.map(item => {
-                  return (
-                    <TouchableOpacity
+          <View
+            style={{
+              width: windowWidth,
+              // height: windowHeight * 0.07,
+              //   backgroundColor: 'red',
+              marginVertical: moderateScale(10, 0.6),
+            }}>
+            <CustomText
+              isBold
+              style={[
+                styles.text,
+                {
+                  marginLeft: moderateScale(10, 0.6),
+                  marginBottom: moderateScale(10, 0.3),
+                },
+              ]}>
+              Categories
+            </CustomText>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              {dynamicinterests.map(item => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedDynamicinterests(item?.name);
+                    }}
+                    style={{
+                      paddingHorizontal: moderateScale(10, 0.6),
+                      height: windowHeight * 0.035,
+                      //   padding: moderateScale(10, 0.6),
+                      marginHorizontal: moderateScale(5, 0.3),
+                      borderWidth: 1,
+                      justifyContent: 'center',
+                      backgroundColor:
+                        item?.name == selectedDynamicinterests
+                          ? Color.themeColor
+                          : 'white',
+                      borderColor: Color.themeColor,
+                      borderRadius: moderateScale(20, 0.6),
+                    }}>
+                    <CustomText
                       onPress={() => {
                         setSelectedDynamicinterests(item?.name);
                       }}
                       style={{
-                        paddingHorizontal: moderateScale(10, 0.6),
-                        height: windowHeight * 0.035,
-                        //   padding: moderateScale(10, 0.6),
-                        marginHorizontal: moderateScale(5, 0.3),
-                        borderWidth: 1,
-                        justifyContent: 'center',
-                        backgroundColor:
+                        color:
                           item?.name == selectedDynamicinterests
-                            ? Color.themeColor
-                            : 'white',
-                        borderColor: Color.themeColor,
-                        borderRadius: moderateScale(20, 0.6),
+                            ? 'white'
+                            : Color.themeColor,
+                        // backgroundColor: 'green',
+                        textAlign: 'center',
                       }}>
-                      <CustomText
-                        onPress={() => {
-                          setSelectedDynamicinterests(item?.name);
-                        }}
-                        style={{
-                          color:
-                            item?.name == selectedDynamicinterests
-                              ? 'white'
-                              : Color.themeColor,
-                          // backgroundColor: 'green',
-                          textAlign: 'center',
-                        }}>
-                        {item?.name}
-                      </CustomText>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-            </View>
-            {isLoading ? (
-          <View
-            style={{
-              width: windowWidth,
-              height: windowHeight * 0.9,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <ActivityIndicator size={'large'} color={Color.themeColor} />
+                      {item?.name}
+                    </CustomText>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
           </View>
-        ) : (<>
-
-            <CustomText isBold style={styles.text}>
-              {selectedDynamicinterests ? selectedDynamicinterests : category}
-            </CustomText>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              data={newHere}
-              horizontal
-              style={{}}
-              contentContainerStyle={{
-                paddingBottom: moderateScale(5, 0.6),
-              }}
-              renderItem={({item, index}) => {
-                return <FundRaiseCard item={item} key={index} />;
-              }}
-              ListEmptyComponent={() => {
-                return (
-                  <View
-                    style={{
-                      marginTop : moderateScale(10,0.3),
-                      width: windowWidth * 0.95,
-                      borderRadius: moderateScale(10, 0.6),
-                      height: windowHeight * 0.2,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor : 'white'
-                    }}>
-                    {/* <CustomImage
+          {isLoading || locationLoader ? (
+            <View
+              style={{
+                width: windowWidth,
+                height: windowHeight * 0.9,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={Color.themeColor} />
+            </View>
+          ) : (
+            <>
+              <CustomText isBold style={styles.text}>
+                {selectedDynamicinterests ? selectedDynamicinterests : category}
+              </CustomText>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                data={newHere}
+                horizontal
+                style={{}}
+                contentContainerStyle={{
+                  paddingBottom: moderateScale(5, 0.6),
+                }}
+                renderItem={({item, index}) => {
+                  return <FundRaiseCard item={item} key={index} />;
+                }}
+                ListEmptyComponent={() => {
+                  return (
+                    <View
+                      style={{
+                        marginTop: moderateScale(10, 0.3),
+                        width: windowWidth * 0.95,
+                        borderRadius: moderateScale(10, 0.6),
+                        height: windowHeight * 0.2,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'white',
+                      }}>
+                      {/* <CustomImage
                       source={require('../Assets/Images/noData.png')}
                       style={{
                         width: windowWidth * 0.4,
                         height: windowHeight * 0.1,
                       }}
                     /> */}
-                    {/* <CustomText isBold>Data Not found</CustomText> */}
-                  </View>
-                );
-              }}
-            />
-
-            <View style={styles.thanks}>
-              <CustomImage
-                source={require('../Assets/Images/mangives.png')}
-                style={{
-                  width: moderateScale(150, 0.6),
-                  height: moderateScale(100, 0.6),
+                      {/* <CustomText isBold>Data Not found</CustomText> */}
+                    </View>
+                  );
                 }}
               />
-              <CustomText style={[styles.text1, {width: windowWidth * 0.3}]}>
-              Seize Your Alhamdulillah Moments
-              </CustomText>
-            </View>
+            
+          
 
-            <CustomText isBold style={styles.text}>
-              FundRaising Now
-            </CustomText>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              data={[fundRaisingNow]}
-              horizontal
-              style={{}}
-              contentContainerStyle={{
-                // backgroundColor : 'red',
-                paddingBottom: moderateScale(5, 0.6),
-                // paddingHorizontal : moderateScale(5,0.6),
-              }}
-              renderItem={({item, index}) => {
-                // console.log("🚀 ~ file: HomeScreen.js:380 ~ BankDetails ~ item:", index)
-                return <FundRaiseCard item={item} key={index} />;
-              }}
-              ListEmptyComponent={() => {
-                return (
-                  <View
+              <View style={styles.thanks}>
+                <CustomImage
+                  source={require('../Assets/Images/mangives.png')}
                   style={{
-                  marginTop : moderateScale(10,0.3),
-                    width: windowWidth * 0.95,
-                    borderRadius: moderateScale(10, 0.6),
-                    height: windowHeight * 0.2,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor : 'white'
-                  }}>
-                  {/* <CustomImage
+                    width: moderateScale(150, 0.6),
+                    height: moderateScale(100, 0.6),
+                  }}
+                />
+                <CustomText style={[styles.text1, {width: windowWidth * 0.3}]}>
+                Seize Your Alhamdulillah Moments
+                </CustomText>
+              </View>
+
+              <CustomText isBold style={styles.text}>
+                FundRaising Now
+              </CustomText>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                data={[fundRaisingNow]}
+                horizontal
+                style={{}}
+                contentContainerStyle={{
+                  // backgroundColor : 'red',
+                  paddingBottom: moderateScale(5, 0.6),
+                  // paddingHorizontal : moderateScale(5,0.6),
+                }}
+                renderItem={({item, index}) => {
+                  // console.log("🚀 ~ file: HomeScreen.js:380 ~ BankDetails ~ item:", index)
+                  return <FundRaiseCard item={item} key={index} />;
+                }}
+                ListEmptyComponent={() => {
+                  return (
+                    <View
+                      style={{
+                        marginTop: moderateScale(10, 0.3),
+                        width: windowWidth * 0.95,
+                        borderRadius: moderateScale(10, 0.6),
+                        height: windowHeight * 0.2,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'white',
+                      }}>
+                      {/* <CustomImage
                     source={require('../Assets/Images/noData.png')}
                     style={{
                       width: windowWidth * 0.4,
                       height: windowHeight * 0.1,
                     }}
                   /> */}
-                  {/* <CustomText isBold>Data Not found</CustomText> */}
-                </View>
-                );
-              }}
-            />
-
-            <CustomText isBold style={styles.text}>
-              Near You
-            </CustomText>
-            <FlatList
-              showsHorizontalScrollIndicator={false}
-              data={nearYou}
-              horizontal
-              style={{}}
-              contentContainerStyle={{
-                paddingBottom: moderateScale(5, 0.6),
-              }}
-              renderItem={({item, index}) => {
-                return <FundRaiseCard item={item} key={index} />;
-              }}
-              ListEmptyComponent={() => {
-                return (
-                  <View
-                    style={{
-                      marginTop : moderateScale(10,0.3),
-                      width: windowWidth * 0.95,
-                      borderRadius: moderateScale(10, 0.6),
-                      height: windowHeight * 0.2,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor : 'white'
-                    }}>
-                    {/* <CustomImage
-                      source={require('../Assets/Images/noData.png')}
-                      style={{
-                        width: windowWidth * 0.4,
-                        height: windowHeight * 0.1,
-                      }}
-                    /> */}
-                    {/* <CustomText isBold>Data Not found</CustomText> */}
-                  </View>
-                );
-              }}
-            />
-            </>
-              )}
-
-            {/* <CustomButton
-              onPress={() => {
-                navigationService.navigate('DonationCategories');
-              }}
-              text={'See All'}
-              textColor={Color.white}
-              width={windowWidth * 0.75}
-              height={windowHeight * 0.06}
-              marginTop={moderateScale(15, 0.3)}
-              bgColor={Color.themeColor}
-              borderRadius={moderateScale(25, 0.3)}
-            /> */}
-          </LinearGradient>
-      
-
-        {/* <FlatList
-          numColumns={3}
-          showsVerticalScrollIndicator={false}
-          data={dynamicinterests}
-          style={{
-            marginBottom: moderateScale(20, 0.6),
-            width: windowWidth,
-          }}
-          contentContainerStyle={{
-            alignSelf: 'center',
-            marginTop: moderateScale(5, 0.3),
-          }}
-          renderItem={({item, index}) => {
-            return (
-              <Chunks
-                item={item}
-                onPress={() => {
-                  setSelectedDynamicinterests(item?.name);
+                      {/* <CustomText isBold>Data Not found</CustomText> */}
+                    </View>
+                  );
                 }}
-                data={selectedDynamicinterests}
               />
-            );
-          }}
-        /> */}
-        {/* RBS SHEET OPEN  */}
+
+              <CustomText isBold style={styles.text}>
+                Near You
+              </CustomText>
+              <FlatList
+                showsHorizontalScrollIndicator={false}
+                data={nearYou}
+                horizontal
+                style={{}}
+                contentContainerStyle={{
+                  paddingBottom: moderateScale(5, 0.6),
+                }}
+                renderItem={({item, index}) => {
+                  return <FundRaiseCard item={item} key={index} />;
+                }}
+                ListEmptyComponent={() => {
+                  return (
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'white',
+                        width: windowWidth * 0.95,
+                        borderRadius: moderateScale(10, 0.6),
+                      }}>
+                      <View
+                        style={{
+                          marginTop: moderateScale(10, 0.3),
+                          width: windowWidth * 0.4,
+                          borderRadius: moderateScale(10, 0.6),
+                          height: windowHeight * 0.16,
+                          // justifyContent: 'center',
+                          // alignItems: 'center',
+                          backgroundColor: 'white',
+                        }}>
+                        <CustomImage
+                          source={require('../Assets/Images/ImpactFul.png')}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                          }}
+                          resizeMode={'stretch'}
+                        />
+                      </View>
+                      <CustomText
+                        style={{
+                          fontSize: moderateScale(17, 0.6),
+                          marginTop: moderateScale(10, 0.3),
+                        }}
+                        isBold>
+                        Coming Soon{' '}
+                      </CustomText>
+                    </View>
+                  );
+                }}
+              />
+            </>
+          )}
+
+        </LinearGradient>
+
+      
         <RBSheet
           ref={refRBSheet}
           closeOnDragDown={true}

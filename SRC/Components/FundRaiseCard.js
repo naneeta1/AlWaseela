@@ -24,35 +24,31 @@ const FundRaiseCard = ({item}) => {
       onPress={() => {
         navigationService.navigate('DonationDetail', {item: item});
       }}>
-        {
-          item?.type == 'fixed' &&
-     
-        <View style={{
-          position : 'absolute' ,
-          zIndex : 1,
-          left : 20 , 
-          top : 10,
-        }}>
-
-      
+      {item?.type == 'fixed' && (
+        <View
+          style={{
+            position: 'absolute',
+            zIndex: 1,
+            left: 20,
+            top: 10,
+          }}>
           <CustomButton
-          
-              onPress={() => {
-                navigationService.navigate('DonationDetail', {item: item});
-              }}
-              isBold
-              text={'Buy Ticket'}
-              textColor={Color.white}
-              width={windowWidth * 0.15}
-              height={windowHeight * 0.03}
-              fontSize={moderateScale(7, 0.6)}
-              // marginTop={moderateScale(30, 0.3)}d
-              bgColor={Color.themeColor}
-              borderRadius={moderateScale(20, 0.3)}
-              alignSelf={'center'}
-            />
-              </View>
-                 }
+            onPress={() => {
+              navigationService.navigate('DonationDetail', {item: item});
+            }}
+            isBold
+            text={'Buy Ticket'}
+            textColor={Color.white}
+            width={windowWidth * 0.15}
+            height={windowHeight * 0.03}
+            fontSize={moderateScale(7, 0.6)}
+            // marginTop={moderateScale(30, 0.3)}d
+            bgColor={Color.themeColor}
+            borderRadius={moderateScale(20, 0.3)}
+            alignSelf={'center'}
+          />
+        </View>
+      )}
       {/* <CustomText isBold style={styles.text}>
         {item?.category}
       </CustomText> */}
@@ -76,7 +72,7 @@ const FundRaiseCard = ({item}) => {
           source={{uri: item?.image}}
           style={{
             width: '100%',
-            height: windowHeight * 0.2,
+            height: windowHeight * 0.23,
             justifyContent: 'flex-end',
             // paddingLeft : '20%',
           }}>
@@ -93,10 +89,9 @@ const FundRaiseCard = ({item}) => {
           </CustomText>
           </View>
         </ImageBackground>
-      
-        
+
         {/* {item?.fundRaising && item?.type == 'variable' &&( */}
-          <>
+        <>
           <View
             style={{
               width: windowWidth * 0.83,
@@ -108,7 +103,10 @@ const FundRaiseCard = ({item}) => {
             }}>
             <View
               style={{
-                width: item?.type == 'variable' ? `${(item?.collected / item?.target) * 100}%` : `${(item?.ticket_counter / item?.ticket_tickets) * 100}%` ,
+                width:
+                  item?.type == 'variable'
+                    ? `${(item?.collected / item?.target) * 100}%`
+                    : `${(item?.ticket_counter / item?.ticket_tickets) * 100}%`,
                 height: moderateScale(10, 0.6),
 
                 backgroundColor: '#3E3028',
@@ -116,37 +114,42 @@ const FundRaiseCard = ({item}) => {
                 borderRadius: moderateScale(20, 0.6),
               }}></View>
           </View>
-           <View
-           style={{
-             width: windowWidth * 0.83,
-             justifyContent : 'space-between',
-             flexDirection : 'row',
-            //  height: moderateScale(10, 0.6),
-             alignSelf: 'center',marginBottom :10,
-           }}>
-              <CustomText
-                  style={{
-                    width: windowWidth * 0.4,
-                    fontSize: moderateScale(12, 0.6),
-                    // marginTop: moderateScale(5, 0.3),
-                    color: Color.black,
-                  }}
-                  isBold
-                  >
-                  {item?.type == 'variable' ? `Target : PKR ${item?.target} ` : `Sold tickets ${item?.ticket_counter}` }    
-                </CustomText>
-                <CustomText
-                  style={{
-                    // width: windowWidth * 0.4,
-                    fontSize: moderateScale(12, 0.6),
-                    // marginTop: moderateScale(5, 0.3),
-                    color: Color.black,
-                  }}
-                  isBold>
-                  {item?.type == 'variable' ? `${item?.donators} Donors` : `total tickets ${item?.ticket_tickets}` } </CustomText>
-           </View>
-           </>
-          
+          <View
+            style={{
+              width: windowWidth * 0.83,
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              //  height: moderateScale(10, 0.6),
+              alignSelf: 'center',
+              marginBottom: 10,
+            }}>
+            <CustomText
+              style={{
+                width: windowWidth * 0.4,
+                fontSize: moderateScale(12, 0.6),
+                // marginTop: moderateScale(5, 0.3),
+                color: Color.black,
+              }}
+              isBold>
+              {item?.type == 'variable'
+                ? `Target : Rs ${item?.target} `
+                : `Sold tickets ${item?.ticket_counter}`}
+            </CustomText>
+            <CustomText
+              style={{
+                // width: windowWidth * 0.4,
+                fontSize: moderateScale(12, 0.6),
+                // marginTop: moderateScale(5, 0.3),
+                color: Color.black,
+              }}
+              isBold>
+              {item?.type == 'variable'
+                ? `${item?.donators} donators`
+                : `total tickets ${item?.ticket_tickets}`}{' '}
+            </CustomText>
+          </View>
+        </>
+
         {/* )} */}
         {/* {item?.type == 'variable' ? (
           // <View style={styles.thanks}>
@@ -197,10 +200,10 @@ const styles = ScaledSheet.create({
     fontSize: moderateScale(14, 0.6),
   },
   text1: {
-    marginLeft: moderateScale(20, 0.6),
-    width: '80%',
-    textAlign: 'left',
-    // marginBottom: moderateScale(7, 0.3),
+    marginHorizontal: moderateScale(15, 0.6),
+    // width: '80%',
+    // textAlign: 'center',
+    marginBottom: moderateScale(7, 0.3),
     fontSize: moderateScale(12, 0.6),
     lineHeight: moderateScale(17, 0.6),
     color: Color.white,

@@ -53,6 +53,15 @@ const SideDrawer = () => {
         // navigationService.navigate('GivingHistory')
       }
     },
+    {
+      id: 4,
+      name: 'transection History',
+      image: require('../Assets/Images/invoice.png'),
+      onPress: ()=>{
+        navigationService.navigate('TransectionHistory')
+      }
+    },
+    
     // {
     //   id: 5,
     //   name: 'Settings',
