@@ -242,7 +242,7 @@ const DonationDetail = props => {
                   paddingVertical: moderateScale(5, 0.6),
                 }}
                 isBold>
-                {`Rs${detail?.collected} Fund raised from Rs${detail?.target}`}
+                {`PKR${detail?.collected} Fund raised from PKR${detail?.target}`}
               </CustomText>
               <View
                 style={{
@@ -278,7 +278,7 @@ const DonationDetail = props => {
                     color: Color.black,
                   }}
                   isBold>
-                  {detail?.donators} donators
+                  {detail?.donators} Donors
                 </CustomText>
                 <CustomText
                   style={{
@@ -393,7 +393,7 @@ const DonationDetail = props => {
                     fontSize: moderateScale(14, 0.6),
                     color: Color.black,
                   }}>
-                  {detail?.donators} donators
+                  {detail?.donators} Donors
                 </CustomText>
               </View>
 

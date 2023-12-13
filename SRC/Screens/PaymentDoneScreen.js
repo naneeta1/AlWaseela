@@ -27,6 +27,9 @@ import RecieptComponent from '../Components/RecieptComponent';
 
 const PaymentDoneScreen = props => {
   const amount = props?.route?.params?.amount ;
+  const recieptUrl = props?.route?.params?.recieptUrl ;
+  console.log("🚀 ~ file: PaymentDoneScreen.js:31 ~ PaymentDoneScreen ~ recieptUrl:", recieptUrl)
+
   console.log("🚀 ~ file: PaymentDoneScreen.js:30 ~ PaymentDoneScreen ~ amount:", amount)
   const [isLoading, setIsLoading] = useState(false);
 //   const [email, setEmail] = useState('');
@@ -226,6 +229,7 @@ const PaymentDoneScreen = props => {
               );
           }}
           item={amount}
+          url={recieptUrl}
         />
       </LinearGradient>
     </ScreenBoiler>

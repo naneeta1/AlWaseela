@@ -561,7 +561,7 @@ const BankDetails = ({route}) => {
                 }}
               />
               <CustomText style={[styles.text1, {width: windowWidth * 0.3}]}>
-                Size your alhamdullilah moment
+              Seize Your Alhamdulillah Moments
               </CustomText>
             </View>
 

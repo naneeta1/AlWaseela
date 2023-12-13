@@ -83,7 +83,7 @@ const ContactUs = () => {
           </View>
         </View>
 
-        <DropDownSingleSelect
+        {/* <DropDownSingleSelect
           array={sizesArray}
           item={enquirytype}
           setItem={setEnquiryType}
@@ -96,7 +96,7 @@ const ContactUs = () => {
             borderBottomWidth: 0,
           }}
           borderColor={Color.veryLightGray}
-        />
+        /> */}
 
         <TextInputWithTitle
           fontSize={moderateScale(15, 0.6)}

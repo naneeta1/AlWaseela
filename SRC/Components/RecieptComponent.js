@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity,Clipboard} from 'react-native';
 import React from 'react';
 import Modal from 'react-native-modal';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
@@ -12,7 +12,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CustomButton from './CustomButton';
 import { useSelector } from 'react-redux';
 
-const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
+const RecieptComponent = ({isVisible, setIsVisible, item , onPress, url}) => {
   const userData = useSelector(State => State.commonReducer.userData);
 
   
@@ -185,7 +185,7 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
           isBold>
           Thank you !
         </CustomText>
-        <CustomText
+        {/* <CustomText
           style={{
             marginTop: moderateScale(20, 0.3),
             fontSize: moderateScale(10, 0.6),
@@ -225,7 +225,7 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
               </TouchableOpacity>
             );
           })}
-        </View>
+        </View> */}
         <CustomText
           style={{
             marginTop: moderateScale(20, 0.3),
@@ -233,7 +233,7 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
             textAlign: 'left',
             width: windowWidth * 0.8,
           }}>
-          or copy link
+          copy link
         </CustomText>
         <View
           style={{
@@ -259,12 +259,13 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress}) => {
             width : windowWidth * 0.5,
             color : '#3E3028'
           }}>
-          example.com/share-link
+        {url}
         </CustomText>
         <CustomButton
-            // onPress={() => {
-            //   navigationService.navigate('DonateNow');
-            // }}
+            onPress={() => {
+              // navigationService.navigate('DonateNow');
+              Clipboard.setString(url)
+            }}
             text={'Copy'}
             textColor={Color.white}
             width={windowWidth * 0.17}

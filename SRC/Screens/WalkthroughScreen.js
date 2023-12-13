@@ -20,6 +20,7 @@ import CustomText from '../Components/CustomText';
 import CustomImage from '../Components/CustomImage';
 import {setWalkThrough} from '../Store/slices/auth';
 import LinearGradient from 'react-native-linear-gradient';
+import navigationService from '../navigationService';
 
 const WalkThroughScreen = props => {
   const dispatch = useDispatch();
@@ -27,21 +28,21 @@ const WalkThroughScreen = props => {
   const slides = [
     {
       key: '1',
-      logo: require('../Assets/Images/secure.png'),
+      logo: require('../Assets/Images/secure.jpg'),
       title: 'Secure',
       subtitle:'Give securely and immediately',
       text: `Support reputable and charitable organizations by channeling your contributions through trusted financial partners such as stripe and plaid.`,
     },
     {
       key: '2',
-      logo: require('../Assets/Images/easy.png'),
+      logo: require('../Assets/Images/easy.jpg'),
       title: ' Easy',
       subtitle:'Accumulate your moments of gratitude (alhamdulilah) continuously',
       text: `Effortlessly eet your charitable responsibilities throughout the year by setting up recurring donations and taking advantage of gift aid`,
     },
     {
       key: '3',
-      logo: require('../Assets/Images/ImpactFul.png'),
+      logo: require('../Assets/Images/impact.jpg'),
       subtitle:'Create a lasting legacy',
       title: 'Impact ful',
       text: `Discover and support charities effortlessly with a single tap, making your contributions more purposeful and meaningful.`   },
@@ -74,10 +75,10 @@ const WalkThroughScreen = props => {
               // justifyContent: 'center',
             height: windowHeight,
           }}>
-            <View style={{width:windowWidth*0.3, height:windowHeight*0.3, marginTop:moderateScale(80,.3)}}>
+            <View style={{width:windowWidth*0.6, height:windowHeight*0.3, marginTop:moderateScale(80,.3)}}>
           <Image
             source={item.logo}
-            resizeMode={'contain'}
+            resizeMode={'cover'}
             style={{height: '100%', width:'100%'}}
           />
           </View>
@@ -133,7 +134,8 @@ const WalkThroughScreen = props => {
     return (
       <CustomText
         onPress={() => {
-          dispatch(setWalkThrough(true));
+          // dispatch(setWalkThrough(true));
+          navigationService.navigate('Causes')
         }}
         style={[styles.generalBtn, styles.btnRight]}>
         Done
@@ -144,7 +146,8 @@ const WalkThroughScreen = props => {
     return (
       <CustomText
         onPress={() => {
-          dispatch(setWalkThrough(true));
+          // dispatch(setWalkThrough(true));
+          navigationService.navigate('Causes')
         }}
         style={[styles.generalBtn, styles.btnLeft]}>
         Skip

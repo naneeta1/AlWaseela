@@ -86,7 +86,7 @@ const FundRaiseCard = ({item}) => {
               width : '90%',
               borderRadius : moderateScale(5,0.6),
               alignSelf : 'center',
-              marginBottom : moderateScale(10,0.3),
+              marginBottom : moderateScale(15,0.3),
 }}>
               <CustomText numberOfLines={2} style={styles.text1}>
             {item?.tagLine}
@@ -133,7 +133,7 @@ const FundRaiseCard = ({item}) => {
                   }}
                   isBold
                   >
-                  {item?.type == 'variable' ? `Target : Rs ${item?.target} ` : `Sold tickets ${item?.ticket_counter}` }    
+                  {item?.type == 'variable' ? `Target : PKR ${item?.target} ` : `Sold tickets ${item?.ticket_counter}` }    
                 </CustomText>
                 <CustomText
                   style={{
@@ -143,7 +143,7 @@ const FundRaiseCard = ({item}) => {
                     color: Color.black,
                   }}
                   isBold>
-                  {item?.type == 'variable' ? `${item?.donators} donators` : `total tickets ${item?.ticket_tickets}` } </CustomText>
+                  {item?.type == 'variable' ? `${item?.donators} Donors` : `total tickets ${item?.ticket_tickets}` } </CustomText>
            </View>
            </>
           
@@ -200,7 +200,7 @@ const styles = ScaledSheet.create({
     marginLeft: moderateScale(20, 0.6),
     width: '80%',
     textAlign: 'left',
-    marginBottom: moderateScale(7, 0.3),
+    // marginBottom: moderateScale(7, 0.3),
     fontSize: moderateScale(12, 0.6),
     lineHeight: moderateScale(17, 0.6),
     color: Color.white,

@@ -48,11 +48,12 @@ const AppNavigator = () => {
 
   const AppNavigatorContainer = () => {
   const firstScreen = 
-      !walkThrough
-      ? 'WalkThroughScreen'
-      : token == null
+      // !walkThrough
+      // ? 'WalkThroughScreen'
+      // : 
+      token == null
       ? 'LoginScreen'
-      :'Causes';
+      :'WalkThroughScreen';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
