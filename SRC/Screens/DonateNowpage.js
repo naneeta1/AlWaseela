@@ -176,7 +176,7 @@ const DonateNowpage = ({route}) => {
           <TextInputWithTitle
               placeholder={dollors}
               setText={setDollors}
-              value={`Rs${dollors}`}
+              value={`PKR ${dollors}`}
               borderBottom={1}
               // viewHeight={0.07}
               viewWidth={0.75}
@@ -240,7 +240,7 @@ const DonateNowpage = ({route}) => {
                   // backgroundColor: 'red',
                   width: windowWidth * 0.15,
                 }}>
-                Rs{dollors}
+                PKR {dollors}
               </CustomText>
               <View
                 style={{

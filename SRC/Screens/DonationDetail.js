@@ -238,7 +238,7 @@ const DonationDetail = props => {
                   paddingVertical: moderateScale(5, 0.6),
                 }}
                 isBold>
-                {`PKR${detail?.collected} Fund raised from PKR${detail?.target}`}
+                {`PKR ${detail?.collected} Fund raised from PKR ${detail?.target}`}
               </CustomText>
               <View
                 style={{
@@ -346,7 +346,7 @@ const DonationDetail = props => {
                   paddingVertical: moderateScale(5, 0.6),
                 }}
                 isBold>
-                {`Price: PKR${detail?.fix_amount}`}
+                {`Price: PKR ${detail?.fix_amount}`}
               </CustomText>
                 </>
               }
@@ -459,7 +459,7 @@ const DonationDetail = props => {
               </View>
             </View> */}
               {/* <View style={{paddingHorizontal: moderateScale(20, 0.6)}}> */}
-                <CustomText
+                {/* <CustomText
                   style={{
                     width: windowWidth * 0.9,
                     color: 'black',
@@ -467,7 +467,7 @@ const DonationDetail = props => {
                   }}
                   isBold>
                   Story
-                </CustomText>
+                </CustomText> */}
                 <ScrollView
           showsVerticalScrollIndicator={false}
           // contentContainerStyle={{

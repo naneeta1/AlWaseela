@@ -694,7 +694,7 @@ const BankDetails = ({route}) => {
                           backgroundColor: 'white',
                         }}>
                         <CustomImage
-                          source={require('../Assets/Images/ImpactFul.png')}
+                          source={require('../Assets/Images/impact.jpg')}
                           style={{
                             width: '100%',
                             height: '100%',

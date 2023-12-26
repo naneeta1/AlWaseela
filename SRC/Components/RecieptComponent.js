@@ -187,7 +187,7 @@ const RecieptComponent = ({isVisible, setIsVisible, item , onPress, url}) => {
               fontSize: moderateScale(20, 0.6),
             }}
             isBold>
-            {item}PKR
+            {item} PKR
           </CustomText>
         </View>
         <CustomText

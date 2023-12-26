@@ -1,4 +1,4 @@
-export const baseUrl = "https://alwasila.trackdiv.com";
+export const baseUrl = "https://alwasila.itserver.biz";
 // export const baseUrl = "https://37ba-113-203-241-61.ngrok-free.app";
 export const imageUrl = `${baseUrl}/api/images/`;
 export const profilePicUrl = `${baseUrl}/uploads`

@@ -47,20 +47,21 @@ const SideDrawer = () => {
     // },
     {
       id: 4,
-      name: 'GIving History',
-      image: require('../Assets/Images/invoice.png'),
-      onPress: ()=>{
-        // navigationService.navigate('GivingHistory')
-      }
-    },
-    {
-      id: 4,
-      name: 'transection History',
+      name: 'Giving History',
       image: require('../Assets/Images/invoice.png'),
       onPress: ()=>{
         navigationService.navigate('TransectionHistory')
+        // navigationService.navigate('GivingHistory')
       }
     },
+    // {
+    //   id: 4,
+    //   name: 'transection History',
+    //   image: require('../Assets/Images/invoice.png'),
+    //   onPress: ()=>{
+       
+    //   }
+    // },
     
     // {
     //   id: 5,
@@ -95,19 +96,19 @@ const SideDrawer = () => {
         navigationService.navigate('ContactUs')
       }
     },
-    {
-      id: 9,
-      name: 'payment',
-        onPress: () => {
-          navigation.navigate('BankDetails');
-        },
-        image: require('../Assets/Images/cash.png'),
-    },
-    {
-      id: 8,
-      name: 'Share This App',
-      image: require('../Assets/Images/share.png'),
-    },
+    // {
+    //   id: 9,
+    //   name: 'payment',
+    //     onPress: () => {
+    //       navigation.navigate('BankDetails');
+    //     },
+    //     image: require('../Assets/Images/cash.png'),
+    // },
+    // {
+    //   id: 8,
+    //   name: 'Share This App',
+    //   image: require('../Assets/Images/share.png'),
+    // },
      {
       id: 2,
       name: 'LogOut',

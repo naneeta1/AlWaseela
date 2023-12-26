@@ -132,7 +132,7 @@ const FundRaiseCard = ({item}) => {
               }}
               isBold>
               {item?.type == 'variable'
-                ? `Target : Rs ${item?.target} `
+                ? `Target : PKR ${item?.target} `
                 : `Sold tickets ${item?.ticket_counter}`}
             </CustomText>
             <CustomText
